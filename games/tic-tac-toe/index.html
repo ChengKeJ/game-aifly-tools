@@ -7,6 +7,25 @@
 <meta name="description" content="Play Tic Tac Toe online free in your browser. Three in a row wins. Play against the computer or a friend on the same screen. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/tic-tac-toe/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:20px;text-align:center}
+.hud{display:flex;justify-content:center;gap:24px;font-weight:700;margin:10px 0;color:#e8eaf0}
+.hud span{color:#ffb020}
+.game-btn{background:#ffb020;color:#111;padding:10px 22px;border:0;border-radius:999px;font-weight:700;cursor:pointer;font-size:15px;margin-top:12px}
+.game-btn:hover{filter:brightness(1.1)}
+.game-msg{font-size:20px;font-weight:700;min-height:28px;margin-top:10px}
+.game-hint{color:#9aa0ae;font-size:13px;margin-top:8px}
+.board{display:grid;grid-template-columns:repeat(3,100px);grid-template-rows:repeat(3,100px);gap:6px;justify-content:center;margin:16px auto}
+.cell{background:#0b0e14;border:2px solid #3a4152;border-radius:10px;font-size:52px;font-weight:700;color:#e8eaf0;cursor:pointer;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-tap-highlight-color:transparent}
+.cell:hover:not(:disabled){border-color:#ffb020}
+.cell:disabled{cursor:default}
+.cell.x{color:#4cc9f0}
+.cell.o{color:#ff9f1c}
+.cell.win{background:#2a2f3a;border-color:#ffb020}
+.mode-row{display:flex;justify-content:center;gap:10px;margin-top:4px;flex-wrap:wrap}
+.mode-btn{background:#232733;color:#e8eaf0;border:1px solid #3a4152;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+.mode-btn.active{background:#ffb020;color:#111;border-color:#ffb020}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -15,16 +34,180 @@
 <h1>❌ Play Tic Tac Toe Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Three in a row wins. Play against the computer or a friend on the same screen.</p>
 <p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">❌</div>
-<h2>Tic Tac Toe</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<div class="game-box">
+  <div class="mode-row">
+    <button class="mode-btn active" id="modeCpu">🤖 Vs Computer</button>
+    <button class="mode-btn" id="modeFriend">👥 2 Players</button>
+  </div>
+  <div class="hud">
+    <div><span id="labelX">You (X)</span>: <span id="scoreX">0</span></div>
+    <div>Draws: <span id="scoreD">0</span></div>
+    <div><span id="labelO">Computer (O)</span>: <span id="scoreO">0</span></div>
+  </div>
+  <div class="board" id="board"></div>
+  <div class="game-msg" id="msg">Your turn — tap a square</div>
+  <button class="game-btn" id="newBtn">New Game</button>
+  <p class="game-hint">Get three in a row — across, down, or diagonally — to win. In Vs Computer mode you are X and the computer is O.</p>
 </div>
 <h2>About Tic Tac Toe</h2>
 <p style="line-height:1.7">Three in a row wins. Play against the computer or a friend on the same screen. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function () {
+  var boardEl = document.getElementById('board');
+  var msgEl = document.getElementById('msg');
+  var newBtn = document.getElementById('newBtn');
+  var modeCpuBtn = document.getElementById('modeCpu');
+  var modeFriendBtn = document.getElementById('modeFriend');
+  var scoreXEl = document.getElementById('scoreX');
+  var scoreOEl = document.getElementById('scoreO');
+  var scoreDEl = document.getElementById('scoreD');
+  var labelXEl = document.getElementById('labelX');
+  var labelOEl = document.getElementById('labelO');
+
+  var WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  var board, current, gameOver, mode; // mode: 'cpu' | 'friend'
+  var scores = { X: 0, O: 0, D: 0 };
+  var cells = [];
+
+  function buildBoard() {
+    boardEl.innerHTML = '';
+    cells = [];
+    for (var i = 0; i < 9; i++) {
+      var c = document.createElement('button');
+      c.className = 'cell';
+      c.type = 'button';
+      c.setAttribute('aria-label', 'Square ' + (i + 1));
+      c.dataset.i = i;
+      c.addEventListener('click', function () { onCell(+this.dataset.i); });
+      boardEl.appendChild(c);
+      cells.push(c);
+    }
+  }
+
+  function newGame() {
+    board = ['', '', '', '', '', '', '', '', ''];
+    current = 'X';
+    gameOver = false;
+    for (var i = 0; i < 9; i++) {
+      cells[i].textContent = '';
+      cells[i].className = 'cell';
+      cells[i].disabled = false;
+    }
+    msgEl.textContent = mode === 'cpu' ? 'Your turn — tap a square' : 'Player X goes first';
+  }
+
+  function updateScores() {
+    scoreXEl.textContent = scores.X;
+    scoreOEl.textContent = scores.O;
+    scoreDEl.textContent = scores.D;
+  }
+
+  function winner(b) {
+    for (var i = 0; i < WINS.length; i++) {
+      var w = WINS[i];
+      if (b[w[0]] && b[w[0]] === b[w[1]] && b[w[0]] === b[w[2]]) return { player: b[w[0]], line: w };
+    }
+    return null;
+  }
+
+  function isFull(b) { return b.indexOf('') === -1; }
+
+  function finish(win, isDraw) {
+    gameOver = true;
+    for (var i = 0; i < 9; i++) cells[i].disabled = true;
+    if (isDraw) {
+      scores.D++;
+      msgEl.textContent = "It's a draw!";
+    } else {
+      for (var j = 0; j < win.line.length; j++) cells[win.line[j]].classList.add('win');
+      scores[win.player]++;
+      if (mode === 'cpu') {
+        msgEl.textContent = win.player === 'X' ? '🎉 You win!' : 'Computer wins — try again!';
+      } else {
+        msgEl.textContent = '🎉 Player ' + win.player + ' wins!';
+      }
+    }
+    updateScores();
+  }
+
+  // Minimax: O is the maximizing computer.
+  function minimax(b, turn) {
+    var w = winner(b);
+    if (w) return w.player === 'O' ? 10 : -10;
+    if (isFull(b)) return 0;
+    var best = turn === 'O' ? -Infinity : Infinity;
+    for (var i = 0; i < 9; i++) {
+      if (b[i] !== '') continue;
+      b[i] = turn;
+      var s = minimax(b, turn === 'O' ? 'X' : 'O');
+      b[i] = '';
+      best = turn === 'O' ? Math.max(best, s) : Math.min(best, s);
+    }
+    return best;
+  }
+
+  function cpuMove() {
+    var bestScore = -Infinity, bestMove = -1;
+    for (var i = 0; i < 9; i++) {
+      if (board[i] !== '') continue;
+      board[i] = 'O';
+      var s = minimax(board, 'X');
+      board[i] = '';
+      if (s > bestScore) { bestScore = s; bestMove = i; }
+    }
+    if (bestMove === -1) return;
+    place(bestMove, 'O');
+  }
+
+  function place(i, player) {
+    board[i] = player;
+    cells[i].textContent = player;
+    cells[i].classList.add(player.toLowerCase());
+    cells[i].disabled = true;
+    var win = winner(board);
+    if (win) { finish(win, false); return; }
+    if (isFull(board)) { finish(null, true); return; }
+    current = player === 'X' ? 'O' : 'X';
+    if (mode === 'cpu') {
+      if (current === 'O') {
+        msgEl.textContent = 'Computer is thinking…';
+        setTimeout(function () {
+          if (!gameOver) { cpuMove(); if (!gameOver) msgEl.textContent = 'Your turn — tap a square'; }
+        }, 350);
+      } else {
+        msgEl.textContent = 'Your turn — tap a square';
+      }
+    } else {
+      msgEl.textContent = 'Player ' + current + "'s turn";
+    }
+  }
+
+  function onCell(i) {
+    if (gameOver || board[i] !== '') return;
+    if (mode === 'cpu' && current !== 'X') return;
+    place(i, current);
+  }
+
+  function setMode(m) {
+    mode = m;
+    modeCpuBtn.classList.toggle('active', m === 'cpu');
+    modeFriendBtn.classList.toggle('active', m === 'friend');
+    labelXEl.textContent = m === 'cpu' ? 'You (X)' : 'Player X';
+    labelOEl.textContent = m === 'cpu' ? 'Computer (O)' : 'Player O';
+    newGame();
+  }
+
+  modeCpuBtn.addEventListener('click', function () { setMode('cpu'); });
+  modeFriendBtn.addEventListener('click', function () { setMode('friend'); });
+  newBtn.addEventListener('click', newGame);
+
+  buildBoard();
+  mode = 'cpu';
+  newGame();
+})();
+</script>
 </body>
 </html>
