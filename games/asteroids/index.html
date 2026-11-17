@@ -74,6 +74,7 @@
   }
 
   function makeAsteroid(x, y, size) {
+    size = size === undefined ? 3 : size;
     var r = size === 3 ? 46 : size === 2 ? 28 : 15;
     var a = Math.random() * Math.PI * 2;
     var speed = rand(0.5, 1.5) + (3 - size) * 0.5;
@@ -100,7 +101,7 @@
     var count = 3 + n;
     for (var i = 0; i < count; i++) {
       var a;
-      do { a = makeAsteroid(); } while (dist(a.x, a.y, ship.x, ship.y) < 140);
+      do { a = makeAsteroid(undefined, undefined, 3); } while (dist(a.x, a.y, ship.x, ship.y) < 140);
       asteroids.push(a);
     }
   }
