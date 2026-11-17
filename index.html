@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play Free Online Games — game.aifly.tools</title>
+<meta name="description" content="Play 100+ free online mini-games in your browser. No download, no sign-up. Puzzle, arcade, shooting, racing and card games — play now on game.aifly.tools.">
+<link rel="canonical" href="https://game.aifly.tools/">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<header><div class="wrap">
+<a class="logo" href="/">🎮 game<span>.aifly.tools</span></a>
+<nav><a href="/">Home</a><a href="#puzzle">Puzzle</a><a href="#arcade">Arcade</a><a href="#shooting">Shooting</a><a href="#racing">Racing</a></nav>
+<div class="search"><input id="q" type="search" placeholder="Search games..." oninput="filterGames(this.value)"></div>
+</div></header>
+<main class="wrap">
+<section class="hero">
+<h1>Play free online games</h1>
+<p>100+ mini-games in your browser. No download, no sign-up — just click and play. New games added every week.</p>
+<div class="chips" id="cats"></div>
+</section>
+
+<section>
+<h2>⭐ Featured — Our own games</h2>
+<div class="grid">
+<a class="card featured" href="/games/airplane-shooter/"><div class="thumb">✈️</div><div class="card-body"><h3>Airplane Shooter</h3><p>Our flagship Cocos shooter. Dodge, shoot, upgrade weapons to level 3. Web version coming soon.</p><div class="meta"><span class="badge">Shooting</span><span class="badge">Original</span> Coming soon</div></div></a>
+<a class="card featured" href="/games/kart-racer/"><div class="thumb">🏎️</div><div class="card-body"><h3>Kart Racer</h3><p>Our flagship Cocos kart racer. Real 3D track, items and AI opponents. Web version coming soon.</p><div class="meta"><span class="badge">Racing</span><span class="badge">Original</span> Coming soon</div></div></a>
+</div>
+</section>
+
+<section>
+<h2>All games</h2>
+<div class="grid" id="grid"></div>
+<p style="color:#9aa0ae;font-size:13px">More licensed games from GameMonetize / GameDistribution are being added. Each game page lists its licence and source. No AdSense is shown on game pages.</p>
+</section>
+</main>
+<footer><div class="wrap">
+<strong>game.aifly.tools</strong> — free H5 game hall by aifly.tools.<br>
+All games are licensed embeds or MIT open-source games with attribution. Do not copy games from other portals without licence.<br>
+<a href="https://www.aifly.tools/">aifly.tools</a> · <a href="/sitemap.xml">Sitemap</a>
+</div></footer>
+<script src="/assets/js/games.js"></script>
+<script>
+const cats=[...new Set(GAMES.map(g=>g.cat))];
+document.getElementById('cats').innerHTML='<button class="chip active" onclick="setCat(\'All\',this)">All</button>'+cats.map(c=>`<button class="chip" onclick="setCat('${c}',this)">${c}</button>`).join('');
+let cur='All';
+function render(list){
+  document.getElementById('grid').innerHTML=list.map(g=>`<a class="card" href="/games/${g.slug}/"><div class="thumb">${g.emoji}</div><div class="card-body"><h3>${g.name}</h3><p>${g.desc}</p><div class="meta"><span class="badge">${g.cat}</span><span class="badge">${g.license}</span> Play free</div></div></a>`).join('');
+}
+function setCat(c,el){cur=c;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));el.classList.add('active');render(GAMES.filter(g=>c==='All'||g.cat===c));}
+function filterGames(q){q=q.toLowerCase();render(GAMES.filter(g=>(cur==='All'||g.cat===cur)&&(g.name.toLowerCase().includes(q)||g.desc.toLowerCase().includes(q))));}
+render(GAMES);
+</script>
+</body>
+</html>
