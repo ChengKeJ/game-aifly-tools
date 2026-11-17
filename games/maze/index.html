@@ -7,6 +7,17 @@
 <meta name="description" content="Play Maze Runner online free in your browser. Find your way out of the maze. Arrow keys to move, beat the clock. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/maze/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center}
+.game-box canvas{width:100%;max-width:480px;height:auto;background:#fff;border-radius:10px;display:block;margin:0 auto;touch-action:manipulation}
+.hud{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:10px 0;font-weight:700}
+.hud span{color:#ffb020}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px;margin:4px}
+.dpad{display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;justify-content:center;margin:12px auto}
+.dpad button{border-radius:10px;border:1px solid #444;background:#232733;color:#fff;font-size:22px;cursor:pointer}
+.msg{font-size:18px;font-weight:700;min-height:26px;margin:6px 0}
+.hint{color:#9aa0ae;font-size:14px}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +25,108 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Puzzle / Maze Runner</p>
 <h1>🌀 Play Maze Runner Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Find your way out of the maze. Arrow keys to move, beat the clock.</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🌀</div>
-<h2>Maze Runner</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> Move the green dot from the start (top-left) to the red exit (bottom-right). Arrow keys or WASD on desktop, on-screen arrows on mobile. The timer starts on your first move.</p>
+<div class="game-box">
+<canvas id="game" width="480" height="480" aria-label="Maze Runner game"></canvas>
+<div class="hud"><div>Time: <span id="time">0.0s</span></div><div>Moves: <span id="moves">0</span></div><div>Best: <span id="best">—</span></div></div>
+<div class="msg" id="msg">Reach the red exit!</div>
+<div class="dpad">
+<span></span><button id="up" aria-label="Move up">⬆</button><span></span>
+<button id="left" aria-label="Move left">⬅</button><button id="down" aria-label="Move down">⬇</button><button id="right" aria-label="Move right">➡</button>
+</div>
+<div><button class="btn" id="newBtn">🔄 New Maze</button></div>
+<p class="hint">A brand-new maze is generated every game (recursive backtracker). Walls block you — find the open path.</p>
 </div>
 <h2>About Maze Runner</h2>
 <p style="line-height:1.7">Find your way out of the maze. Arrow keys to move, beat the clock. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+var N=15,CELL=480/N;
+var cv=document.getElementById('game'),ctx=cv.getContext('2d');
+var timeEl=document.getElementById('time'),movesEl=document.getElementById('moves'),bestEl=document.getElementById('best'),msgEl=document.getElementById('msg');
+var cells,player,moves,started,won,startTime,timerId,best=null;
+try{var b=localStorage.getItem('maze-best');if(b)best=parseFloat(b);}catch(e){}
+if(best!==null)bestEl.textContent=best.toFixed(1)+'s';
+function genMaze(){
+  cells=[];
+  for(var y=0;y<N;y++){var row=[];for(var x=0;x<N;x++)row.push({x:x,y:y,walls:{n:true,s:true,e:true,w:true},visited:false});cells.push(row);}
+  var stack=[cells[0][0]];cells[0][0].visited=true;
+  while(stack.length){
+    var cur=stack[stack.length-1];
+    var ns=[];
+    if(cur.y>0&&!cells[cur.y-1][cur.x].visited)ns.push(['n',cells[cur.y-1][cur.x]]);
+    if(cur.y<N-1&&!cells[cur.y+1][cur.x].visited)ns.push(['s',cells[cur.y+1][cur.x]]);
+    if(cur.x<N-1&&!cells[cur.y][cur.x+1].visited)ns.push(['e',cells[cur.y][cur.x+1]]);
+    if(cur.x>0&&!cells[cur.y][cur.x-1].visited)ns.push(['w',cells[cur.y][cur.x-1]]);
+    if(!ns.length){stack.pop();continue;}
+    var pick=ns[Math.floor(Math.random()*ns.length)],dir=pick[0],next=pick[1];
+    if(dir==='n'){cur.walls.n=false;next.walls.s=false;}
+    if(dir==='s'){cur.walls.s=false;next.walls.n=false;}
+    if(dir==='e'){cur.walls.e=false;next.walls.w=false;}
+    if(dir==='w'){cur.walls.w=false;next.walls.e=false;}
+    next.visited=true;stack.push(next);
+  }
+}
+function newGame(){
+  genMaze();player={x:0,y:0};moves=0;started=false;won=false;
+  if(timerId){clearInterval(timerId);timerId=null;}
+  movesEl.textContent='0';timeEl.textContent='0.0s';msgEl.textContent='Reach the red exit!';
+  draw();
+}
+function draw(){
+  ctx.clearRect(0,0,480,480);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,480,480);
+  // exit
+  ctx.fillStyle='#e74c3c';ctx.fillRect((N-1)*CELL+4,(N-1)*CELL+4,CELL-8,CELL-8);
+  ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText('EXIT',(N-1)*CELL+CELL/2,(N-1)*CELL+CELL/2+5);ctx.textAlign='left';
+  // walls
+  ctx.strokeStyle='#222';ctx.lineWidth=3;ctx.beginPath();
+  for(var y=0;y<N;y++)for(var x=0;x<N;x++){var c=cells[y][x],px=x*CELL,py=y*CELL;
+    if(c.walls.n){ctx.moveTo(px,py);ctx.lineTo(px+CELL,py);}
+    if(c.walls.s){ctx.moveTo(px,py+CELL);ctx.lineTo(px+CELL,py+CELL);}
+    if(c.walls.w){ctx.moveTo(px,py);ctx.lineTo(px,py+CELL);}
+    if(c.walls.e){ctx.moveTo(px+CELL,py);ctx.lineTo(px+CELL,py+CELL);}
+  }
+  ctx.stroke();
+  // player
+  ctx.fillStyle='#22a355';ctx.beginPath();ctx.arc(player.x*CELL+CELL/2,player.y*CELL+CELL/2,CELL/2-5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(player.x*CELL+CELL/2-4,player.y*CELL+CELL/2-3,2.5,0,Math.PI*2);ctx.arc(player.x*CELL+CELL/2+4,player.y*CELL+CELL/2-3,2.5,0,Math.PI*2);ctx.fill();
+}
+function move(dx,dy){
+  if(won)return;
+  var c=cells[player.y][player.x];
+  if(dx===-1&&c.walls.w)return;
+  if(dx===1&&c.walls.e)return;
+  if(dy===-1&&c.walls.n)return;
+  if(dy===1&&c.walls.s)return;
+  if(!started){started=true;startTime=Date.now();timerId=setInterval(function(){timeEl.textContent=((Date.now()-startTime)/1000).toFixed(1)+'s';},100);}
+  player.x+=dx;player.y+=dy;moves++;movesEl.textContent=moves;
+  if(player.x===N-1&&player.y===N-1){
+    won=true;clearInterval(timerId);
+    var t=(Date.now()-startTime)/1000;
+    timeEl.textContent=t.toFixed(1)+'s';
+    if(best===null||t<best){best=t;try{localStorage.setItem('maze-best',String(t));}catch(e){}bestEl.textContent=t.toFixed(1)+'s';msgEl.textContent='🎉 You escaped in '+t.toFixed(1)+'s with '+moves+' moves — new best! Press New Maze to play again.';}
+    else{msgEl.textContent='🎉 You escaped in '+t.toFixed(1)+'s with '+moves+' moves! Press New Maze to play again.';}
+  }
+  draw();
+}
+document.getElementById('up').addEventListener('click',function(){move(0,-1);});
+document.getElementById('down').addEventListener('click',function(){move(0,1);});
+document.getElementById('left').addEventListener('click',function(){move(-1,0);});
+document.getElementById('right').addEventListener('click',function(){move(1,0);});
+document.getElementById('newBtn').addEventListener('click',newGame);
+document.addEventListener('keydown',function(e){
+  var k=e.key;
+  if(k==='ArrowUp'||k==='w'||k==='W'){e.preventDefault();move(0,-1);}
+  else if(k==='ArrowDown'||k==='s'||k==='S'){e.preventDefault();move(0,1);}
+  else if(k==='ArrowLeft'||k==='a'||k==='A'){e.preventDefault();move(-1,0);}
+  else if(k==='ArrowRight'||k==='d'||k==='D'){e.preventDefault();move(1,0);}
+});
+newGame();
+})();
+</script>
 </body>
 </html>
