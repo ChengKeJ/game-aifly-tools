@@ -7,6 +7,29 @@
 <meta name="description" content="Play Hearts Card Game online free in your browser. A classic trick-taking card game. Avoid hearts and the Queen of Spades. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/hearts/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#0d3b26;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center;color:#e8eaf0}
+#status{font-weight:700;min-height:26px;margin-bottom:10px;color:#ffe08a}
+#scores{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-size:14px;margin-bottom:12px}
+#scores b{color:#ffb020}
+.ai-row{display:flex;justify-content:center;gap:6px;min-height:60px;margin-bottom:6px}
+.ai-hand{display:flex;gap:4px}
+.ai-hand .card-back{width:26px;height:38px;background:#1c5c40;border:2px solid #e8eaf0;border-radius:5px;display:inline-block}
+.trick-area{display:flex;justify-content:center;gap:10px;min-height:92px;align-items:center;margin:8px 0}
+.trick-slot{width:64px;height:92px}
+.card{width:60px;height:88px;background:#fff;color:#111;border-radius:8px;border:1px solid #999;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:20px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.4);user-select:none;line-height:1.1}
+.card.red{color:#d21f3c}
+.card small{font-size:22px}
+.card.playable{transform:translateY(-8px);box-shadow:0 0 0 3px #ffb020,0 4px 10px rgba(0,0,0,.5)}
+.card:not(.playable){opacity:.55;cursor:not-allowed}
+.card.static{cursor:default}
+#hand{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;min-height:96px;margin-top:6px}
+#handLabel{font-size:13px;color:#9fd8b4;margin-top:10px}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px;margin-top:12px}
+.btn:hover{opacity:.9}
+#result{font-size:18px;font-weight:700;min-height:28px;margin-top:10px}
+.legend{font-size:13px;color:#9fd8b4;margin-top:8px}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +37,201 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Card / Hearts Card Game</p>
 <h1>♥️ Play Hearts Card Game Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">A classic trick-taking card game. Avoid hearts and the Queen of Spades.</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">♥️</div>
-<h2>Hearts Card Game</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: attogram/games.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> This is <strong>Simplified Hearts</strong> — you play against 3 computer opponents with a full 52-card deck. The player with the 2 of Clubs leads the first trick. You must follow suit if you can. Hearts cannot be led until a heart has been played ("broken"). Each heart taken is 1 point, the Queen of Spades is 13 points. Lowest points after all 13 tricks wins the round. Simplified: no card-passing phase, one deal = one round (no multi-round match to 100), and taking all 26 points ("shooting the moon") scores 0 for you and 26 for each opponent.</p>
+<div class="game-box">
+<div id="status">Press New Game to deal.</div>
+<div id="scores"></div>
+<div class="ai-row" id="aiRows"></div>
+<div class="trick-area" id="trickArea"></div>
+<div id="handLabel">Your hand — tap a highlighted card to play it</div>
+<div id="hand"></div>
+<p id="result"></p>
+<p><button class="btn" id="btnNew">🃏 New Game</button></p>
+<p class="legend">♥ each heart = 1 point &nbsp;•&nbsp; ♠ Q = 13 points &nbsp;•&nbsp; lowest score wins</p>
 </div>
 <h2>About Hearts Card Game</h2>
 <p style="line-height:1.7">A classic trick-taking card game. Avoid hearts and the Queen of Spades. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: attogram/games - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+'use strict';
+var SUITS=['♣','♦','♠','♥'];
+var SUIT_NAMES={ '♣':'Clubs','♦':'Diamonds','♠':'Spades','♥':'Hearts' };
+var RANKS=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+var NAMES=['You','North','East','West'];
+var statusEl=document.getElementById('status'),scoresEl=document.getElementById('scores'),
+    aiRowsEl=document.getElementById('aiRows'),trickEl=document.getElementById('trickArea'),
+    handEl=document.getElementById('hand'),resultEl=document.getElementById('result');
+
+var hands=[[],[],[],[]],scores=[0,0,0,0],currentTrick=[],leader=0,trickCount=0,heartsBroken=false,turn=0,gameOver=true,leadSuit=null;
+
+function makeDeck(){
+  var d=[];
+  SUITS.forEach(function(s){RANKS.forEach(function(r,i){d.push({suit:s,rank:r,val:i+2});});});
+  return d;
+}
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+function cardPoints(c){return c.suit==='♥'?1:(c.suit==='♠'&&c.rank==='Q'?13:0);}
+function sortHand(h){h.sort(function(a,b){return a.suit.localeCompare(b.suit)||a.val-b.val;});}
+function cardHTML(c,cls){
+  return '<div class="card '+(c.suit==='♥'||c.suit==='♦'?'red':'')+' '+(cls||'')+'" data-suit="'+c.suit+'" data-rank="'+c.rank+'">'+c.rank+'<small>'+c.suit+'</small></div>';
+}
+function newGame(){
+  var deck=shuffle(makeDeck());
+  hands=[[],[],[],[]];scores=[0,0,0,0];
+  for(var i=0;i<52;i++)hands[i%4].push(deck[i]);
+  hands.forEach(sortHand);
+  currentTrick=[];trickCount=0;heartsBroken=false;gameOver=false;
+  // holder of 2 of Clubs leads
+  leader=0;
+  for(var p=0;p<4;p++)for(var k=0;k<13;k++)
+    if(hands[p][k].suit==='♣'&&hands[p][k].rank==='2')leader=p;
+  turn=leader;leadSuit=null;
+  resultEl.textContent='';
+  statusEl.textContent=NAMES[leader]+(leader===0?' (you)':'')+' lead'+(leader===0?'s':'')+' with the 2♣.';
+  render();
+  if(turn!==0)setTimeout(aiTurn,700);
+}
+function playableCards(){
+  var hand=hands[0];
+  if(currentTrick.length===0){
+    // leading: 2♣ on very first trick; hearts not until broken
+    if(trickCount===0)return hand.filter(function(c){return c.suit==='♣'&&c.rank==='2';});
+    var nonHearts=hand.filter(function(c){return c.suit!=='♥';});
+    if(!heartsBroken&&nonHearts.length)return nonHearts;
+    return hand.slice();
+  }
+  var follow=hand.filter(function(c){return c.suit===leadSuit;});
+  return follow.length?follow:hand.slice();
+}
+function render(){
+  scoresEl.innerHTML=NAMES.map(function(n,i){
+    return '<span>'+n+': <b>'+scores[i]+' pts</b> ('+hands[i].length+' cards)</span>';
+  }).join('');
+  aiRowsEl.innerHTML='';
+  for(var p=1;p<4;p++){
+    var row=document.createElement('div');
+    row.innerHTML='<div style="font-size:13px;color:#9fd8b4;margin-bottom:2px">'+NAMES[p]+' — '+hands[p].length+' cards</div><div class="ai-hand">'+
+      hands[p].map(function(){return '<span class="card-back"></span>';}).join('')+'</div>';
+    aiRowsEl.appendChild(row);
+  }
+  trickEl.innerHTML='';
+  for(var s=0;s<4;s++){
+    var slot=document.createElement('div');slot.className='trick-slot';
+    var idx=currentTrick.findIndex(function(t){return t.player===s;});
+    if(idx>=0){
+      slot.innerHTML=cardHTML(currentTrick[idx].card,'static');
+      var lab=document.createElement('div');
+      lab.style.cssText='font-size:11px;color:#9fd8b4';
+      lab.textContent=NAMES[s];
+      slot.appendChild(lab);
+    }
+    trickEl.appendChild(slot);
+  }
+  var playable=(!gameOver&&turn===0)?playableCards():[];
+  handEl.innerHTML='';
+  hands[0].forEach(function(c){
+    var ok=playable.some(function(pc){return pc.suit===c.suit&&pc.rank===c.rank;});
+    var el=document.createElement('div');
+    el.className='card '+((c.suit==='♥'||c.suit==='♦')?'red ':'')+(ok?'playable':'');
+    el.innerHTML=c.rank+'<small>'+c.suit+'</small>';
+    if(ok)el.addEventListener('click',function(){playCard(0,c);});
+    handEl.appendChild(el);
+  });
+}
+function playCard(player,card){
+  var hand=hands[player];
+  var idx=hand.findIndex(function(c){return c.suit===card.suit&&c.rank===card.rank;});
+  if(idx<0)return;
+  hand.splice(idx,1);
+  if(currentTrick.length===0)leadSuit=card.suit;
+  if(card.suit==='♥')heartsBroken=true;
+  currentTrick.push({player:player,card:card});
+  if(currentTrick.length===4){render();setTimeout(resolveTrick,900);return;}
+  turn=(player+1)%4;
+  render();
+  if(turn!==0)setTimeout(aiTurn,700);
+}
+function aiChoose(player){
+  var hand=hands[player];
+  var opts;
+  if(currentTrick.length===0){
+    var nonHearts=hand.filter(function(c){return c.suit!=='♥';});
+    opts=(!heartsBroken&&nonHearts.length)?nonHearts:hand.slice();
+    // lead low
+    opts.sort(function(a,b){return a.val-b.val;});
+    return opts[0];
+  }
+  var follow=hand.filter(function(c){return c.suit===leadSuit;});
+  if(follow.length){
+    var curBest=null,curVal=-1;
+    currentTrick.forEach(function(t){if(t.card.suit===leadSuit&&t.card.val>curVal){curVal=t.card.val;curBest=t;}});
+    // play highest card below the current winner if possible, else dump highest
+    var below=follow.filter(function(c){return c.val<curVal;});
+    if(below.length){below.sort(function(a,b){return b.val-a.val;});return below[0];}
+    follow.sort(function(a,b){return b.val-a.val;});return follow[0];
+  }
+  // void in suit: dump Q♠, then highest heart, then highest card
+  var qs=hand.find(function(c){return c.suit==='♠'&&c.rank==='Q';});
+  if(qs)return qs;
+  var hearts=hand.filter(function(c){return c.suit==='♥';});
+  if(hearts.length){hearts.sort(function(a,b){return b.val-a.val;});return hearts[0];}
+  var sorted=hand.slice().sort(function(a,b){return b.val-a.val;});
+  return sorted[0];
+}
+function aiTurn(){
+  if(gameOver)return;
+  playCard(turn,aiChoose(turn));
+}
+function resolveTrick(){
+  var best=null,bestVal=-1;
+  currentTrick.forEach(function(t){
+    if(t.card.suit===leadSuit&&t.card.val>bestVal){bestVal=t.card.val;best=t;}
+  });
+  var pts=0;
+  currentTrick.forEach(function(t){pts+=cardPoints(t.card);});
+  scores[best.player]+=pts;
+  trickCount++;
+  var msg=NAMES[best.player]+' takes the trick'+(pts?' (+'+pts+' pts)':'')+'.';
+  currentTrick=[];leadSuit=null;
+  if(trickCount===13){endRound();return;}
+  leader=best.player;turn=leader;
+  statusEl.textContent=msg+' '+NAMES[turn]+(turn===0?' (you)':'')+' lead'+(turn===0?'s':'')+'.';
+  render();
+  if(turn!==0)setTimeout(aiTurn,700);
+}
+function endRound(){
+  gameOver=true;
+  var moon=scores.findIndex(function(s){return s===26;});
+  if(moon>=0){
+    scores=scores.map(function(s,i){return i===moon?0:26;});
+    statusEl.textContent='🌙 '+NAMES[moon]+' shot the moon! Scores adjusted.';
+  }
+  var min=Math.min.apply(null,scores);
+  var winners=scores.map(function(s,i){return s===min?i:-1;}).filter(function(i){return i>=0;});
+  render();
+  var txt='Final scores — '+NAMES.map(function(n,i){return n+' '+scores[i];}).join(', ')+'. ';
+  if(winners.length===1&&winners[0]===0){
+    resultEl.textContent='🏆 '+txt+'You win with the lowest score!';
+    resultEl.style.color='#7ee081';
+  }else if(winners.indexOf(0)>=0){
+    resultEl.textContent='🤝 '+txt+'It\'s a tie — you share the win!';
+    resultEl.style.color='#ffe08a';
+  }else{
+    resultEl.textContent='😞 '+txt+NAMES[winners[0]]+' wins. Try again!';
+    resultEl.style.color='#ff8a8a';
+  }
+  statusEl.textContent='Round over.';
+}
+document.getElementById('btnNew').addEventListener('click',newGame);
+render();
+statusEl.textContent='Press New Game to deal.';
+})();
+</script>
 </body>
 </html>
