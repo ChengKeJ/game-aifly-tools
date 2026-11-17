@@ -7,6 +7,28 @@
 <meta name="description" content="Play Solitaire online free in your browser. The classic single-player card game. Sort all cards by suit and rank. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/solitaire/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center;overflow-x:auto}
+.top-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.found{display:flex;gap:10px}
+.card{width:64px;height:88px;border-radius:8px;background:#fff;color:#111;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:5px 6px;font-weight:700;font-size:16px;cursor:pointer;border:2px solid #ccc;box-sizing:border-box;user-select:none;position:relative;flex-shrink:0}
+.card.red{color:#d43a2f}
+.card.back{background:repeating-linear-gradient(45deg,#2f6fd4,#2f6fd4 8px,#2456a8 8px,#2456a8 16px);color:#fff;cursor:pointer}
+.card.slot{background:rgba(255,255,255,.07);border:2px dashed #555;color:#9aa0ae;cursor:pointer;align-items:center;justify-content:center;font-size:12px}
+.card.selected{border-color:#ffb020;box-shadow:0 0 0 3px #ffb020;transform:translateY(-4px)}
+.card .suit{font-size:20px;line-height:1}
+.tableau{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pile{width:64px;min-height:88px;position:relative}
+.pile .card{position:absolute;left:0}
+.pile .card.slot{position:relative}
+.hud{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:10px 0;font-weight:700}
+.hud span{color:#ffb020}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px;margin:4px}
+.btn:hover{opacity:.85}
+.msg{font-size:16px;font-weight:700;min-height:24px;margin:8px 0}
+.hint{color:#9aa0ae;font-size:14px;line-height:1.6}
+@media(max-width:560px){.card{width:52px;height:72px;font-size:13px}.pile{width:52px}.card .suit{font-size:16px}}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +36,191 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Card / Solitaire</p>
 <h1>♠️ Play Solitaire Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">The classic single-player card game. Sort all cards by suit and rank.</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">♠️</div>
-<h2>Solitaire</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: attogram/games.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> Click a card to select it, then click where it should go. Build tableau piles down in alternating colours (K→Q→J…), and build each foundation up by suit from A to K. Click the stock (blue back) to draw a card. Double-click a card to send it to its foundation when possible.</p>
+<div class="game-box">
+<p style="color:#ffb020;font-weight:700;margin:0 0 4px">Simplified Solitaire</p>
+<p class="hint" style="margin:0 0 12px">Simplified Klondike: click-to-move instead of drag-and-drop, draw-1 stock with unlimited redeals, and cards cannot be moved back out of a foundation. The full Klondike rules for building tableau and foundations still apply.</p>
+<div class="hud"><div>Moves: <span id="moves">0</span></div><div>Cards in foundations: <span id="foundCount">0</span> / 52</div><div>Stock: <span id="stockCount">0</span></div></div>
+<div class="msg" id="msg">Click the stock to draw, or click a face-up card to select it.</div>
+<div class="top-row">
+<div id="stockArea"></div>
+<div id="wasteArea"></div>
+<div class="found" id="foundArea"></div>
+</div>
+<div class="tableau" id="tableauArea"></div>
+<div style="margin-top:14px">
+<button class="btn" id="newBtn">🔄 New Game</button>
+<button class="btn" id="autoBtn">⬆ Auto-move to foundations</button>
+</div>
+<p class="hint">Tableau: descending, alternating red/black. Empty tableau pile: only a King (or a stack starting with a King). Foundation: same suit, ascending from Ace.</p>
 </div>
 <h2>About Solitaire</h2>
 <p style="line-height:1.7">The classic single-player card game. Sort all cards by suit and rank. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: attogram/games - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+var SUITS=[{s:'♠',red:false},{s:'♥',red:true},{s:'♦',red:true},{s:'♣',red:false}];
+var RANKS=['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+var stock=[],waste=[],foundations=[[],[],[],[]],tableau=[[],[],[],[],[],[],[]];
+var sel=null,moves=0,over=false;
+var movesEl=document.getElementById('moves'),foundEl=document.getElementById('foundCount'),stockEl=document.getElementById('stockCount'),msgEl=document.getElementById('msg');
+function newDeck(){var d=[];for(var si=0;si<4;si++)for(var r=1;r<=13;r++)d.push({suit:SUITS[si].s,red:SUITS[si].red,rank:r,faceUp:false});return d;}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function newGame(){
+  var deck=shuffle(newDeck());stock=[];waste=[];foundations=[[],[],[],[]];tableau=[[],[],[],[],[],[],[]];
+  sel=null;moves=0;over=false;
+  for(var p=0;p<7;p++)for(var k=0;k<=p;k++){var c=deck.pop();c.faceUp=(k===p);tableau[p].push(c);}
+  stock=deck;
+  msgEl.textContent='Click the stock to draw, or click a face-up card to select it.';
+  render();
+}
+function label(c){return RANKS[c.rank]+c.suit;}
+function cardEl(c,opts){
+  opts=opts||{};
+  var d=document.createElement('div');
+  if(!c){d.className='card slot';d.textContent=opts.slotText||'';return d;}
+  if(!c.faceUp){d.className='card back';d.textContent='🂠';return d;}
+  d.className='card'+(c.red?' red':'')+(opts.selected?' selected':'');
+  d.innerHTML='<div>'+RANKS[c.rank]+'</div><div class="suit">'+c.suit+'</div>';
+  return d;
+}
+function render(){
+  movesEl.textContent=moves;
+  stockEl.textContent=stock.length;
+  var fc=0;foundations.forEach(function(f){fc+=f.length;});foundEl.textContent=fc;
+  // stock
+  var sa=document.getElementById('stockArea');sa.innerHTML='';
+  var sc=stock.length?cardEl({faceUp:false}):cardEl(null,{slotText:'↻ Redeal'});
+  sc.addEventListener('click',drawStock);sa.appendChild(sc);
+  // waste
+  var wa=document.getElementById('wasteArea');wa.innerHTML='';
+  if(waste.length){var wc=cardEl(waste[waste.length-1],{selected:sel&&sel.source==='waste'});wc.addEventListener('click',function(){onWasteClick();});wc.addEventListener('dblclick',function(){tryFoundationFromWaste();});wa.appendChild(wc);}
+  else{var ws=cardEl(null,{slotText:'Waste'});wa.appendChild(ws);}
+  // foundations
+  var fa=document.getElementById('foundArea');fa.innerHTML='';
+  foundations.forEach(function(f,fi){
+    var el=f.length?cardEl(f[f.length-1]):cardEl(null,{slotText:SUITS[fi].s});
+    el.addEventListener('click',function(){onFoundationClick(fi);});
+    fa.appendChild(el);
+  });
+  // tableau
+  var ta=document.getElementById('tableauArea');ta.innerHTML='';
+  tableau.forEach(function(pile,pi){
+    var col=document.createElement('div');col.className='pile';
+    if(!pile.length){
+      var slot=cardEl(null,{slotText:'K only'});
+      slot.addEventListener('click',function(){onTableauClick(pi,-1);});
+      col.appendChild(slot);
+    }else{
+      pile.forEach(function(c,ci){
+        var el=cardEl(c,{selected:sel&&sel.source==='tableau'&&sel.pile===pi&&ci>=sel.cardIdx});
+        el.style.top=(ci*24)+'px';
+        el.addEventListener('click',function(){onTableauClick(pi,ci);});
+        el.addEventListener('dblclick',function(){if(ci===pile.length-1)tryFoundationFromTableau(pi);});
+        col.appendChild(el);
+      });
+    }
+    ta.appendChild(col);
+  });
+}
+function drawStock(){
+  if(over)return;
+  if(stock.length){var c=stock.pop();c.faceUp=true;waste.push(c);moves++;}
+  else if(waste.length){while(waste.length){var c2=waste.pop();c2.faceUp=false;stock.push(c2);}msgEl.textContent='Stock redealt.';}
+  else{msgEl.textContent='Stock is empty.';return;}
+  sel=null;render();
+}
+function canTableau(card,targetTop){
+  if(!targetTop)return card.rank===13;
+  return card.red!==targetTop.red&&card.rank===targetTop.rank-1;
+}
+function canFoundation(card,fi){
+  var f=foundations[fi];
+  if(!f.length)return card.rank===1&&card.suit===SUITS[fi].s;
+  var top=f[f.length-1];
+  return card.suit===top.suit&&card.rank===top.rank+1;
+}
+function flipTop(pile){if(pile.length&&!pile[pile.length-1].faceUp)pile[pile.length-1].faceUp=true;}
+function checkWin(){
+  var total=0;foundations.forEach(function(f){total+=f.length;});
+  if(total===52){over=true;msgEl.textContent='🎉 You win! All 52 cards are in the foundations — in '+moves+' moves. Press New Game to play again.';}
+}
+function doMoveToTableau(destPile){
+  if(!sel)return;
+  var cards,srcPile;
+  if(sel.source==='waste'){cards=[waste[waste.length-1]];}
+  else{srcPile=tableau[sel.pile];cards=srcPile.slice(sel.cardIdx);}
+  var dest=tableau[destPile];
+  var top=dest.length?dest[dest.length-1]:null;
+  if(!canTableau(cards[0],top)){msgEl.textContent='❌ That move is not allowed (tableau: descending, alternating colours; empty pile needs a King).';sel=null;render();return;}
+  if(sel.source==='waste')waste.pop();else{tableau[sel.pile]=srcPile.slice(0,sel.cardIdx);flipTop(tableau[sel.pile]);}
+  cards.forEach(function(c){dest.push(c);});
+  moves++;sel=null;msgEl.textContent='Moved '+label(cards[0])+(cards.length>1?' (+'+(cards.length-1)+' more)':'')+'.';render();checkWin();
+}
+function doMoveToFoundation(fi){
+  if(!sel)return;
+  var card;
+  if(sel.source==='waste'){if(!waste.length)return;card=waste[waste.length-1];}
+  else{var p=tableau[sel.pile];if(sel.cardIdx!==p.length-1)return;card=p[p.length-1];}
+  if(!canFoundation(card,fi)){msgEl.textContent='❌ Cannot move '+label(card)+' to that foundation (same suit, ascending from Ace).';sel=null;render();return;}
+  if(sel.source==='waste')waste.pop();else{tableau[sel.pile].pop();flipTop(tableau[sel.pile]);}
+  foundations[fi].push(card);moves++;sel=null;msgEl.textContent='Moved '+label(card)+' to its foundation.';render();checkWin();
+}
+function onTableauClick(pi,ci){
+  if(over)return;
+  var pile=tableau[pi];
+  if(sel){
+    if(sel.source==='tableau'&&sel.pile===pi){sel=null;render();return;}
+    if(ci===-1||(pile.length&&ci===pile.length-1)||!pile.length){doMoveToTableau(pi);return;}
+    // clicked a non-top card while something is selected: select that stack instead
+  }
+  if(ci<0||!pile.length)return;
+  var c=pile[ci];
+  if(!c.faceUp){msgEl.textContent='That card is face down.';return;}
+  sel={source:'tableau',pile:pi,cardIdx:ci};render();
+}
+function onWasteClick(){
+  if(over||!waste.length)return;
+  if(sel&&sel.source==='waste'){sel=null;render();return;}
+  if(sel){msgEl.textContent='Cards cannot be moved to the waste.';sel=null;render();return;}
+  sel={source:'waste'};render();
+}
+function onFoundationClick(fi){
+  if(over||!sel)return;
+  doMoveToFoundation(fi);
+}
+function tryFoundationFromWaste(){
+  if(!waste.length)return;
+  var card=waste[waste.length-1];
+  for(var fi=0;fi<4;fi++)if(canFoundation(card,fi)){sel={source:'waste'};doMoveToFoundation(fi);return;}
+  msgEl.textContent=label(card)+' cannot go to a foundation yet.';
+}
+function tryFoundationFromTableau(pi){
+  var pile=tableau[pi];if(!pile.length)return;
+  var card=pile[pile.length-1];
+  for(var fi=0;fi<4;fi++)if(canFoundation(card,fi)){sel={source:'tableau',pile:pi,cardIdx:pile.length-1};doMoveToFoundation(fi);return;}
+  msgEl.textContent=label(card)+' cannot go to a foundation yet.';
+}
+document.getElementById('newBtn').addEventListener('click',newGame);
+document.getElementById('autoBtn').addEventListener('click',function(){
+  if(over)return;
+  var movedAny=false,progress=true;
+  while(progress){progress=false;
+    for(var fi=0;fi<4;fi++){
+      if(waste.length&&canFoundation(waste[waste.length-1],fi)){var c=waste.pop();foundations[fi].push(c);moves++;movedAny=true;progress=true;break;}
+    }
+    if(progress)continue;
+    for(var pi=0;pi<7;pi++){var pile=tableau[pi];if(!pile.length)continue;var top=pile[pile.length-1];
+      for(var fj=0;fj<4;fj++)if(canFoundation(top,fj)){pile.pop();foundations[fj].push(top);flipTop(pile);moves++;movedAny=true;progress=true;break;}
+      if(progress)break;}
+  }
+  msgEl.textContent=movedAny?'Auto-moved eligible cards to foundations.':'No cards can go to a foundation right now.';
+  render();checkWin();
+});
+newGame();
+})();
+</script>
 </body>
 </html>
