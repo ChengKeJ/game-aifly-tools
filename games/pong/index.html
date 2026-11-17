@@ -7,6 +7,16 @@
 <meta name="description" content="Play Pong online free in your browser. The original video game. Bounce the ball past your opponent's paddle. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/pong/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:20px;text-align:center}
+.game-box canvas{display:block;margin:0 auto;max-width:100%;height:auto;background:#0b0e14;border-radius:8px;touch-action:none}
+.hud{display:flex;justify-content:center;gap:24px;font-weight:700;margin:10px 0;color:#e8eaf0}
+.hud span{color:#ffb020}
+.game-btn{background:#ffb020;color:#111;padding:10px 22px;border:0;border-radius:999px;font-weight:700;cursor:pointer;font-size:15px;margin-top:12px}
+.game-btn:hover{filter:brightness(1.1)}
+.game-msg{font-size:20px;font-weight:700;min-height:28px;margin-top:10px}
+.game-hint{color:#9aa0ae;font-size:13px;margin-top:8px}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -15,16 +25,187 @@
 <h1>🏓 Play Pong Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">The original video game. Bounce the ball past your opponent's paddle.</p>
 <p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🏓</div>
-<h2>Pong</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<div class="game-box">
+  <div class="hud">
+    <div>You: <span id="scoreYou">0</span></div>
+    <div>Computer: <span id="scoreCpu">0</span></div>
+    <div>First to <span>5</span></div>
+  </div>
+  <canvas id="game" width="480" height="320"></canvas>
+  <div class="game-msg" id="msg">Click Start or press Space to play</div>
+  <button class="game-btn" id="startBtn">Start Game</button>
+  <p class="game-hint">Move your paddle (left) with the mouse, touch drag, or ↑ / ↓ keys. First to 5 points wins!</p>
 </div>
 <h2>About Pong</h2>
 <p style="line-height:1.7">The original video game. Bounce the ball past your opponent's paddle. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function () {
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var scoreYouEl = document.getElementById('scoreYou');
+  var scoreCpuEl = document.getElementById('scoreCpu');
+  var msgEl = document.getElementById('msg');
+  var btn = document.getElementById('startBtn');
+  var W = canvas.width, H = canvas.height;
+  var WIN_SCORE = 5;
+  var PADDLE_W = 10, PADDLE_H = 70, PADDLE_SPEED = 6;
+  var BALL_R = 8;
+
+  var youY, cpuY, ball, scoreYou, scoreCpu, state, keys, raf;
+
+  function resetBall(dir) {
+    ball = { x: W / 2, y: H / 2, vx: 4.5 * dir, vy: (Math.random() * 4 - 2), r: BALL_R };
+  }
+
+  function resetGame() {
+    scoreYou = 0; scoreCpu = 0;
+    youY = (H - PADDLE_H) / 2;
+    cpuY = (H - PADDLE_H) / 2;
+    resetBall(Math.random() > 0.5 ? 1 : -1);
+    state = 'ready';
+    updateHUD();
+    msgEl.textContent = 'Click Start or press Space to play';
+    btn.textContent = 'Start Game';
+    draw();
+  }
+
+  function updateHUD() {
+    scoreYouEl.textContent = scoreYou;
+    scoreCpuEl.textContent = scoreCpu;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // centre line
+    ctx.fillStyle = '#3a4152';
+    for (var y = 6; y < H; y += 22) ctx.fillRect(W / 2 - 2, y, 4, 12);
+    // paddles
+    ctx.fillStyle = '#4cc9f0';
+    ctx.fillRect(12, youY, PADDLE_W, PADDLE_H);
+    ctx.fillStyle = '#ff9f1c';
+    ctx.fillRect(W - 22, cpuY, PADDLE_W, PADDLE_H);
+    // ball
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function step() {
+    if (state !== 'playing') return;
+
+    // player paddle (keys)
+    if (keys['ArrowUp'] || keys['w']) youY -= PADDLE_SPEED;
+    if (keys['ArrowDown'] || keys['s']) youY += PADDLE_SPEED;
+    youY = Math.max(0, Math.min(H - PADDLE_H, youY));
+
+    // AI paddle: track ball with limited speed, only when ball moves toward it
+    var target = ball.y - PADDLE_H / 2;
+    var aiSpeed = 4.2;
+    if (ball.vx > 0) {
+      if (cpuY + PADDLE_H / 2 < target - 6) cpuY += aiSpeed;
+      else if (cpuY + PADDLE_H / 2 > target + 6) cpuY -= aiSpeed;
+    } else {
+      // drift back to centre slowly
+      if (cpuY + PADDLE_H / 2 < H / 2 - 4) cpuY += 1.5;
+      else if (cpuY + PADDLE_H / 2 > H / 2 + 4) cpuY -= 1.5;
+    }
+    cpuY = Math.max(0, Math.min(H - PADDLE_H, cpuY));
+
+    // ball
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+    if (ball.y - ball.r < 0) { ball.y = ball.r; ball.vy = -ball.vy; }
+    if (ball.y + ball.r > H) { ball.y = H - ball.r; ball.vy = -ball.vy; }
+
+    // player paddle collision
+    if (ball.vx < 0 && ball.x - ball.r <= 12 + PADDLE_W && ball.x - ball.r >= 12 - 6 &&
+        ball.y >= youY && ball.y <= youY + PADDLE_H) {
+      var hit = (ball.y - (youY + PADDLE_H / 2)) / (PADDLE_H / 2);
+      var speed = Math.min(Math.abs(ball.vx) + 0.3, 9);
+      ball.vx = speed;
+      ball.vy = hit * 5;
+      ball.x = 12 + PADDLE_W + ball.r;
+    }
+    // CPU paddle collision
+    if (ball.vx > 0 && ball.x + ball.r >= W - 22 && ball.x + ball.r <= W - 22 + PADDLE_W + 6 &&
+        ball.y >= cpuY && ball.y <= cpuY + PADDLE_H) {
+      var hit2 = (ball.y - (cpuY + PADDLE_H / 2)) / (PADDLE_H / 2);
+      var speed2 = Math.min(Math.abs(ball.vx) + 0.3, 9);
+      ball.vx = -speed2;
+      ball.vy = hit2 * 5;
+      ball.x = W - 22 - ball.r;
+    }
+
+    // scoring
+    if (ball.x < -ball.r) {
+      scoreCpu++;
+      updateHUD();
+      afterPoint(false);
+    } else if (ball.x > W + ball.r) {
+      scoreYou++;
+      updateHUD();
+      afterPoint(true);
+    }
+
+    draw();
+    if (state === 'playing') raf = requestAnimationFrame(step);
+  }
+
+  function afterPoint(youScored) {
+    if (scoreYou >= WIN_SCORE || scoreCpu >= WIN_SCORE) {
+      state = 'over';
+      msgEl.textContent = scoreYou >= WIN_SCORE
+        ? '🎉 You Win! ' + scoreYou + '–' + scoreCpu
+        : 'Computer wins ' + scoreCpu + '–' + scoreYou + ' — try again!';
+      btn.textContent = 'Play Again';
+      return;
+    }
+    state = 'ready';
+    msgEl.textContent = (youScored ? 'Point for you!' : 'Point for computer.') + ' Press Space to serve';
+    btn.textContent = 'Serve';
+    resetBall(youScored ? -1 : 1);
+    draw();
+  }
+
+  function start() {
+    if (state === 'playing') return;
+    if (state === 'over') resetGame();
+    state = 'playing';
+    msgEl.textContent = '';
+    btn.textContent = 'Restart';
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(step);
+  }
+
+  btn.addEventListener('click', function () {
+    if (state === 'playing') { resetGame(); return; }
+    start();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === ' ') e.preventDefault();
+    keys[e.key] = true;
+    if (e.key === ' ' && state !== 'playing') start();
+  });
+  document.addEventListener('keyup', function (e) { keys[e.key] = false; });
+
+  function movePaddle(clientY) {
+    var rect = canvas.getBoundingClientRect();
+    var y = (clientY - rect.top) * (H / rect.height);
+    youY = Math.max(0, Math.min(H - PADDLE_H, y - PADDLE_H / 2));
+    if (state !== 'playing') draw();
+  }
+  canvas.addEventListener('mousemove', function (e) { movePaddle(e.clientY); });
+  canvas.addEventListener('touchmove', function (e) { e.preventDefault(); movePaddle(e.touches[0].clientY); }, { passive: false });
+  canvas.addEventListener('touchstart', function (e) { e.preventDefault(); movePaddle(e.touches[0].clientY); }, { passive: false });
+
+  keys = {};
+  resetGame();
+})();
+</script>
 </body>
 </html>
