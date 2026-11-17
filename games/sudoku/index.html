@@ -7,6 +7,32 @@
 <meta name="description" content="Play Sudoku online free in your browser. Fill the 9x9 grid so every row, column and box has 1-9. Daily brain training. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/sudoku/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center}
+#hud{display:flex;justify-content:center;gap:24px;font-weight:700;margin-bottom:12px;color:#e8eaf0}
+#hud span{color:#ffb020}
+#grid{display:grid;grid-template-columns:repeat(9,44px);grid-template-rows:repeat(9,44px);gap:0;margin:0 auto;border:3px solid #e8eaf0;width:max-content;background:#fff}
+.cell{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#111;background:#fff;border:1px solid #c9cdd6;cursor:pointer;box-sizing:border-box}
+.cell.given{color:#111;background:#eef1f6}
+.cell.user{color:#1a5fd0}
+.cell.sel{background:#ffe9b0}
+.cell.peer{background:#fff3d6}
+.cell.same{background:#cfe4ff}
+.cell.err{background:#ffd2d2;color:#d21f3c}
+.cell:nth-child(3n){border-right:2px solid #555}
+.cell:nth-child(9n){border-right:1px solid #c9cdd6}
+.cell:nth-child(n+19):nth-child(-n+27),.cell:nth-child(n+46):nth-child(-n+54){border-bottom:2px solid #555}
+#pad{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:14px}
+#pad button{width:42px;height:42px;font-size:19px;font-weight:700;border-radius:8px;border:1px solid #3a4054;background:#232733;color:#fff;cursor:pointer}
+#pad button.sel{background:#ffb020;color:#111}
+#pad button:hover{border-color:#ffb020}
+#pad button.erase{width:auto;padding:0 14px}
+#msg{font-weight:700;min-height:26px;margin-top:12px;color:#7ee081}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px;margin-top:8px}
+.btn:hover{opacity:.9}
+.btn.ghost{background:#232733;color:#fff}
+@media(max-width:480px){#grid{grid-template-columns:repeat(9,36px);grid-template-rows:repeat(9,36px)}.cell{width:36px;height:36px;font-size:18px}}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +40,175 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Puzzle / Sudoku</p>
 <h1>🔢 Play Sudoku Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Fill the 9x9 grid so every row, column and box has 1-9. Daily brain training.</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🔢</div>
-<h2>Sudoku</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> Click a cell, then tap a number 1–9 (or type it on your keyboard). Wrong entries are marked red and count as mistakes. Complete the grid to win. Use Erase to clear a cell you entered.</p>
+<div class="game-box">
+<div id="hud"><div>⏱ Time: <span id="time">0:00</span></div><div>❌ Mistakes: <span id="mistakes">0</span></div><div>✅ Filled: <span id="filled">0</span>/81</div></div>
+<div id="grid" role="grid" aria-label="Sudoku grid"></div>
+<div id="pad"></div>
+<p id="msg"></p>
+<p><button class="btn" id="btnNew">🔀 New Puzzle</button> <button class="btn ghost" id="btnCheck">✔ Check</button> <button class="btn ghost" id="btnRestart">↻ Restart</button></p>
 </div>
 <h2>About Sudoku</h2>
 <p style="line-height:1.7">Fill the 9x9 grid so every row, column and box has 1-9. Daily brain training. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+'use strict';
+var PUZZLES=[
+ {puzzle:[
+  [5,3,0,0,7,0,0,0,0],[6,0,0,1,9,5,0,0,0],[0,9,8,0,0,0,0,6,0],
+  [8,0,0,0,6,0,0,0,3],[4,0,0,8,0,3,0,0,1],[7,0,0,0,2,0,0,0,6],
+  [0,6,0,0,0,0,2,8,0],[0,0,0,4,1,9,0,0,5],[0,0,0,0,8,0,0,7,9]],
+  solution:[
+  [5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],
+  [8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],
+  [9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]]},
+ {puzzle:[
+  [0,0,3,0,2,0,6,0,0],[9,0,0,3,0,5,0,0,1],[0,0,1,8,0,6,4,0,0],
+  [0,0,8,1,0,2,9,0,0],[7,0,0,0,0,0,0,0,8],[0,0,6,7,0,8,2,0,0],
+  [0,0,2,6,0,9,5,0,0],[8,0,0,2,0,3,0,0,9],[0,0,5,0,1,0,3,0,0]],
+  solution:[
+  [4,8,3,9,2,1,6,5,7],[9,6,7,3,4,5,8,2,1],[2,5,1,8,7,6,4,9,3],
+  [5,4,8,1,3,2,9,7,6],[7,2,9,5,6,4,1,3,8],[1,3,6,7,9,8,2,4,5],
+  [3,7,2,6,8,9,5,1,4],[8,1,4,2,5,3,7,6,9],[6,9,5,4,1,7,3,8,2]]}
+];
+var gridEl=document.getElementById('grid'),padEl=document.getElementById('pad'),
+    msgEl=document.getElementById('msg'),timeEl=document.getElementById('time'),
+    mistEl=document.getElementById('mistakes'),fillEl=document.getElementById('filled');
+var puzzleIdx=0,board,given,solution,sel=null,selNum=0,mistakes=0,won=false,
+    startTime=Date.now(),timerId=null;
+
+function buildGrid(){
+  gridEl.innerHTML='';
+  for(var r=0;r<9;r++)for(var c=0;c<9;c++){
+    var d=document.createElement('div');
+    d.className='cell'+(given[r][c]?' given':'');
+    d.dataset.r=r;d.dataset.c=c;
+    d.textContent=board[r][c]||'';
+    d.addEventListener('click',function(){selectCell(+this.dataset.r,+this.dataset.c);});
+    gridEl.appendChild(d);
+  }
+}
+function buildPad(){
+  padEl.innerHTML='';
+  for(var n=1;n<=9;n++){
+    (function(num){
+      var b=document.createElement('button');
+      b.textContent=num;
+      b.addEventListener('click',function(){pickNumber(num);});
+      padEl.appendChild(b);
+    })(n);
+  }
+  var e=document.createElement('button');
+  e.textContent='⌫ Erase';e.className='erase';
+  e.addEventListener('click',function(){eraseCell();});
+  padEl.appendChild(e);
+}
+function startPuzzle(idx){
+  puzzleIdx=idx;
+  var P=PUZZLES[idx];
+  solution=P.solution;
+  board=P.puzzle.map(function(row){return row.slice();});
+  given=P.puzzle.map(function(row){return row.map(function(v){return v!==0;});});
+  sel=null;selNum=0;mistakes=0;won=false;
+  msgEl.textContent='Puzzle '+(idx+1)+' — good luck!';
+  startTime=Date.now();
+  if(timerId)clearInterval(timerId);
+  timerId=setInterval(tick,1000);
+  buildGrid();buildPad();updateHUD();highlight();
+}
+function tick(){
+  if(won)return;
+  var s=Math.floor((Date.now()-startTime)/1000);
+  timeEl.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+}
+function updateHUD(){
+  mistEl.textContent=mistakes;
+  var filled=0;
+  board.forEach(function(row){row.forEach(function(v){if(v)filled++;});});
+  fillEl.textContent=filled;
+}
+function selectCell(r,c){
+  if(won)return;
+  sel={r:r,c:c};
+  highlight();
+}
+function highlight(){
+  var cells=gridEl.children;
+  for(var i=0;i<81;i++){
+    var r=Math.floor(i/9),c=i%9,el=cells[i];
+    el.classList.remove('sel','peer','same');
+    if(!sel)continue;
+    if(r===sel.r&&c===sel.c)el.classList.add('sel');
+    else if(r===sel.r||c===sel.c||(Math.floor(r/3)===Math.floor(sel.r/3)&&Math.floor(c/3)===Math.floor(sel.c/3)))el.classList.add('peer');
+    var sv=board[sel.r][sel.c];
+    if(sv&&board[r][c]===sv)el.classList.add('same');
+  }
+}
+function placeNumber(n){
+  if(!sel||won)return;
+  var r=sel.r,c=sel.c;
+  if(given[r][c])return;
+  board[r][c]=n;
+  var el=gridEl.children[r*9+c];
+  el.textContent=n;
+  el.classList.remove('user','err');
+  if(n===solution[r][c]){
+    el.classList.add('user');
+    msgEl.textContent='';
+  }else{
+    el.classList.add('err');
+    mistakes++;
+    msgEl.textContent='❌ That number doesn\'t fit here.';
+    msgEl.style.color='#ff8a8a';
+  }
+  updateHUD();highlight();
+  checkWin();
+}
+function pickNumber(n){
+  selNum=n;
+  var btns=padEl.querySelectorAll('button');
+  btns.forEach(function(b){b.classList.toggle('sel',b.textContent===String(n));});
+  placeNumber(n);
+}
+function eraseCell(){
+  if(!sel||won)return;
+  var r=sel.r,c=sel.c;
+  if(given[r][c])return;
+  board[r][c]=0;
+  var el=gridEl.children[r*9+c];
+  el.textContent='';el.classList.remove('user','err');
+  updateHUD();highlight();
+}
+function checkWin(){
+  for(var r=0;r<9;r++)for(var c=0;c<9;c++)
+    if(board[r][c]!==solution[r][c])return;
+  won=true;
+  if(timerId)clearInterval(timerId);
+  msgEl.textContent='🎉 Solved! Time '+timeEl.textContent+' • '+mistakes+' mistake'+(mistakes===1?'':'s')+'.';
+  msgEl.style.color='#7ee081';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key>='1'&&e.key<='9')pickNumber(+e.key);
+  else if(e.key==='Backspace'||e.key==='Delete'||e.key==='0')eraseCell();
+  else if(e.key==='ArrowUp'&&sel){sel.r=Math.max(0,sel.r-1);highlight();}
+  else if(e.key==='ArrowDown'&&sel){sel.r=Math.min(8,sel.r+1);highlight();}
+  else if(e.key==='ArrowLeft'&&sel){sel.c=Math.max(0,sel.c-1);highlight();}
+  else if(e.key==='ArrowRight'&&sel){sel.c=Math.min(8,sel.c+1);highlight();}
+});
+document.getElementById('btnNew').addEventListener('click',function(){startPuzzle((puzzleIdx+1)%PUZZLES.length);});
+document.getElementById('btnRestart').addEventListener('click',function(){startPuzzle(puzzleIdx);});
+document.getElementById('btnCheck').addEventListener('click',function(){
+  var bad=0;
+  for(var r=0;r<9;r++)for(var c=0;c<9;c++)
+    if(board[r][c]&&board[r][c]!==solution[r][c])bad++;
+  msgEl.textContent=bad?('⚠️ '+bad+' incorrect entr'+(bad===1?'y':'ies')+' (marked red).'):('✅ Everything entered so far is correct.');
+  msgEl.style.color=bad?'#ff8a8a':'#7ee081';
+});
+startPuzzle(0);
+})();
+</script>
 </body>
 </html>
