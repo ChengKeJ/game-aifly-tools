@@ -7,6 +7,16 @@
 <meta name="description" content="Play Flappy Bird online free in your browser. Tap to flap through the pipes. Simple to learn, hard to master. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/flappy-bird/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:20px;text-align:center}
+.game-box canvas{display:block;margin:0 auto;max-width:100%;height:auto;background:#70c5ce;border-radius:8px;touch-action:none;cursor:pointer}
+.hud{display:flex;justify-content:center;gap:24px;font-weight:700;margin:10px 0;color:#e8eaf0}
+.hud span{color:#ffb020}
+.game-btn{background:#ffb020;color:#111;padding:10px 22px;border:0;border-radius:999px;font-weight:700;cursor:pointer;font-size:15px;margin-top:12px}
+.game-btn:hover{filter:brightness(1.1)}
+.game-msg{font-size:20px;font-weight:700;min-height:28px;margin-top:10px}
+.game-hint{color:#9aa0ae;font-size:13px;margin-top:8px}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -15,16 +25,229 @@
 <h1>🐦 Play Flappy Bird Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Tap to flap through the pipes. Simple to learn, hard to master.</p>
 <p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🐦</div>
-<h2>Flappy Bird</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<div class="game-box">
+  <div class="hud">
+    <div>Score: <span id="score">0</span></div>
+    <div>Best: <span id="best">0</span></div>
+  </div>
+  <canvas id="game" width="400" height="480"></canvas>
+  <div class="game-msg" id="msg">Tap, click, or press Space to flap</div>
+  <button class="game-btn" id="startBtn">Start Game</button>
+  <p class="game-hint">Tap / click / Space to flap. Fly through the gaps between the pipes — one point per pipe. Don't hit a pipe or the ground!</p>
 </div>
 <h2>About Flappy Bird</h2>
 <p style="line-height:1.7">Tap to flap through the pipes. Simple to learn, hard to master. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function () {
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var scoreEl = document.getElementById('score');
+  var bestEl = document.getElementById('best');
+  var msgEl = document.getElementById('msg');
+  var btn = document.getElementById('startBtn');
+  var W = canvas.width, H = canvas.height;
+
+  var GRAVITY = 0.45, FLAP = -7.5, PIPE_SPEED = 2.4, PIPE_W = 64, GAP = 130, PIPE_SPACING = 210;
+  var GROUND_H = 56;
+  var BEST_KEY = 'flappy-bird-best';
+
+  var bird, pipes, score, best, state, raf, frame;
+
+  function loadBest() {
+    try { return parseInt(localStorage.getItem(BEST_KEY), 10) || 0; } catch (e) { return 0; }
+  }
+  function saveBest() {
+    try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
+  }
+
+  function resetGame() {
+    bird = { x: 90, y: H / 2, vy: 0, r: 14 };
+    pipes = [];
+    score = 0;
+    best = loadBest();
+    state = 'ready';
+    frame = 0;
+    scoreEl.textContent = '0';
+    bestEl.textContent = best;
+    msgEl.textContent = 'Tap, click, or press Space to flap';
+    btn.textContent = 'Start Game';
+    draw();
+  }
+
+  function addPipe(x) {
+    var minTop = 40, maxTop = H - GROUND_H - GAP - 40;
+    var topH = minTop + Math.random() * (maxTop - minTop);
+    pipes.push({ x: x, topH: topH, scored: false });
+  }
+
+  function flap() {
+    if (state === 'ready') { start(); bird.vy = FLAP; return; }
+    if (state === 'playing') bird.vy = FLAP;
+    if (state === 'over') { /* wait for button */ }
+  }
+
+  function start() {
+    if (state === 'playing') return;
+    if (state === 'over') resetGame();
+    state = 'playing';
+    msgEl.textContent = '';
+    btn.textContent = 'Restart';
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(step);
+  }
+
+  function gameOver() {
+    state = 'over';
+    if (score > best) { best = score; saveBest(); bestEl.textContent = best; }
+    msgEl.textContent = '💥 Game Over! Score: ' + score + ' · Best: ' + best;
+    btn.textContent = 'Play Again';
+    draw();
+  }
+
+  function drawPipe(x, y, w, h) {
+    ctx.fillStyle = '#74bf2e';
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = '#557a1f';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, w, h);
+    ctx.fillStyle = '#9ee65a';
+    ctx.fillRect(x + 6, y, 8, h);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // sky
+    ctx.fillStyle = '#70c5ce';
+    ctx.fillRect(0, 0, W, H);
+    // clouds
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    for (var c = 0; c < 3; c++) {
+      var cx = ((c * 170 + frame * 0.4) % (W + 120)) - 60;
+      var cy = 40 + c * 45;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+      ctx.arc(cx + 20, cy + 4, 14, 0, Math.PI * 2);
+      ctx.arc(cx - 20, cy + 4, 12, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // pipes
+    for (var i = 0; i < pipes.length; i++) {
+      var p = pipes[i];
+      var botY = p.topH + GAP;
+      drawPipe(p.x, 0, PIPE_W, p.topH);
+      drawPipe(p.x, botY, PIPE_W, H - GROUND_H - botY);
+      // pipe caps
+      ctx.fillStyle = '#74bf2e';
+      ctx.fillRect(p.x - 3, p.topH - 18, PIPE_W + 6, 18);
+      ctx.fillRect(p.x - 3, botY, PIPE_W + 6, 18);
+      ctx.strokeStyle = '#557a1f';
+      ctx.strokeRect(p.x - 3, p.topH - 18, PIPE_W + 6, 18);
+      ctx.strokeRect(p.x - 3, botY, PIPE_W + 6, 18);
+    }
+    // ground
+    ctx.fillStyle = '#ded895';
+    ctx.fillRect(0, H - GROUND_H, W, GROUND_H);
+    ctx.fillStyle = '#9ee65a';
+    ctx.fillRect(0, H - GROUND_H, W, 10);
+    // bird
+    ctx.save();
+    ctx.translate(bird.x, bird.y);
+    ctx.rotate(Math.max(-0.5, Math.min(1.2, bird.vy * 0.08)));
+    ctx.fillStyle = '#fbd000';
+    ctx.beginPath();
+    ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#d89a00';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // wing
+    ctx.fillStyle = '#fff3a3';
+    ctx.beginPath();
+    ctx.ellipse(-4, 3, 8, 5, -0.4, 0, Math.PI * 2);
+    ctx.fill();
+    // eye
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(6, -6, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#111';
+    ctx.beginPath();
+    ctx.arc(7.5, -6, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    // beak
+    ctx.fillStyle = '#fb651e';
+    ctx.beginPath();
+    ctx.moveTo(bird.r - 2, -2);
+    ctx.lineTo(bird.r + 10, 2);
+    ctx.lineTo(bird.r - 2, 6);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+    // big score during play
+    if (state === 'playing' || state === 'ready') {
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+      ctx.lineWidth = 4;
+      ctx.font = 'bold 44px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.strokeText(String(score), W / 2, 70);
+      ctx.fillText(String(score), W / 2, 70);
+    }
+  }
+
+  function step() {
+    if (state !== 'playing') return;
+    frame++;
+    bird.vy += GRAVITY;
+    bird.y += bird.vy;
+
+    // spawn pipes
+    if (pipes.length === 0 || pipes[pipes.length - 1].x < W - PIPE_SPACING) addPipe(W + 10);
+
+    for (var i = pipes.length - 1; i >= 0; i--) {
+      var p = pipes[i];
+      p.x -= PIPE_SPEED;
+      if (!p.scored && p.x + PIPE_W < bird.x - bird.r) {
+        p.scored = true;
+        score++;
+        scoreEl.textContent = score;
+      }
+      if (p.x + PIPE_W < -10) pipes.splice(i, 1);
+    }
+
+    // collisions
+    if (bird.y + bird.r >= H - GROUND_H) { bird.y = H - GROUND_H - bird.r; gameOver(); return; }
+    if (bird.y - bird.r <= 0) bird.y = bird.r;
+    for (var j = 0; j < pipes.length; j++) {
+      var p2 = pipes[j];
+      var botY = p2.topH + GAP;
+      if (bird.x + bird.r > p2.x && bird.x - bird.r < p2.x + PIPE_W) {
+        if (bird.y - bird.r < p2.topH || bird.y + bird.r > botY) { gameOver(); return; }
+      }
+    }
+
+    draw();
+    raf = requestAnimationFrame(step);
+  }
+
+  btn.addEventListener('click', function () {
+    if (state === 'playing') { resetGame(); return; }
+    start();
+  });
+  canvas.addEventListener('mousedown', function (e) { e.preventDefault(); flap(); });
+  canvas.addEventListener('touchstart', function (e) { e.preventDefault(); flap(); }, { passive: false });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      flap();
+    }
+  });
+
+  resetGame();
+})();
+</script>
 </body>
 </html>
