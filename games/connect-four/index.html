@@ -7,6 +7,23 @@
 <meta name="description" content="Play Connect Four online free in your browser. Drop discs and get four in a row before your opponent does. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/connect-four/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center}
+#status{font-weight:700;min-height:26px;margin-bottom:10px;color:#e8eaf0}
+#status .you{color:#ff5f6d}#status .ai{color:#ffd23e}
+#board{display:grid;grid-template-columns:repeat(7,52px);gap:6px;margin:0 auto;width:max-content;background:#1a5fd0;padding:10px;border-radius:12px;box-shadow:0 4px 0 #0d3a86}
+.col{display:flex;flex-direction:column;gap:6px;cursor:pointer}
+.col:hover{opacity:.85}
+.cell{width:52px;height:52px;border-radius:50%;background:#0b1220;border:2px solid #0d3a86;box-sizing:border-box}
+.cell.red{background:#ff3b4d;box-shadow:inset 0 -4px 0 rgba(0,0,0,.3)}
+.cell.yellow{background:#ffd23e;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
+.cell.win{box-shadow:0 0 0 4px #7ee081,inset 0 -4px 0 rgba(0,0,0,.3)}
+#score{margin-top:12px;color:#9aa0ae}
+#score b{color:#e8eaf0}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px;margin-top:12px}
+.btn:hover{opacity:.9}
+@media(max-width:480px){#board{grid-template-columns:repeat(7,40px);gap:4px;padding:7px}.cell{width:40px;height:40px}}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +31,133 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Puzzle / Connect Four</p>
 <h1>🔴 Play Connect Four Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Drop discs and get four in a row before your opponent does.</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🔴</div>
-<h2>Connect Four</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> Click or tap a column to drop your red disc. The computer (yellow) plays after you. Get four in a row — horizontally, vertically or diagonally — before it does. First to connect four wins; a full board is a draw.</p>
+<div class="game-box">
+<div id="status">Your turn — click a column to drop a disc.</div>
+<div id="board"></div>
+<p id="score">You <b id="winsYou">0</b> — <b id="winsAi">0</b> Computer &nbsp;•&nbsp; Draws <b id="draws">0</b></p>
+<p><button class="btn" id="btnRestart">↻ New Game</button></p>
 </div>
 <h2>About Connect Four</h2>
 <p style="line-height:1.7">Drop discs and get four in a row before your opponent does. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+'use strict';
+var ROWS=6,COLS=7,EMPTY=0,YOU=1,AI=2;
+var boardEl=document.getElementById('board'),statusEl=document.getElementById('status');
+var board,turn,over,winsYou=0,winsAi=0,draws=0,aiBusy=false;
+
+function newGame(){
+  board=[];for(var r=0;r<ROWS;r++){board.push([0,0,0,0,0,0,0]);}
+  turn=YOU;over=false;aiBusy=false;
+  statusEl.innerHTML='<span class="you">Your turn</span> — click a column to drop a disc.';
+  render();
+}
+function render(){
+  boardEl.innerHTML='';
+  for(var c=0;c<COLS;c++){
+    (function(col){
+      var colEl=document.createElement('div');
+      colEl.className='col';
+      colEl.addEventListener('click',function(){playerMove(col);});
+      for(var r=0;r<ROWS;r++){
+        var cell=document.createElement('div');
+        cell.className='cell';
+        var v=board[r][col];
+        if(v===YOU)cell.classList.add('red');
+        else if(v===AI)cell.classList.add('yellow');
+        colEl.appendChild(cell);
+      }
+      boardEl.appendChild(colEl);
+    })(c);
+  }
+}
+function dropDisc(col,player){
+  for(var r=ROWS-1;r>=0;r--){
+    if(board[r][col]===EMPTY){board[r][col]=player;return r;}
+  }
+  return -1;
+}
+function validCols(){
+  var cols=[];
+  for(var c=0;c<COLS;c++)if(board[0][c]===EMPTY)cols.push(c);
+  return cols;
+}
+function checkWinAt(r,c,player){
+  var dirs=[[0,1],[1,0],[1,1],[1,-1]];
+  for(var d=0;d<dirs.length;d++){
+    var dr=dirs[d][0],dc=dirs[d][1],count=1,cells=[[r,c]];
+    var rr=r+dr,cc=c+dc;
+    while(rr>=0&&rr<ROWS&&cc>=0&&cc<COLS&&board[rr][cc]===player){count++;cells.push([rr,cc]);rr+=dr;cc+=dc;}
+    rr=r-dr;cc=c-dc;
+    while(rr>=0&&rr<ROWS&&cc>=0&&cc<COLS&&board[rr][cc]===player){count++;cells.push([rr,cc]);rr-=dr;cc-=dc;}
+    if(count>=4)return cells;
+  }
+  return null;
+}
+function highlightWin(cells){
+  cells.forEach(function(pos){
+    var colEl=boardEl.children[pos[1]];
+    if(colEl)colEl.children[pos[0]].classList.add('win');
+  });
+}
+function updateScore(){
+  document.getElementById('winsYou').textContent=winsYou;
+  document.getElementById('winsAi').textContent=winsAi;
+  document.getElementById('draws').textContent=draws;
+}
+function endGame(msg){
+  over=true;
+  statusEl.innerHTML=msg;
+}
+function playerMove(col){
+  if(over||turn!==YOU||aiBusy)return;
+  var row=dropDisc(col,YOU);
+  if(row<0)return;
+  render();
+  var win=checkWinAt(row,col,YOU);
+  if(win){highlightWin(win);winsYou++;updateScore();endGame('<span class="you">🎉 You win!</span> Four in a row — play again?');return;}
+  if(validCols().length===0){draws++;updateScore();endGame('🤝 Draw — the board is full!');return;}
+  turn=AI;aiBusy=true;
+  statusEl.innerHTML='<span class="ai">Computer is thinking…</span>';
+  setTimeout(aiMove,450);
+}
+function aiMove(){
+  if(over)return;
+  var cols=validCols();
+  var pick=-1;
+  // 1) win if possible
+  for(var i=0;i<cols.length&&pick<0;i++){
+    var r=dropDisc(cols[i],AI);
+    if(checkWinAt(r,cols[i],AI))pick=cols[i];
+    board[r][cols[i]]=EMPTY;
+  }
+  // 2) block player's immediate win
+  for(var j=0;j<cols.length&&pick<0;j++){
+    var r2=dropDisc(cols[j],YOU);
+    if(checkWinAt(r2,cols[j],YOU))pick=cols[j];
+    board[r2][cols[j]]=EMPTY;
+  }
+  // 3) prefer centre, else random
+  if(pick<0){
+    var pref=[3,2,4,1,5,0,6];
+    for(var k=0;k<pref.length;k++)if(cols.indexOf(pref[k])>=0){pick=pref[k];break;}
+    if(pick<0)pick=cols[Math.floor(Math.random()*cols.length)];
+  }
+  var row=dropDisc(pick,AI);
+  aiBusy=false;turn=YOU;
+  render();
+  var win=checkWinAt(row,pick,AI);
+  if(win){highlightWin(win);winsAi++;updateScore();endGame('<span class="ai">😞 Computer wins!</span> Four in a row — try again?');return;}
+  if(validCols().length===0){draws++;updateScore();endGame('🤝 Draw — the board is full!');return;}
+  statusEl.innerHTML='<span class="you">Your turn</span> — click a column to drop a disc.';
+}
+document.getElementById('btnRestart').addEventListener('click',newGame);
+newGame();
+})();
+</script>
 </body>
 </html>
