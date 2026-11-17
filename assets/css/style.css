@@ -1,0 +1,24 @@
+:root{--bg:#0f1115;--card:#171a21;--text:#e8eaf0;--muted:#9aa0ae;--accent:#ffb020;--accent2:#4f8cff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+a{color:inherit;text-decoration:none}.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;background:rgba(15,17,21,.92);backdrop-filter:blur(8px);border-bottom:1px solid #222}
+header .wrap{display:flex;align-items:center;gap:16px;height:56px}
+.logo{font-weight:800;font-size:20px}.logo span{color:var(--accent)}
+nav{display:flex;gap:14px;color:var(--muted);font-size:14px;overflow:auto}
+nav a:hover{color:#fff}
+.search{margin-left:auto}.search input{background:#22242e;border:1px solid #333;color:#fff;border-radius:999px;padding:8px 14px;width:200px;outline:none}
+.hero{padding:36px 0 20px}.hero h1{font-size:32px;margin:0 0 8px}.hero p{color:var(--muted);margin:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.chip{background:#1e222c;border:1px solid #2a2f3d;padding:7px 12px;border-radius:999px;font-size:13px;cursor:pointer}
+.chip.active{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;padding:8px 0 32px}
+.card{background:var(--card);border:1px solid #232733;border-radius:14px;overflow:hidden;transition:.15s}
+.card:hover{transform:translateY(-2px);border-color:#333}
+.thumb{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;background:linear-gradient(135deg,#1f2937,#111827)}
+.card-body{padding:12px}.card-body h3{margin:0 0 4px;font-size:15px}.card-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+.meta{font-size:12px;color:var(--muted);margin-top:8px}
+.badge{display:inline-block;background:#2a2f3d;border-radius:6px;padding:2px 6px;font-size:11px;margin-right:4px}
+.featured{border:1px solid #ffb02033;background:linear-gradient(180deg,#1a1508,#171a21)}
+footer{border-top:1px solid #222;color:var(--muted);font-size:13px;padding:24px 0 36px;line-height:1.6}
+.game-frame{width:100%;height:520px;border:0;background:#000;border-radius:12px}
+@media(max-width:640px){.hero h1{font-size:26px}.search input{width:120px}.game-frame{height:420px}}
