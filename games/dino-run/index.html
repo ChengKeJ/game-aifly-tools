@@ -7,6 +7,16 @@
 <meta name="description" content="Play Dino Run online free in your browser. Jump over cacti and dodge birds in this endless runner. Space to jump. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/dino-run/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center}
+.game-box canvas{width:100%;max-width:800px;height:auto;background:#f7f7f7;border-radius:10px;display:block;margin:0 auto;touch-action:manipulation}
+.hud{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:10px 0;font-weight:700}
+.hud span{color:#ffb020}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px;margin:4px}
+.btn:hover{opacity:.85}
+.msg{font-size:18px;font-weight:700;min-height:26px;margin:6px 0}
+.hint{color:#9aa0ae;font-size:14px}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +24,115 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Arcade / Dino Run</p>
 <h1>🦕 Play Dino Run Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Jump over cacti and dodge birds in this endless runner. Space to jump.</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🦕</div>
-<h2>Dino Run</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> Press Space, ↑ or tap the game to jump. Hold ↓ (or the Duck button) to duck under birds. Avoid cacti and birds — the longer you run, the faster it gets.</p>
+<div class="game-box">
+<canvas id="game" width="800" height="220" aria-label="Dino Run game"></canvas>
+<div class="hud"><div>Score: <span id="score">0</span></div><div>Best: <span id="best">0</span></div><div>Speed: <span id="speed">1x</span></div></div>
+<div class="msg" id="msg">Press Space or tap to start!</div>
+<div>
+<button class="btn" id="startBtn">▶ Start / Restart</button>
+<button class="btn" id="jumpBtn">⬆ Jump</button>
+<button class="btn" id="duckBtn">⬇ Duck</button>
+</div>
+<p class="hint">Space / ↑ / tap = jump &nbsp;·&nbsp; ↓ = duck &nbsp;·&nbsp; Birds fly at head height — duck or jump over low ones.</p>
 </div>
 <h2>About Dino Run</h2>
 <p style="line-height:1.7">Jump over cacti and dodge birds in this endless runner. Space to jump. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+var cv=document.getElementById('game'),ctx=cv.getContext('2d');
+var scoreEl=document.getElementById('score'),bestEl=document.getElementById('best'),speedEl=document.getElementById('speed'),msgEl=document.getElementById('msg');
+var W=800,H=220,GROUND=180;
+var best=0; try{best=parseInt(localStorage.getItem('dino-best')||'0',10)||0;}catch(e){}
+bestEl.textContent=best;
+var dino,obstacles,clouds,score,speed,running,over,frame,ducking,jumpVel;
+function reset(){
+  dino={x:60,y:GROUND-44,w:34,h:44,vy:0,jumping:false};
+  obstacles=[];clouds=[{x:100,y:30},{x:400,y:55},{x:650,y:25}];
+  score=0;speed=6;running=false;over=false;frame=0;ducking=false;jumpVel=0;
+  scoreEl.textContent='0';speedEl.textContent='1.0x';
+  msgEl.textContent='Press Space or tap to start!';
+  draw();
+}
+function start(){
+  if(running) return;
+  if(over){reset();}
+  running=true;over=false;msgEl.textContent='Run!';
+  requestAnimationFrame(loop);
+}
+function jump(){
+  if(!running){start();return;}
+  if(!dino.jumping){dino.vy=-13;dino.jumping=true;}
+}
+function loop(){
+  if(!running) return;
+  frame++;
+  score+=1; speed=6+Math.floor(score/500)*0.7;
+  scoreEl.textContent=Math.floor(score/10);
+  speedEl.textContent=(speed/6).toFixed(1)+'x';
+  // physics
+  if(dino.jumping){dino.y+=dino.vy;dino.vy+=0.7;if(dino.y>=GROUND-(ducking?24:44)){dino.y=GROUND-(ducking?24:44);dino.jumping=false;dino.vy=0;}}
+  // spawn
+  if(frame%70===0||(obstacles.length&&obstacles[obstacles.length-1].x<W-220&&Math.random()<0.02)){
+    var type=Math.random()<0.62?'cactus':'bird';
+    if(type==='cactus'){var cw=18+Math.random()*16;obstacles.push({type:type,x:W,y:GROUND-36,w:cw,h:36});}
+    else{var bh=Math.random()<0.5?GROUND-28:GROUND-52;obstacles.push({type:type,x:W,y:bh,w:36,h:20,flap:0});}
+  }
+  for(var i=obstacles.length-1;i>=0;i--){obstacles[i].x-=speed;if(obstacles[i].type==='bird')obstacles[i].flap+=0.3;if(obstacles[i].x+obstacles[i].w<0)obstacles.splice(i,1);}
+  for(var c=0;c<clouds.length;c++){clouds[c].x-=1;if(clouds[c].x<-60){clouds[c].x=W+Math.random()*100;clouds[c].y=20+Math.random()*50;}}
+  // collision (dino box shrinks a little for fairness)
+  var dh=ducking?24:44, dy=GROUND-dh;
+  dino.h=dh; dino.y=dino.jumping?dino.y:dy;
+  for(var j=0;j<obstacles.length;j++){var o=obstacles[j];
+    if(dino.x+6<o.x+o.w-2 && dino.x+dino.w-6>o.x+2 && dy+4<o.y+o.h-2 && dy+dh-2>o.y+2){gameOver();return;}
+  }
+  draw(); requestAnimationFrame(loop);
+}
+function gameOver(){
+  running=false;over=true;
+  var s=Math.floor(score/10);
+  if(s>best){best=s;try{localStorage.setItem('dino-best',String(best));}catch(e){} bestEl.textContent=best;}
+  msgEl.textContent='💥 Game Over! Score: '+s+' — press Space or Restart to play again.';
+  draw();
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  // sky / ground
+  ctx.fillStyle='#f7f7f7';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#999';ctx.beginPath();ctx.moveTo(0,GROUND);ctx.lineTo(W,GROUND);ctx.stroke();
+  ctx.fillStyle='#ddd';clouds.forEach(function(cl){ctx.beginPath();ctx.ellipse(cl.x,cl.y,28,10,0,0,Math.PI*2);ctx.fill();});
+  // obstacles
+  obstacles.forEach(function(o){
+    if(o.type==='cactus'){ctx.fillStyle='#2e8b57';ctx.fillRect(o.x,o.y,o.w,o.h);ctx.fillStyle='#3cb371';ctx.fillRect(o.x+3,o.y+6,4,10);ctx.fillRect(o.x+o.w-7,o.y+12,4,10);}
+    else{ctx.fillStyle='#555';var f=Math.sin(o.flap)*6;ctx.beginPath();ctx.moveTo(o.x,o.y+10);ctx.lineTo(o.x+18,o.y+f);ctx.lineTo(o.x+36,o.y+10);ctx.lineTo(o.x+18,o.y+14);ctx.closePath();ctx.fill();ctx.fillStyle='#e74c3c';ctx.fillRect(o.x+24,o.y+8,6,6);}
+  });
+  // dino
+  var dh2=ducking?24:44, dy2=dino.jumping?dino.y:GROUND-dh2;
+  ctx.fillStyle='#333';
+  ctx.fillRect(dino.x,dy2,34,dh2); // body
+  ctx.fillRect(dino.x+22,dy2-12,16,14); // head
+  ctx.fillRect(dino.x+34,dy2-8,6,4); // snout
+  ctx.fillStyle='#fff';ctx.fillRect(dino.x+30,dy2-9,4,4); // eye
+  ctx.fillStyle='#333';ctx.fillRect(dino.x+4,dy2+dh2-8,8,8);ctx.fillRect(dino.x+22,dy2+dh2-8,8,8); // legs
+  if(over){ctx.fillStyle='rgba(0,0,0,0.65)';ctx.font='bold 28px sans-serif';ctx.textAlign='center';ctx.fillText('GAME OVER',W/2,90);ctx.textAlign='left';}
+}
+document.getElementById('startBtn').addEventListener('click',function(){reset();start();});
+document.getElementById('jumpBtn').addEventListener('click',jump);
+var duckBtn=document.getElementById('duckBtn');
+duckBtn.addEventListener('pointerdown',function(e){e.preventDefault();ducking=true;});
+['pointerup','pointerleave'].forEach(function(ev){duckBtn.addEventListener(ev,function(){ducking=false;});});
+cv.addEventListener('pointerdown',function(e){e.preventDefault();jump();});
+document.addEventListener('keydown',function(e){
+  if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump();}
+  if(e.code==='ArrowDown'){ducking=true;}
+  if(e.code==='Enter'&&over){reset();start();}
+});
+document.addEventListener('keyup',function(e){if(e.code==='ArrowDown')ducking=false;});
+reset();
+})();
+</script>
 </body>
 </html>
