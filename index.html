@@ -46,7 +46,7 @@ const cats=[...new Set(GAMES.map(g=>g.cat))];
 document.getElementById('cats').innerHTML='<button class="chip active" onclick="setCat(\'All\',this)">All</button>'+cats.map(c=>`<button class="chip" onclick="setCat('${c}',this)">${c}</button>`).join('');
 let cur='All';
 function render(list){
-  document.getElementById('grid').innerHTML=list.map(g=>`<a class="card" href="/games/${g.slug}/"><div class="thumb">${g.emoji}</div><div class="card-body"><h3>${g.name}</h3><p>${g.desc}</p><div class="meta"><span class="badge">${g.cat}</span><span class="badge">${g.license}</span> Play free</div></div></a>`).join('');
+  document.getElementById('grid').innerHTML=list.map(g=>`<a class="card" href="/games/${g.slug}/"><div class="thumb">${g.thumb?`<img src="${g.thumb}" alt="${g.name}" loading="lazy">`:g.emoji}</div><div class="card-body"><h3>${g.name}</h3><p>${g.desc}</p><div class="meta"><span class="badge">${g.cat}</span><span class="badge">${g.license}</span> Play free</div></div></a>`).join('');
 }
 function setCat(c,el){cur=c;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));el.classList.add('active');render(GAMES.filter(g=>c==='All'||g.cat===c));}
 function filterGames(q){q=q.toLowerCase();render(GAMES.filter(g=>(cur==='All'||g.cat===cur)&&(g.name.toLowerCase().includes(q)||g.desc.toLowerCase().includes(q))));}
