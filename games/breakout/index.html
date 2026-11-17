@@ -7,6 +7,16 @@
 <meta name="description" content="Play Breakout online free in your browser. Bounce the ball, break all the bricks. Move the paddle with mouse or arrow keys. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/breakout/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:20px;text-align:center}
+.game-box canvas{display:block;margin:0 auto;max-width:100%;height:auto;background:#0b0e14;border-radius:8px;touch-action:none}
+.hud{display:flex;justify-content:center;gap:24px;font-weight:700;margin:10px 0;color:#e8eaf0}
+.hud span{color:#ffb020}
+.game-btn{background:#ffb020;color:#111;padding:10px 22px;border:0;border-radius:999px;font-weight:700;cursor:pointer;font-size:15px;margin-top:12px}
+.game-btn:hover{filter:brightness(1.1)}
+.game-msg{font-size:20px;font-weight:700;min-height:28px;margin-top:10px}
+.game-hint{color:#9aa0ae;font-size:13px;margin-top:8px}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -15,16 +25,203 @@
 <h1>🧱 Play Breakout Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Bounce the ball, break all the bricks. Move the paddle with mouse or arrow keys.</p>
 <p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🧱</div>
-<h2>Breakout</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<div class="game-box">
+  <div class="hud">
+    <div>Score: <span id="score">0</span></div>
+    <div>Lives: <span id="lives">3</span></div>
+    <div>Bricks: <span id="bricksLeft">0</span></div>
+  </div>
+  <canvas id="game" width="480" height="400"></canvas>
+  <div class="game-msg" id="msg">Click Start or press Space to play</div>
+  <button class="game-btn" id="startBtn">Start Game</button>
+  <p class="game-hint">Move the paddle with your mouse, arrow keys (← →), or by dragging on touch screens. Clear all the bricks to win!</p>
 </div>
 <h2>About Breakout</h2>
 <p style="line-height:1.7">Bounce the ball, break all the bricks. Move the paddle with mouse or arrow keys. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function () {
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var scoreEl = document.getElementById('score');
+  var livesEl = document.getElementById('lives');
+  var bricksEl = document.getElementById('bricksLeft');
+  var msgEl = document.getElementById('msg');
+  var btn = document.getElementById('startBtn');
+
+  var W = canvas.width, H = canvas.height;
+  var paddleW = 80, paddleH = 12, paddleY = H - 30;
+  var ballR = 8;
+  var brickRows = 5, brickCols = 8, brickW = 52, brickH = 20, brickPad = 8, brickTop = 50, brickLeft = 12;
+  var colors = ['#ff5a5a', '#ff9f1c', '#ffd60a', '#3ddc84', '#4cc9f0'];
+
+  var paddleX, ballX, ballY, ballDX, ballDY, score, lives, bricks, totalBricks;
+  var state = 'ready'; // ready | playing | over | win
+  var keys = {};
+  var raf = null;
+
+  function buildBricks() {
+    bricks = [];
+    totalBricks = brickRows * brickCols;
+    for (var r = 0; r < brickRows; r++) {
+      for (var c = 0; c < brickCols; c++) {
+        bricks.push({ x: brickLeft + c * (brickW + brickPad), y: brickTop + r * (brickH + brickPad), alive: true, color: colors[r] });
+      }
+    }
+  }
+
+  function resetBall() {
+    ballX = W / 2;
+    ballY = H - 50;
+    ballDX = 3 * (Math.random() > 0.5 ? 1 : -1);
+    ballDY = -3.5;
+    paddleX = (W - paddleW) / 2;
+  }
+
+  function resetGame() {
+    score = 0; lives = 3;
+    buildBricks();
+    resetBall();
+    updateHUD();
+    state = 'ready';
+    msgEl.textContent = 'Click Start or press Space to play';
+    btn.textContent = 'Start Game';
+    draw();
+  }
+
+  function updateHUD() {
+    scoreEl.textContent = score;
+    livesEl.textContent = lives;
+    var left = 0;
+    for (var i = 0; i < bricks.length; i++) if (bricks[i].alive) left++;
+    bricksEl.textContent = left;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // bricks
+    for (var i = 0; i < bricks.length; i++) {
+      var b = bricks[i];
+      if (!b.alive) continue;
+      ctx.fillStyle = b.color;
+      ctx.fillRect(b.x, b.y, brickW, brickH);
+    }
+    // paddle
+    ctx.fillStyle = '#ffb020';
+    ctx.fillRect(paddleX, paddleY, paddleW, paddleH);
+    // ball
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, ballR, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function step() {
+    if (state !== 'playing') return;
+    // paddle keys
+    if (keys['ArrowLeft'] || keys['a']) paddleX -= 7;
+    if (keys['ArrowRight'] || keys['d']) paddleX += 7;
+    if (paddleX < 0) paddleX = 0;
+    if (paddleX > W - paddleW) paddleX = W - paddleW;
+
+    ballX += ballDX;
+    ballY += ballDY;
+
+    // walls
+    if (ballX < ballR) { ballX = ballR; ballDX = -ballDX; }
+    if (ballX > W - ballR) { ballX = W - ballR; ballDX = -ballDX; }
+    if (ballY < ballR) { ballY = ballR; ballDY = -ballDY; }
+
+    // paddle collision
+    if (ballY + ballR >= paddleY && ballY + ballR <= paddleY + paddleH + 8 &&
+        ballX >= paddleX - ballR && ballX <= paddleX + paddleW + ballR && ballDY > 0) {
+      var hit = (ballX - (paddleX + paddleW / 2)) / (paddleW / 2);
+      var speed = Math.min(Math.sqrt(ballDX * ballDX + ballDY * ballDY) + 0.05, 7);
+      var angle = hit * Math.PI / 3; // up to 60 deg
+      ballDX = speed * Math.sin(angle);
+      ballDY = -Math.abs(speed * Math.cos(angle));
+      ballY = paddleY - ballR;
+    }
+
+    // brick collision
+    for (var i = 0; i < bricks.length; i++) {
+      var b = bricks[i];
+      if (!b.alive) continue;
+      if (ballX + ballR > b.x && ballX - ballR < b.x + brickW &&
+          ballY + ballR > b.y && ballY - ballR < b.y + brickH) {
+        b.alive = false;
+        score += 10;
+        ballDY = -ballDY;
+        updateHUD();
+        break;
+      }
+    }
+
+    // bottom = lost ball
+    if (ballY - ballR > H) {
+      lives--;
+      updateHUD();
+      if (lives <= 0) {
+        state = 'over';
+        msgEl.textContent = 'Game Over! Final score: ' + score;
+        btn.textContent = 'Play Again';
+      } else {
+        state = 'ready';
+        msgEl.textContent = 'Ball lost! ' + lives + ' ' + (lives === 1 ? 'life' : 'lives') + ' left — press Space to continue';
+        btn.textContent = 'Continue';
+        resetBall();
+      }
+    }
+
+    // win check
+    var left = 0;
+    for (var j = 0; j < bricks.length; j++) if (bricks[j].alive) left++;
+    if (left === 0) {
+      state = 'win';
+      msgEl.textContent = '🎉 You Win! Final score: ' + score;
+      btn.textContent = 'Play Again';
+    }
+
+    draw();
+    if (state === 'playing') raf = requestAnimationFrame(step);
+  }
+
+  function start() {
+    if (state === 'playing') return;
+    if (state === 'over' || state === 'win') { resetGame(); }
+    state = 'playing';
+    msgEl.textContent = '';
+    btn.textContent = 'Restart';
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(step);
+  }
+
+  btn.addEventListener('click', function () {
+    if (state === 'playing') { resetGame(); return; }
+    start();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === ' ') e.preventDefault();
+    keys[e.key] = true;
+    if (e.key === ' ' && state !== 'playing') start();
+  });
+  document.addEventListener('keyup', function (e) { keys[e.key] = false; });
+
+  function movePaddle(clientX) {
+    var rect = canvas.getBoundingClientRect();
+    var x = (clientX - rect.left) * (W / rect.width);
+    paddleX = Math.max(0, Math.min(W - paddleW, x - paddleW / 2));
+    if (state === 'ready') draw();
+  }
+  canvas.addEventListener('mousemove', function (e) { movePaddle(e.clientX); });
+  canvas.addEventListener('touchmove', function (e) { e.preventDefault(); movePaddle(e.touches[0].clientX); }, { passive: false });
+  canvas.addEventListener('touchstart', function (e) { e.preventDefault(); movePaddle(e.touches[0].clientX); }, { passive: false });
+
+  resetGame();
+})();
+</script>
 </body>
 </html>
