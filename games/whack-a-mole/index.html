@@ -7,6 +7,22 @@
 <meta name="description" content="Play Whack a Mole online free in your browser. Moles pop up — whack them fast. 30 seconds, how many can you get? No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/whack-a-mole/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center}
+#hud{display:flex;justify-content:center;gap:28px;font-weight:700;font-size:18px;margin-bottom:14px;color:#e8eaf0}
+#hud span{color:#ffb020}
+#hud .time-low{color:#ff5f6d}
+#grid{display:grid;grid-template-columns:repeat(3,110px);gap:14px;justify-content:center}
+.hole{width:110px;height:110px;background:#0b1220;border:3px solid #3a2c14;border-radius:50%;position:relative;overflow:hidden;cursor:pointer;box-shadow:inset 0 10px 0 #2a1f0d}
+.hole .mole{position:absolute;left:50%;bottom:-90px;transform:translateX(-50%);font-size:64px;transition:bottom .18s ease;line-height:1;pointer-events:none}
+.hole.up .mole{bottom:6px}
+.hole.hit .mole{transform:translateX(-50%) rotate(90deg);opacity:.4}
+#msg{font-weight:700;min-height:28px;margin-top:14px;color:#7ee081;font-size:18px}
+#best{color:#9aa0ae;margin-top:4px;font-size:14px}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px;margin-top:10px}
+.btn:hover{opacity:.9}
+@media(max-width:480px){#grid{grid-template-columns:repeat(3,96px);gap:10px}.hole{width:96px;height:96px}.hole .mole{font-size:54px}}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +30,96 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Arcade / Whack a Mole</p>
 <h1>🔨 Play Whack a Mole Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Moles pop up — whack them fast. 30 seconds, how many can you get?</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">🔨</div>
-<h2>Whack a Mole</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> Press Start, then tap the moles as they pop out of the holes. Each whack scores 1 point. You have 30 seconds — beat your best score!</p>
+<div class="game-box">
+<div id="hud"><div>⏱ Time: <span id="time">30</span>s</div><div>🔨 Score: <span id="score">0</span></div></div>
+<div id="grid"></div>
+<p id="msg">Press Start — the moles are waiting…</p>
+<p id="best">Best score: <span id="bestScore">0</span></p>
+<p><button class="btn" id="btnStart">▶ Start Game</button> <button class="btn" id="btnAgain" style="background:#232733;color:#fff">↻ Play Again</button></p>
 </div>
 <h2>About Whack a Mole</h2>
 <p style="line-height:1.7">Moles pop up — whack them fast. 30 seconds, how many can you get? This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+'use strict';
+var DURATION=30;
+var gridEl=document.getElementById('grid'),timeEl=document.getElementById('time'),
+    scoreEl=document.getElementById('score'),msgEl=document.getElementById('msg'),
+    bestEl=document.getElementById('bestScore');
+var holes=[],score=0,timeLeft=DURATION,playing=false,timerId=null,moleId=null,best=0;
+try{best=parseInt(localStorage.getItem('whackBest')||'0',10)||0;}catch(e){best=0;}
+bestEl.textContent=best;
+
+for(var i=0;i<9;i++){
+  (function(idx){
+    var h=document.createElement('div');
+    h.className='hole';
+    h.innerHTML='<span class="mole">🐹</span>';
+    h.addEventListener('click',function(){whack(idx);});
+    h.addEventListener('touchstart',function(e){e.preventDefault();whack(idx);},{passive:false});
+    gridEl.appendChild(h);
+    holes.push(h);
+  })(i);
+}
+function whack(idx){
+  if(!playing)return;
+  var h=holes[idx];
+  if(h.classList.contains('up')&&!h.classList.contains('hit')){
+    h.classList.add('hit');
+    score++;scoreEl.textContent=score;
+    setTimeout(function(){h.classList.remove('up','hit');},150);
+  }
+}
+function popMole(){
+  if(!playing)return;
+  var idx=Math.floor(Math.random()*holes.length);
+  var h=holes[idx];
+  if(h.classList.contains('up')){schedulePop(120);return;}
+  h.classList.add('up');
+  var upTime=Math.max(450,950-timeLeft*15); // moles get quicker as time runs out
+  setTimeout(function(){h.classList.remove('up','hit');},upTime);
+  schedulePop(Math.max(220,700-timeLeft*10));
+}
+function schedulePop(delay){
+  if(!playing)return;
+  moleId=setTimeout(popMole,delay);
+}
+function start(){
+  clearInterval(timerId);clearTimeout(moleId);
+  holes.forEach(function(h){h.classList.remove('up','hit');});
+  score=0;timeLeft=DURATION;playing=true;
+  scoreEl.textContent=score;timeEl.textContent=timeLeft;
+  timeEl.classList.remove('time-low');
+  msgEl.textContent='Go! Whack those moles! 🔨';
+  msgEl.style.color='#7ee081';
+  timerId=setInterval(function(){
+    timeLeft--;
+    timeEl.textContent=timeLeft;
+    if(timeLeft<=5)timeEl.classList.add('time-low');
+    if(timeLeft<=0)endGame();
+  },1000);
+  schedulePop(300);
+}
+function endGame(){
+  playing=false;
+  clearInterval(timerId);clearTimeout(moleId);
+  holes.forEach(function(h){h.classList.remove('up','hit');});
+  var isBest=score>best;
+  if(isBest){
+    best=score;
+    try{localStorage.setItem('whackBest',String(best));}catch(e){}
+    bestEl.textContent=best;
+  }
+  msgEl.textContent='⏰ Time\'s up! Final score: '+score+(isBest?' — 🎉 New best!':' — best: '+best+'.');
+  msgEl.style.color='#ffb020';
+}
+document.getElementById('btnStart').addEventListener('click',start);
+document.getElementById('btnAgain').addEventListener('click',start);
+})();
+</script>
 </body>
 </html>
