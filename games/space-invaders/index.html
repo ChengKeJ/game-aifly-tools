@@ -7,6 +7,18 @@
 <meta name="description" content="Play Space Invaders online free in your browser. Defend Earth from waves of invaders. Move, shoot, don't let them land. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/space-invaders/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#0b0e14;border:1px solid #232733;border-radius:14px;padding:16px;text-align:center}
+#hud{display:flex;justify-content:space-between;max-width:480px;margin:0 auto 8px;color:#e8eaf0;font-weight:700;font-size:15px}
+#hud span{color:#ffb020}
+#gameCanvas{display:block;margin:0 auto;background:#000;border:2px solid #232733;border-radius:8px;max-width:100%;height:auto;touch-action:none}
+.touch-controls{display:flex;justify-content:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+.touch-controls button{background:#232733;color:#fff;border:1px solid #3a4054;border-radius:10px;padding:12px 20px;font-size:18px;font-weight:700;cursor:pointer;min-width:64px}
+.touch-controls button:active{background:#ffb020;color:#111}
+#msg{color:#ffb020;font-weight:700;min-height:24px;margin:10px 0 0}
+.btn{background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;font-size:15px}
+.btn:hover{opacity:.9}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -14,17 +26,248 @@
 <p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Shooting / Space Invaders</p>
 <h1>👾 Play Space Invaders Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Defend Earth from waves of invaders. Move, shoot, don't let them land.</p>
-<p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">👾</div>
-<h2>Space Invaders</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: Self-hosted implementation.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<p><strong>How to play:</strong> Move with ← → arrow keys (or drag / on-screen buttons), shoot with Space (or the FIRE button). Destroy all invaders to start the next, faster wave. You have 3 lives — game over if the invaders land.</p>
+<div class="game-box">
+<div id="hud"><div>Score: <span id="score">0</span></div><div>Wave: <span id="wave">1</span></div><div>Lives: <span id="lives">❤️❤️❤️</span></div></div>
+<canvas id="gameCanvas" width="480" height="480"></canvas>
+<p id="msg">Press Start or tap FIRE to play</p>
+<div class="touch-controls">
+<button id="btnLeft" aria-label="Move left">◀</button>
+<button id="btnFire" aria-label="Fire">🔥 FIRE</button>
+<button id="btnRight" aria-label="Move right">▶</button>
+</div>
+<p style="margin-top:14px"><button class="btn" id="btnStart">▶ Start Game</button> <button class="btn" id="btnRestart" style="background:#232733;color:#fff">↻ Restart</button></p>
 </div>
 <h2>About Space Invaders</h2>
 <p style="line-height:1.7">Defend Earth from waves of invaders. Move, shoot, don't let them land. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: Self-hosted implementation - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function(){
+'use strict';
+var canvas=document.getElementById('gameCanvas');
+var ctx=canvas.getContext('2d');
+var W=canvas.width,H=canvas.height;
+var scoreEl=document.getElementById('score'),waveEl=document.getElementById('wave'),
+    livesEl=document.getElementById('lives'),msgEl=document.getElementById('msg');
+
+var player,bullets,enemyBullets,invaders,shields;
+var score=0,wave=1,lives=3,running=false,over=false,raf=null;
+var invDir=1,invSpeed=0.6,invDrop=0,shootTimer=0;
+var keys={left:false,right:false};
+
+function buildWave(w){
+  invaders=[];
+  var rows=4,cols=8;
+  for(var r=0;r<rows;r++){
+    for(var c=0;c<cols;c++){
+      invaders.push({x:40+c*48,y:40+r*36,w:30,h:22,alive:true,
+        pts:(rows-r)*10, row:r});
+    }
+  }
+  invSpeed=0.5+w*0.25;
+}
+function buildShields(){
+  shields=[];
+  for(var s=0;s<4;s++){
+    var bx=50+s*110;
+    for(var i=0;i<4;i++)for(var j=0;j<3;j++)
+      shields.push({x:bx+i*12,y:380+j*10,w:12,h:10,alive:true});
+  }
+}
+function resetGame(){
+  score=0;wave=1;lives=3;over=false;
+  player={x:W/2-20,y:H-40,w:40,h:16,speed:5};
+  bullets=[];enemyBullets=[];
+  buildWave(wave);buildShields();
+  updateHUD();msgEl.textContent='Wave 1 — good luck!';
+}
+function updateHUD(){
+  scoreEl.textContent=score;
+  waveEl.textContent=wave;
+  livesEl.textContent='❤️'.repeat(Math.max(0,lives))||'—';
+}
+function start(){
+  if(!running){resetGame();}
+  running=true;over=false;msgEl.textContent='';
+  if(raf)cancelAnimationFrame(raf);
+  loop();
+}
+function gameOver(){
+  running=false;over=true;
+  msgEl.textContent='👾 GAME OVER — the invaders landed! Final score: '+score;
+}
+function nextWave(){
+  wave++;buildWave(wave);bullets=[];enemyBullets=[];
+  updateHUD();msgEl.textContent='Wave '+wave+' — faster invaders!';
+}
+function loop(){
+  if(!running)return;
+  update();draw();
+  raf=requestAnimationFrame(loop);
+}
+function update(){
+  // player movement
+  if(keys.left)player.x-=player.speed;
+  if(keys.right)player.x+=player.speed;
+  if(player.x<4)player.x=4;
+  if(player.x>W-player.w-4)player.x=W-player.w-4;
+  // player bullets
+  for(var i=bullets.length-1;i>=0;i--){
+    var b=bullets[i];b.y-=7;
+    if(b.y<-10){bullets.splice(i,1);continue;}
+    // hit invader
+    var hit=false;
+    for(var j=0;j<invaders.length;j++){
+      var iv=invaders[j];
+      if(iv.alive&&b.x>iv.x&&b.x<iv.x+iv.w&&b.y>iv.y&&b.y<iv.y+iv.h){
+        iv.alive=false;score+=iv.pts;hit=true;updateHUD();break;
+      }
+    }
+    if(hit){bullets.splice(i,1);continue;}
+    // hit shield
+    for(var k=shields.length-1;k>=0;k--){
+      var sh=shields[k];
+      if(sh.alive&&b.x>sh.x&&b.x<sh.x+sh.w&&b.y>sh.y&&b.y<sh.y+sh.h){
+        sh.alive=false;bullets.splice(i,1);hit=true;break;
+      }
+    }
+  }
+  // invader movement: speed up as they are destroyed
+  var aliveCount=invaders.filter(function(v){return v.alive;}).length;
+  if(aliveCount===0){nextWave();return;}
+  var speed=invSpeed*(1+(40-aliveCount)/40);
+  var edge=false;
+  for(var m=0;m<invaders.length;m++){
+    var v=invaders[m];
+    if(!v.alive)continue;
+    v.x+=speed*invDir;
+    if(v.x<=6||v.x+v.w>=W-6)edge=true;
+  }
+  if(edge){
+    invDir*=-1;
+    for(var n=0;n<invaders.length;n++){
+      if(invaders[n].alive)invaders[n].y+=16;
+    }
+  }
+  // invaders reach bottom?
+  for(var p=0;p<invaders.length;p++){
+    if(invaders[p].alive&&invaders[p].y+invaders[p].h>=player.y-4){gameOver();return;}
+  }
+  // enemy shooting
+  shootTimer++;
+  if(shootTimer>Math.max(18,60-wave*4)){
+    shootTimer=0;
+    var shooters=invaders.filter(function(v){return v.alive;});
+    if(shooters.length){
+      var s=shooters[Math.floor(Math.random()*shooters.length)];
+      enemyBullets.push({x:s.x+s.w/2,y:s.y+s.h});
+    }
+  }
+  for(var q=enemyBullets.length-1;q>=0;q--){
+    var eb=enemyBullets[q];eb.y+=4+wave*0.3;
+    if(eb.y>H){enemyBullets.splice(q,1);continue;}
+    // hit player
+    if(eb.x>player.x&&eb.x<player.x+player.w&&eb.y>player.y&&eb.y<player.y+player.h){
+      enemyBullets.splice(q,1);
+      lives--;updateHUD();
+      if(lives<=0){gameOver();return;}
+      msgEl.textContent='Hit! '+(lives)+' '+(lives===1?'life':'lives')+' left';
+      continue;
+    }
+    // hit shield
+    for(var r=shields.length-1;r>=0;r--){
+      var sh2=shields[r];
+      if(sh2.alive&&eb.x>sh2.x&&eb.x<sh2.x+sh2.w&&eb.y>sh2.y&&eb.y<sh2.y+sh2.h){
+        sh2.alive=false;enemyBullets.splice(q,1);break;
+      }
+    }
+  }
+}
+function draw(){
+  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+  // shields
+  ctx.fillStyle='#2ecc71';
+  shields.forEach(function(s){if(s.alive)ctx.fillRect(s.x,s.y,s.w,s.h);});
+  // invaders
+  invaders.forEach(function(v){
+    if(!v.alive)return;
+    ctx.fillStyle=v.row===0?'#ff5f6d':v.row===1?'#ffb020':'#7ee081';
+    ctx.fillRect(v.x,v.y,v.w,v.h);
+    ctx.fillStyle='#000';
+    ctx.fillRect(v.x+6,v.y+6,5,5);ctx.fillRect(v.x+v.w-11,v.y+6,5,5);
+    ctx.fillRect(v.x+6,v.y+v.h-9,5,4);ctx.fillRect(v.x+v.w-11,v.y+v.h-9,5,4);
+  });
+  // player
+  ctx.fillStyle='#4da3ff';
+  ctx.beginPath();
+  ctx.moveTo(player.x+player.w/2,player.y);
+  ctx.lineTo(player.x+player.w,player.y+player.h);
+  ctx.lineTo(player.x,player.y+player.h);
+  ctx.closePath();ctx.fill();
+  ctx.fillRect(player.x+player.w/2-3,player.y-6,6,6);
+  // bullets
+  ctx.fillStyle='#fff';
+  bullets.forEach(function(b){ctx.fillRect(b.x-2,b.y-8,4,10);});
+  ctx.fillStyle='#ff5f6d';
+  enemyBullets.forEach(function(b){ctx.fillRect(b.x-2,b.y,4,10);});
+  if(!running&&!over){
+    ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#ffb020';ctx.font='bold 22px sans-serif';ctx.textAlign='center';
+    ctx.fillText('👾 SPACE INVADERS',W/2,H/2-10);
+    ctx.fillStyle='#fff';ctx.font='15px sans-serif';
+    ctx.fillText('Press Start — arrows to move, Space to fire',W/2,H/2+20);
+  }
+  if(over){
+    ctx.fillStyle='rgba(0,0,0,.65)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#ff5f6d';ctx.font='bold 26px sans-serif';ctx.textAlign='center';
+    ctx.fillText('GAME OVER',W/2,H/2-10);
+    ctx.fillStyle='#fff';ctx.font='16px sans-serif';
+    ctx.fillText('Final score: '+score,W/2,H/2+22);
+  }
+}
+function fire(){
+  if(!running)return;
+  if(bullets.length<3)
+    bullets.push({x:player.x+player.w/2,y:player.y-8});
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowLeft'){keys.left=true;e.preventDefault();}
+  if(e.key==='ArrowRight'){keys.right=true;e.preventDefault();}
+  if(e.code==='Space'){fire();e.preventDefault();}
+});
+document.addEventListener('keyup',function(e){
+  if(e.key==='ArrowLeft')keys.left=false;
+  if(e.key==='ArrowRight')keys.right=false;
+});
+function hold(btn,prop){
+  btn.addEventListener('touchstart',function(e){e.preventDefault();keys[prop]=true;},{passive:false});
+  btn.addEventListener('touchend',function(){keys[prop]=false;});
+  btn.addEventListener('mousedown',function(){keys[prop]=true;});
+  btn.addEventListener('mouseup',function(){keys[prop]=false;});
+  btn.addEventListener('mouseleave',function(){keys[prop]=false;});
+}
+hold(document.getElementById('btnLeft'),'left');
+hold(document.getElementById('btnRight'),'right');
+var fireBtn=document.getElementById('btnFire');
+fireBtn.addEventListener('touchstart',function(e){e.preventDefault();fire();},{passive:false});
+fireBtn.addEventListener('click',fire);
+// drag on canvas to move ship
+var dragging=false;
+canvas.addEventListener('touchstart',function(e){dragging=true;moveShip(e);},{passive:false});
+canvas.addEventListener('touchmove',function(e){e.preventDefault();if(dragging)moveShip(e);},{passive:false});
+canvas.addEventListener('touchend',function(){dragging=false;});
+function moveShip(e){
+  var rect=canvas.getBoundingClientRect();
+  var t=e.touches[0];
+  var x=(t.clientX-rect.left)*(canvas.width/rect.width);
+  player.x=Math.max(4,Math.min(W-player.w-4,x-player.w/2));
+}
+document.getElementById('btnStart').addEventListener('click',start);
+document.getElementById('btnRestart').addEventListener('click',function(){start();});
+resetGame();draw();
+})();
+</script>
 </body>
 </html>
