@@ -1,74 +1,136 @@
 // First 20 MIT open-source / self-hosted games. Each entry: slug, name, category, emoji, description, licence, source.
 // Own flagships (airplane shooter, kart racer) are featured separately — web builds coming soon from the Cocos projects.
 const GAMES = [
+  
   {slug:"2048", name:"2048", cat:"Puzzle", emoji:"🔢", desc:"Slide the tiles and combine matching numbers to reach 2048. A classic number puzzle, free in your browser.", license:"MIT", source:"gabrielecirulli/2048", thumb:"/assets/thumbs/2048.jpg"},
+  
   {slug:"snake", name:"Snake", cat:"Arcade", emoji:"🐍", desc:"Eat, grow, don't hit the wall or yourself. The timeless arcade snake, with arrow keys or swipe.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/snake.jpg"},
+  
   {slug:"tetris", name:"Tetris Blocks", cat:"Puzzle", emoji:"🧱", desc:"Stack falling blocks, clear lines, chase a high score. Keyboard controls, no download needed.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/tetris.jpg"},
+  
   {slug:"minesweeper", name:"Minesweeper", cat:"Puzzle", emoji:"💣", desc:"Clear the field without hitting a mine. Numbers tell you where the mines hide.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/minesweeper.jpg"},
+  
   {slug:"memory-match", name:"Memory Match", cat:"Puzzle", emoji:"🃏", desc:"Flip cards and find all matching pairs in as few moves as you can.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/memory-match.jpg"},
+  
   {slug:"breakout", name:"Breakout", cat:"Arcade", emoji:"🧱", desc:"Bounce the ball, break all the bricks. Move the paddle with mouse or arrow keys.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/breakout.jpg"},
+  
   {slug:"asteroids", name:"Asteroids", cat:"Shooting", emoji:"☄️", desc:"Pilot your ship, shoot asteroids, avoid collisions. A space arcade classic.", license:"MIT", source:"attogram/games", thumb:"/assets/thumbs/asteroids.jpg"},
+  
   {slug:"tic-tac-toe", name:"Tic Tac Toe", cat:"Puzzle", emoji:"❌", desc:"Three in a row wins. Play against the computer or a friend on the same screen.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/tic-tac-toe.jpg"},
+  
   {slug:"flappy-bird", name:"Flappy Bird", cat:"Arcade", emoji:"🐦", desc:"Tap to flap through the pipes. Simple to learn, hard to master.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/flappy-bird.jpg"},
+  
   {slug:"pong", name:"Pong", cat:"Sports", emoji:"🏓", desc:"The original video game. Bounce the ball past your opponent's paddle.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/pong.jpg"},
+  
   {slug:"space-invaders", name:"Space Invaders", cat:"Shooting", emoji:"👾", desc:"Defend Earth from waves of invaders. Move, shoot, don't let them land.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/space-invaders.jpg"},
+  
   {slug:"hearts", name:"Hearts Card Game", cat:"Card", emoji:"♥️", desc:"A classic trick-taking card game. Avoid hearts and the Queen of Spades.", license:"MIT", source:"attogram/games", thumb:"/assets/thumbs/hearts.jpg"},
+  
   {slug:"sudoku", name:"Sudoku", cat:"Puzzle", emoji:"🔢", desc:"Fill the 9x9 grid so every row, column and box has 1-9. Daily brain training.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/sudoku.jpg"},
+  
   {slug:"connect-four", name:"Connect Four", cat:"Puzzle", emoji:"🔴", desc:"Drop discs and get four in a row before your opponent does.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/connect-four.jpg"},
+  
   {slug:"whack-a-mole", name:"Whack a Mole", cat:"Arcade", emoji:"🔨", desc:"Moles pop up — whack them fast. 30 seconds, how many can you get?", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/whack-a-mole.jpg"},
+  
   {slug:"dino-run", name:"Dino Run", cat:"Arcade", emoji:"🦕", desc:"Jump over cacti and dodge birds in this endless runner. Space to jump.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/dino-run.jpg"},
+  
   {slug:"simon", name:"Simon Says", cat:"Puzzle", emoji:"🎵", desc:"Repeat the colour and sound pattern. Each round adds one more step.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/simon.jpg"},
+  
   {slug:"hangman", name:"Hangman", cat:"Word", emoji:"🔤", desc:"Guess the hidden word letter by letter before the drawing is complete.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/hangman.jpg"},
+  
   {slug:"solitaire", name:"Solitaire", cat:"Card", emoji:"♠️", desc:"The classic single-player card game. Sort all cards by suit and rank.", license:"MIT", source:"attogram/games", thumb:"/assets/thumbs/solitaire.jpg"},
+  
   {slug:"maze", name:"Maze Runner", cat:"Puzzle", emoji:"🌀", desc:"Find your way out of the maze. Arrow keys to move, beat the clock.", license:"MIT", source:"Self-hosted implementation", thumb:"/assets/thumbs/maze.jpg"},
+  
   {slug:"zigzag-snow-mountain", name:"ZigZag Snow Mountain", cat:"Hypercasual", emoji:"⛷️", desc:"Guide your skier down the snowy mountain, zigzag between obstacles and collect coins. Tap to change direction — one wrong turn ends the run.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/s94xp6bhitgjcptd98dyph9u5m7i922m/512x384.jpg"},
+  
   {slug:"hero-rescue-puzzle", name:"Hero Rescue Puzzle", cat:"Puzzle", emoji:"🦸", desc:"Pull the pins in the right order to rescue the hero, defeat enemies and grab the treasure. A physics puzzle where each pin changes the outcome.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/3596x93682lmj4cn7mrtldmfhviig7jj/512x384.jpg"},
+  
   {slug:"love-balls-2d", name:"Love Balls 2D", cat:"Puzzle", emoji:"💕", desc:"Draw lines to bring the two love balls together. Simple to start, tricky to master — every level needs a new clever line.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/1l6pgl750zi41o2cktmkmr71dntshaej/512x384.jpg"},
+  
   {slug:"happy-glass", name:"Happy Glass", cat:"Puzzle", emoji:"🥛", desc:"Draw a path so the water flows into the happy glass. Fill it up without spilling — physics, timing and a steady hand.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/dayksem3hjbea9vsbklh6wqi213w9121/512x384.jpg"},
+  
   {slug:"pou-online", name:"Pou Online", cat:"Puzzle", emoji:"🐾", desc:"Play with Pou in this online puzzle adventure. Feed, play and solve mini-challenges with the little alien pet.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/jyeazqa0x7ym5xcq22g9mgv74s5tift1/512x384.jpg"},
+  
   {slug:"zombie-bears-night-shooting", name:"Zombie Bears Night Shooting", cat:"Shooting", emoji:"🧟", desc:"Zombies are coming at night — grab your weapon and hold the line. Aim, shoot, survive wave after wave.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/a8i3hhixhynwz435k72ub0ichgummyfw/512x384.jpg"},
+  
   {slug:"roof-rails-color-stack-3d", name:"Roof Rails - Color Stack 3D", cat:"Arcade", emoji:"🌈", desc:"Slide down the rails, stack colours and avoid falling off. A fast 3D arcade runner with bright, satisfying stacks.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/3zsuu4fl12ujvfaa5yett2t1rclzg9jj/512x384.jpg"},
+  
   {slug:"among-us-online-edition", name:"Among Us Online Edition", cat:"Arcade", emoji:"👾", desc:"The popular social deduction game in your browser. Complete tasks, watch out for impostors, and vote wisely.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/luye5rleios737wp2o9wjq7h577gl937/512x384.jpg"},
+  
   {slug:"minecraft-remake", name:"Minecraft Remake", cat:"Arcade", emoji:"⛏️", desc:"Build and explore in this browser remake of Minecraft. Mine blocks, craft and create your own world, no download needed.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/cznxajp3hzb8l7gtebaq96s0pbrfa33m/512x384.jpg"},
+  
   {slug:"baldis-basics", name:"Baldi's Basics v1.4.3", cat:"Arcade", emoji:"🏫", desc:"Collect notebooks and escape Baldi's school. Solve maths problems, avoid Baldi, and don't get caught in the halls.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/iiifrxhcnzl5laslqf3eaedtevjzb2bu/512x384.jpg"},
+  
   {slug:"jumper-jam", name:"Jumper Jam", cat:"Arcade", emoji:"🦘", desc:"Jump from platform to platform, go as high as you can. A quick arcade jumper — one mistimed jump and you fall.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/vz014sa1b6hbw3jquxwgn98xhzux2uhz/512x384.jpg"},
+  
   {slug:"super-runcraft", name:"Super RunCraft", cat:"Arcade", emoji:"🕹️", desc:"Super RunCraft is a wonderful 3D Run Game, run through a long minecraft land to collect rows of golden coins, number of special items such as Hoveboard along your running lane and avoid the obstacles in your way. The", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/syoymgm7jw290t7mz0hpqjqmc8yqlmrd/512x384.jpg"},
+  
   {slug:"skate-hooligans", name:"Skate Hooligans", cat:"Arcade", emoji:"🕹️", desc:"Cowabunga! Little hooligans are on the way! Choose your hero and arrange an amazing disorder ^_^ Collect coins, upgrade bonuses, buy cool skateboards, avoid dangerous obstacles and get scores as much as you can.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/vy07es6s71vci1su3wzcqrp7e3ym0vtw/512x384.jpg"},
+  
   {slug:"12-minibattles", name:"12 MiniBattles", cat:"Arcade", emoji:"🕹️", desc:"12 MiniBattles is a fun multiplayer game where you and a friend can play against each other on a variety of games. This physics style game has different game types that you can play at random including a soccer match", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/nuiyi3o2g6fktyjda55g42v3qe5a3hbq/512x384.jpg"},
+  
   {slug:"squid-game-green-light-red-light-hints", name:"Squid Game Green Light Red Light Hints", cat:"Arcade", emoji:"🕹️", desc:"Invite to Squid Game. Invite to a fair game of Red lights, eco-friendly lights. Whoever wins this game will win a great deal of prize money. Stop at the red light. Continue when the thumbs-up is on. Follow your", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/etp56l9axninm4hfoue23ndqkvbpkho2/512x384.jpg"},
+  
   {slug:"hunter-assassin", name:"Hunter Assassin", cat:"Arcade", emoji:"🕹️", desc:"Control the assassin and hunt down your targets one by one. Use your surroundings and shadows to stay hidden from flashlights. Targets with automatic machine guns can be lurking around each corner. Attack them swiftly", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/l1c9pkpxysqy1cao2axakpf8mdwkv8qg/512x384.jpg"},
+  
   {slug:"bitlife-life-simulator", name:"BitLife - Life Simulator", cat:"Arcade", emoji:"🕹️", desc:"How will you live your BitLife? Will you try to make all the right choices in an attempt to become a model citizen sometime before you die? You could marry the love of your life, have kids, and pick up a good education", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/sunlne8825d1006jux3b1xrl9vda49f1/512x384.jpg"},
+  
   {slug:"bottle-avenger-royale", name:"Bottle Avenger Royale", cat:"Arcade", emoji:"🕹️", desc:"Welcome to Bottle Avenger Royale! In this action-packed shooting game, you play as the brave bottle avenger. You will battle zombies or enemies to survive. Keep buying guns to upgrade merges of the same level to", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/xjr31mcvx0827ppslyqbiwp8pym1qlso/512x384.jpg"},
+  
   {slug:"red-ball-forever-2", name:"Red Ball Forever 2", cat:"Arcade", emoji:"🕹️", desc:"Red Ball Forever 2 is an exciting Platformer where you must race through the levels collecting special items and defeating the evil guys. The monsters has invaded the beautiful kingdom the RedBall kingdom have peaceful", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/xvgxy279mumukqpyzmvgwn8x1cw7g9cd/512x384.jpg"},
+  
   {slug:"dune-surfer-3d", name:"Dune Surfer 3d", cat:"Arcade", emoji:"🕹️", desc:"It’s a ball.. it’s a stickman… it’s a dune surfer! Go from ball, to stickman, to ball, to stickman as you draw, surf and slide your way out of the dunes, dune surfer stickman dude! You’re just a poor stickman dune", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/gbql8397haa6gwa3a1h6nqopiwsr0s0g/512x384.jpg"},
+  
   {slug:"mini-switcher", name:"Mini Switcher", cat:"Arcade", emoji:"🕹️", desc:"Switch the gravity to guide a small blob character to the goal, traveling around 30 levels and facing a variety of colorful enemies and obstacles with different behaviors. You can also test your ability on the speed run", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/r822rwum14259b7wacvt1acbp3e4jv4a/512x384.jpg"},
+  
   {slug:"save-the-kitten", name:"Save the Kitten", cat:"Arcade", emoji:"🕹️", desc:"Angry cat Tom lured the kittens to his tower. Rescue as many kittens as you can! Run, beat them off with a trampoline and carry them to the basket of mommy kitty! Kittens really hope for your help. Who will save them if", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/t4v0qrawern26uvsty9514lwespe8e8r/512x384.jpg"},
+  
   {slug:"sonic-jump-fever-2", name:"Sonic Jump Fever 2", cat:"Arcade", emoji:"🕹️", desc:"Play as Sonic the Hedgehog as you run, dash, jump and spin your way across stunning 3D environments in his first fun endless runner game. Swipe your way over and under as you race past challenging obstacles in this free", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/ccx4nhc8sickzxyip9zwuk85vgyo4bsg/512x384.jpg"},
+  
   {slug:"relic-runway", name:"Relic Runway", cat:"Arcade", emoji:"🕹️", desc:"Are you ready for crazy adventures? Run as far as you can, collect coins and upgrade useful bonuses, pick up relic parts to discover ancient artifacts, break idols to unlock amazing characters, and compete with your", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/ralnzjj3b624rjg6a31vl3m7tz7p8tf0/512x384.jpg"},
+  
   {slug:"paper-io-2", name:"Paper.IO 2", cat:"Arcade", emoji:"🕹️", desc:"Capture new territories and defeat enemies in the new exciting game Paper.io 2Each player starts out with a small island, make it larger by adding new areas to it, but watch out for enemies. You are safe on your own", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/1skj7a1hu68a1p31ag4ywljq4gb18oma/512x384.jpg"},
+  
   {slug:"temple-quest", name:"Temple Quest", cat:"Arcade", emoji:"🕹️", desc:"You shouldn't have stolen that artifact! Now you have to run for your life in an endless maze of temple ruins! Collect golden idols, ancient coins and power-ups. Master various obstacles, upgrade power-ups and fulfill", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/wfpm0h4x8a3f63snpkqvfp3b7mhx9z25/512x384.jpg"},
-  {slug:"color-shot-throw-the-ball", name:"Color Shot throw the ball", cat:"Arcade", emoji:"🕹️", desc:"Ready to explore this universe and join other players from all of the world? Here is the most excited android game color shoot finally come, download it and enjoy playing game every day &amp; every night. It is one-tap", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/cvuxtw1g6fpn8m7oscv6i181az96xv3q/512x384.jpg"},
+  
   {slug:"brazen-ball", name:"Brazen Ball", cat:"Arcade", emoji:"🕹️", desc:"You play as a robotic ball as you roll your way through challenging obstacles like sawblades, lasers, meteor showers, trap gates, spikes, magnets, water, wind and many more. Your task is to reach the end marker in as", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/ng1cndnhqyt5r986yphveujeapfk5sca/512x384.jpg"},
+  
   {slug:"super-bowmasters", name:"Super Bowmasters", cat:"Arcade", emoji:"🕹️", desc:"Test your skills and play one of the most competitive archery games ever created. Master all the places and discover their secrets. Be the best archer and dominate the rankings! Super bowmasters games is the hottest and", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/5mkmynq4be442ueej5j4l6pommnieubj/512x384.jpg"},
-  {slug:"among-us-online-v3", name:"Among Us Online v3", cat:"Arcade", emoji:"🕹️", desc:"Welcome to Among Us Online v3 game. In this game you can play only solo as imposter or crewmate on the space ship. You can do sabotage on spaceship or killing them one by one and without being caught. You can customize", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/n2294odux88zuqkl35s7rjoyns90cebj/512x384.jpg"},
+  
   {slug:"super-mario-and-sonic", name:"Super Mario and Sonic", cat:"Arcade", emoji:"🕹️", desc:"Join your friend Mario and Sonic in this fantastic adventure. Get the party started in this fantasy world and help your friends to complete and survive the magic adventure levels with full of dangerous. Choose the", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/9s24edtryabq95mg8ebnh5ej6z60lpwp/512x384.jpg"},
+  
   {slug:"ben10-omnirush", name:"Ben10 Omnirush", cat:"Arcade", emoji:"🕹️", desc:"Play now and have fun with Ben10 Omnirush first here at kiz10.com !!! Have fun with this spectacular game of action, adventure, running and lots of fun. Accompany Ben to complete this new mission to save the world once", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/6c71auwqycmsdn0g8wl7lkf3439dw3o3/512x384.jpg"},
-  {slug:"kindergarten-kids-learning-games", name:"Kindergarten Kids Learning Games", cat:"Arcade", emoji:"🕹️", desc:"Kindergarten kids learning games presents, educative fun games for toddlers & preschool children. Best educational games for kids to teach alphabet, shapes, counting, tracing, interactive charts & body parts using kids", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/9bpv2rcpylxf99jrq8gzjqww8i8nwb85/512x384.jpg"},
+  
   {slug:"super-buddy-kick-2", name:"Super Buddy Kick 2", cat:"Arcade", emoji:"🕹️", desc:"The most exciting action game is back to help you relieve stress in an unconventional way. Choose from an arsenal of weapons and devices to take out the Buddyman and he’ll respawn when you’re finished. Buddyman acts as", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/5619zg9qpx36cf48dkcof8v06wl4q00w/512x384.jpg"},
+  
   {slug:"super-onion-boy", name:"Super Onion Boy", cat:"Arcade", emoji:"🕹️", desc:"Super Onion Boy is a fun platform game, your mission is to save the princess from the terrible monster that imprisoned her in a magic bubble, defeat all the monsters along the way and dodge obstacles until you reach the", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/jtnau6xam3feocnkwi3xn5i4qc0l1kpk/512x384.jpg"},
+  
   {slug:"worms-zone-a-slithery-snake", name:"Worms Zone a Slithery Snake", cat:"Arcade", emoji:"🕹️", desc:"Worms Zone is a game with a dynamic storyline. Start growing your worm right now. Having tried to get a real anaconda, a small worm never gets stuck in one place – he’s ready to bite everyone. However, there is a danger", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/vz6qfngm0al4ggz8f3lrvrfrqrm1q19m/512x384.jpg"},
+  
   {slug:"roads-off-fury", name:"Roads Off Fury", cat:"Arcade", emoji:"🕹️", desc:"THERE'S NO ESCAPE. Take the chance to FIGHT for your life in this charged-up ENDLESS arcade, free-roaming racing game. Select your POST-APOCALYPTIC modified vehicle and drive it through the deserted ruins of the wasted", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/j7i04kr27e5fxm6k3xbzse85zwu20s0k/512x384.jpg"},
+  
   {slug:"gangsters", name:"Gangsters", cat:"Arcade", emoji:"🕹️", desc:"Gangsters is a pixelated shooting mayhem in which the players takes control of a gang. The goal of the game is to defend your turf against rival gangs. The graphics are retro and pixelated but the gameplay is exciting,", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/u3dgtp4b684ecqdv0k2teqczdtw8p38k/512x384.jpg"},
+  
   {slug:"super-hitmasters", name:"Super HitMasters", cat:"Arcade", emoji:"🕹️", desc:"Become a spy and catch all your enemies to complete the levels. Start with simple puzzles and then advance to some challenging levels! Collect coins and unlock tons of weapons, clothes, and characters and prepare your", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/dbw075jc1l806ljs2z1tb69gl1rtb3up/512x384.jpg"},
+  
   {slug:"super-rocket-buddy", name:"Super Rocket Buddy", cat:"Arcade", emoji:"🕹️", desc:"You have a cannon loaded with Buddies, and your goal is to get to the target. Solve puzzling challenges, avoid obstacles, and use as many Buddies as you need to complete every level. The game features your favorite", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/unyq7wdvi2bfsowowi91obhn48m9kuje/512x384.jpg"},
+  
   {slug:"yeti-sensation", name:"Yeti Sensation", cat:"Arcade", emoji:"🕹️", desc:"OH NOOO! Bigfoot wanted! Help embarrassed Yeti to find a way to his new home, avoid sly snowmen, dangerous traps and other obstacles, buy new boosts in the supermarket and run away as further as possible.", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/ieco9m12x4vrouir7ytnupfddkucj1u2/512x384.jpg"},
+  
   {slug:"subway-surfer-seoul", name:"Subway Surfer Seoul", cat:"Arcade", emoji:"🕹️", desc:"Descend into the subway and head towards a new adventure in the endless runner Subway Surfers: Seoul! Dodge obstacles, trains and more, collect coins and don\\\\\\\\\\\\\\t let the grumpy inspector catch up with you!", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/4jerk8kzzf8685dbcx2buh5i3o5zhugu/512x384.jpg"},
+  
   {slug:"fall-guyz", name:"Fall Guyz", cat:"Arcade", emoji:"🕹️", desc:"Play and have fun with this new Fall Guyz game here first on kiz10.com !!!! Now you can enjoy a new exclusive kiz10 game, a casual and entertaining adventure.In this opportunity, the fall guyz characters start an", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/epnb67gydx5b7fujbf6glepkav88egqs/512x384.jpg"},
+  
   {slug:"bridge-race", name:"Bridge Race", cat:"Arcade", emoji:"🕹️", desc:"Do you want to be a champion? Try this game Bridge Race that combines collecting and racing! You need to collect your colored blocks to build the stairs to the next floor, not only to collect them quickly but also to", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/rex0qifhxf6n3jluvsgqkr84t7rp9260/512x384.jpg"},
+  
   {slug:"geometry-dash-bloodbath", name:"Geometry Dash Bloodbath", cat:"Arcade", emoji:"🕹️", desc:"Welcome to Geometry dash Bloodbath game, the most harded game out there. Jump and fly your way through danger in this rhythm-based action platformer! is back with a brand new adventure, New levels, new music, new", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/vprj427n2nce955l5x81ewf1t3hohmfd/512x384.jpg"},
+  
   {slug:"stack-colors", name:"Stack Colors!", cat:"Arcade", emoji:"🕹️", desc:"In the stacking colors game, transport as many bricks as possible. Each level will show you a new scene, and there is a person with a different color. Pay attention to transporting bricks of the same color, avoiding", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/um7ax218g49sfsbbyq13kb6a7ydv47wy/512x384.jpg"},
-  {slug:"temple-runner", name:"Temple Runner", cat:"Arcade", emoji:"🕹️", desc:"You're an adventurous explorer, running through ruined temples. Collecting gold to get cool outfits. Avoiding obstacles along the way, and get help from useful power-ups. Enjoy with new best games Every Week in Kiz10", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/9pup3x89l9oozkevu3w4rslg0x6tt9w3/512x384.jpg"},
+  
   {slug:"join-clash-3d", name:"Join Clash 3D", cat:"Arcade", emoji:"🕹️", desc:"Join Clash 3d is an interesting arcade game. It mix avoid, shooting, gun, collect, and monster elements. This is a very funny game with an easy method. In the beginning, you have only one soldier, you have to blow the", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/3djzlr2cyn9t88k4pguq094urdlly2f1/512x384.jpg"},
+  
   {slug:"pacman-html5", name:"Pacman html5", cat:"Arcade", emoji:"🕹️", desc:"Play up to 70 unique levels of Pacman on the computer, tablet, or smartphone. Collect all small and big dots to score high and eat the fruits to score more. When you eat the big dots the enemies will decrease the speed", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/5st7c6asbp9urr7swcbr2im8b1ch0336/512x384.jpg"},
+  
   {slug:"angry-birds", name:"Angry Birds", cat:"Arcade", emoji:"🕹️", desc:"Angry Birds take your chances in the Star Cup as you go head-to-head against individual opponents! Compete with your friends, come out on top, and climb the leaderboards to become the BEST Angry Birds player in the", license:"GameMonetize", source:"GameMonetize", thumb:"https://img.gamemonetize.com/l2j6sipnjw79fhhb6qw0yut18y0rusrg/512x384.jpg"}
 ];
