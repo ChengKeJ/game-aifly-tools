@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://game.aifly.tools/sitemap.xml
