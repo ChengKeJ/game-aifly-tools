@@ -7,6 +7,19 @@
 <meta name="description" content="Play Asteroids online free in your browser. Pilot your ship, shoot asteroids, avoid collisions. A space arcade classic. No download, no sign-up.">
 <link rel="canonical" href="https://game.aifly.tools/games/asteroids/">
 <link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:20px;text-align:center}
+.game-box canvas{display:block;margin:0 auto;max-width:100%;height:auto;background:#0b0e14;border-radius:8px;touch-action:none}
+.hud{display:flex;justify-content:center;gap:24px;font-weight:700;margin:10px 0;color:#e8eaf0}
+.hud span{color:#ffb020}
+.game-btn{background:#ffb020;color:#111;padding:10px 22px;border:0;border-radius:999px;font-weight:700;cursor:pointer;font-size:15px;margin-top:12px}
+.game-btn:hover{filter:brightness(1.1)}
+.game-msg{font-size:20px;font-weight:700;min-height:28px;margin-top:10px}
+.game-hint{color:#9aa0ae;font-size:13px;margin-top:8px}
+.touch-controls{display:flex;justify-content:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.touch-controls button{background:#232733;color:#e8eaf0;border:1px solid #3a4152;border-radius:10px;padding:12px 18px;font-size:18px;cursor:pointer;min-width:56px}
+.touch-controls button:active{background:#ffb020;color:#111}
+</style>
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
@@ -15,16 +28,328 @@
 <h1>☄️ Play Asteroids Online Free</h1>
 <p style="color:#9aa0ae;line-height:1.6">Pilot your ship, shoot asteroids, avoid collisions. A space arcade classic.</p>
 <p><strong>How to play:</strong> Open the game below and play in your browser. No download, no sign-up. On desktop use keyboard / mouse, on mobile use touch.</p>
-<div style="background:#171a21;border:1px solid #232733;border-radius:14px;padding:28px;text-align:center">
-<div style="font-size:64px">☄️</div>
-<h2>Asteroids</h2>
-<p style="color:#9aa0ae">Playable version is being added to this page. The game is MIT-licensed - source: attogram/games.</p>
-<p><a href="/" style="background:#ffb020;color:#111;padding:10px 18px;border-radius:999px;font-weight:700">Back to all games</a></p>
+<div class="game-box">
+  <div class="hud">
+    <div>Score: <span id="score">0</span></div>
+    <div>Lives: <span id="lives">3</span></div>
+    <div>Level: <span id="level">1</span></div>
+  </div>
+  <canvas id="game" width="480" height="400"></canvas>
+  <div class="game-msg" id="msg">Click Start or press Space to play</div>
+  <button class="game-btn" id="startBtn">Start Game</button>
+  <div class="touch-controls">
+    <button id="btnLeft" aria-label="Rotate left">⟲</button>
+    <button id="btnThrust" aria-label="Thrust">▲ Thrust</button>
+    <button id="btnRight" aria-label="Rotate right">⟳</button>
+    <button id="btnFire" aria-label="Fire">🔥 Fire</button>
+  </div>
+  <p class="game-hint">← → rotate &nbsp;·&nbsp; ↑ thrust &nbsp;·&nbsp; Space fire. Shoot asteroids to split them into smaller ones. Don't collide!</p>
 </div>
 <h2>About Asteroids</h2>
 <p style="line-height:1.7">Pilot your ship, shoot asteroids, avoid collisions. A space arcade classic. This page is part of game.aifly.tools, a free H5 game hall with 100+ online mini-games.</p>
 <p style="color:#9aa0ae;font-size:13px">Licence: MIT - Source: attogram/games - No AdSense is shown on this page.</p>
 </main>
 <footer><div class="wrap"><strong>game.aifly.tools</strong> - free H5 game hall by aifly.tools.</div></footer>
+<script>
+(function () {
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var scoreEl = document.getElementById('score');
+  var livesEl = document.getElementById('lives');
+  var levelEl = document.getElementById('level');
+  var msgEl = document.getElementById('msg');
+  var btn = document.getElementById('startBtn');
+  var W = canvas.width, H = canvas.height;
+
+  var ship, bullets, asteroids, score, lives, level;
+  var state = 'ready'; // ready | playing | over
+  var keys = {};
+  var raf = null;
+  var respawnTimer = 0;
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function newShip() {
+    return { x: W / 2, y: H / 2, angle: -Math.PI / 2, vx: 0, vy: 0, r: 12, alive: true, invuln: 0 };
+  }
+
+  function makeAsteroid(x, y, size) {
+    var r = size === 3 ? 46 : size === 2 ? 28 : 15;
+    var a = Math.random() * Math.PI * 2;
+    var speed = rand(0.5, 1.5) + (3 - size) * 0.5;
+    return {
+      x: x !== undefined ? x : rand(0, W),
+      y: y !== undefined ? y : rand(0, H),
+      vx: Math.cos(a) * speed,
+      vy: Math.sin(a) * speed,
+      r: r, size: size,
+      rot: rand(-0.03, 0.03), angle: rand(0, Math.PI * 2),
+      verts: makeVerts(r)
+    };
+  }
+
+  function makeVerts(r) {
+    var v = [];
+    var n = 11;
+    for (var i = 0; i < n; i++) v.push(rand(0.7, 1.15) * r);
+    return v;
+  }
+
+  function spawnLevel(n) {
+    asteroids = [];
+    var count = 3 + n;
+    for (var i = 0; i < count; i++) {
+      var a;
+      do { a = makeAsteroid(); } while (dist(a.x, a.y, ship.x, ship.y) < 140);
+      asteroids.push(a);
+    }
+  }
+
+  function dist(x1, y1, x2, y2) {
+    var dx = x1 - x2, dy = y1 - y2;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function wrap(o) {
+    if (o.x < -o.r) o.x = W + o.r;
+    if (o.x > W + o.r) o.x = -o.r;
+    if (o.y < -o.r) o.y = H + o.r;
+    if (o.y > H + o.r) o.y = -o.r;
+  }
+
+  function resetGame() {
+    score = 0; lives = 3; level = 1;
+    ship = newShip();
+    bullets = [];
+    spawnLevel(level);
+    updateHUD();
+    state = 'ready';
+    msgEl.textContent = 'Click Start or press Space to play';
+    btn.textContent = 'Start Game';
+    draw();
+  }
+
+  function updateHUD() {
+    scoreEl.textContent = score;
+    livesEl.textContent = lives;
+    levelEl.textContent = level;
+  }
+
+  function fire() {
+    if (!ship.alive || state !== 'playing') return;
+    if (bullets.length >= 8) return;
+    bullets.push({
+      x: ship.x + Math.cos(ship.angle) * ship.r,
+      y: ship.y + Math.sin(ship.angle) * ship.r,
+      vx: Math.cos(ship.angle) * 7 + ship.vx,
+      vy: Math.sin(ship.angle) * 7 + ship.vy,
+      life: 45, r: 3
+    });
+  }
+
+  function drawShip() {
+    ctx.save();
+    ctx.translate(ship.x, ship.y);
+    ctx.rotate(ship.angle);
+    if (ship.invuln > 0 && Math.floor(ship.invuln / 6) % 2 === 0) ctx.globalAlpha = 0.35;
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(ship.r, 0);
+    ctx.lineTo(-ship.r * 0.8, ship.r * 0.7);
+    ctx.lineTo(-ship.r * 0.4, 0);
+    ctx.lineTo(-ship.r * 0.8, -ship.r * 0.7);
+    ctx.closePath();
+    ctx.stroke();
+    // thrust flame
+    if (keys['ArrowUp'] || keys['w'] || touch.thrust) {
+      ctx.fillStyle = '#ffb020';
+      ctx.beginPath();
+      ctx.moveTo(-ship.r * 0.8, ship.r * 0.4);
+      ctx.lineTo(-ship.r * 1.6, 0);
+      ctx.lineTo(-ship.r * 0.8, -ship.r * 0.4);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawAsteroid(a) {
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.rotate(a.angle);
+    ctx.strokeStyle = '#c9d1d9';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (var i = 0; i < a.verts.length; i++) {
+      var ang = (i / a.verts.length) * Math.PI * 2;
+      var px = Math.cos(ang) * a.verts[i];
+      var py = Math.sin(ang) * a.verts[i];
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < asteroids.length; i++) drawAsteroid(asteroids[i]);
+    for (var j = 0; j < bullets.length; j++) {
+      ctx.fillStyle = '#ffd60a';
+      ctx.beginPath();
+      ctx.arc(bullets[j].x, bullets[j].y, bullets[j].r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (ship.alive) drawShip();
+  }
+
+  function step() {
+    if (state !== 'playing') return;
+
+    // ship controls
+    if (keys['ArrowLeft'] || keys['a'] || touch.left) ship.angle -= 0.09;
+    if (keys['ArrowRight'] || keys['d'] || touch.right) ship.angle += 0.09;
+    if (keys['ArrowUp'] || keys['w'] || touch.thrust) {
+      ship.vx += Math.cos(ship.angle) * 0.12;
+      ship.vy += Math.sin(ship.angle) * 0.12;
+    }
+    ship.vx *= 0.995;
+    ship.vy *= 0.995;
+    ship.x += ship.vx;
+    ship.y += ship.vy;
+    wrap(ship);
+    if (ship.invuln > 0) ship.invuln--;
+
+    // bullets
+    for (var b = bullets.length - 1; b >= 0; b--) {
+      var bl = bullets[b];
+      bl.x += bl.vx; bl.y += bl.vy; bl.life--;
+      if (bl.life <= 0 || bl.x < 0 || bl.x > W || bl.y < 0 || bl.y > H) { bullets.splice(b, 1); continue; }
+      // bullet vs asteroid
+      for (var a = asteroids.length - 1; a >= 0; a--) {
+        var ast = asteroids[a];
+        if (dist(bl.x, bl.y, ast.x, ast.y) < ast.r) {
+          bullets.splice(b, 1);
+          score += ast.size === 3 ? 20 : ast.size === 2 ? 50 : 100;
+          if (ast.size > 1) {
+            for (var k = 0; k < 2; k++) {
+              var child = makeAsteroid(ast.x, ast.y, ast.size - 1);
+              asteroids.push(child);
+            }
+          }
+          asteroids.splice(a, 1);
+          updateHUD();
+          break;
+        }
+      }
+    }
+
+    // asteroids move
+    for (var i = 0; i < asteroids.length; i++) {
+      var as2 = asteroids[i];
+      as2.x += as2.vx; as2.y += as2.vy; as2.angle += as2.rot;
+      wrap(as2);
+    }
+
+    // ship vs asteroid
+    if (ship.alive && ship.invuln <= 0) {
+      for (var m = 0; m < asteroids.length; m++) {
+        if (dist(ship.x, ship.y, asteroids[m].x, asteroids[m].y) < asteroids[m].r + ship.r * 0.7) {
+          lives--;
+          updateHUD();
+          ship.alive = false;
+          if (lives <= 0) {
+            state = 'over';
+            msgEl.textContent = 'Game Over! Final score: ' + score;
+            btn.textContent = 'Play Again';
+            draw();
+            return;
+          } else {
+            msgEl.textContent = 'Ship destroyed! ' + lives + ' ' + (lives === 1 ? 'life' : 'lives') + ' left';
+            respawnTimer = 90;
+          }
+          break;
+        }
+      }
+    }
+
+    // respawn
+    if (!ship.alive && lives > 0) {
+      respawnTimer--;
+      if (respawnTimer <= 0) {
+        var safe = false;
+        while (!safe) {
+          ship = newShip();
+          ship.invuln = 120;
+          safe = true;
+          for (var s = 0; s < asteroids.length; s++) {
+            if (dist(ship.x, ship.y, asteroids[s].x, asteroids[s].y) < 120) { safe = false; break; }
+          }
+        }
+        msgEl.textContent = '';
+      }
+    }
+
+    // level clear
+    if (asteroids.length === 0) {
+      level++;
+      updateHUD();
+      msgEl.textContent = 'Level ' + level + ' — get ready!';
+      ship = newShip();
+      ship.invuln = 120;
+      spawnLevel(level);
+    }
+
+    draw();
+    raf = requestAnimationFrame(step);
+  }
+
+  function start() {
+    if (state === 'playing') return;
+    if (state === 'over') resetGame();
+    state = 'playing';
+    msgEl.textContent = '';
+    btn.textContent = 'Restart';
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(step);
+  }
+
+  btn.addEventListener('click', function () {
+    if (state === 'playing') { resetGame(); return; }
+    start();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === ' ') e.preventDefault();
+    if (e.key === ' ' && !keys[' ']) fire();
+    keys[e.key] = true;
+    if (e.key === ' ' && state !== 'playing') start();
+  });
+  document.addEventListener('keyup', function (e) { keys[e.key] = false; });
+
+  // touch controls
+  var touch = { left: false, right: false, thrust: false };
+  function bindHold(id, prop) {
+    var el = document.getElementById(id);
+    var on = function (e) { e.preventDefault(); touch[prop] = true; };
+    var off = function (e) { e.preventDefault(); touch[prop] = false; };
+    el.addEventListener('touchstart', on, { passive: false });
+    el.addEventListener('touchend', off, { passive: false });
+    el.addEventListener('touchcancel', off, { passive: false });
+    el.addEventListener('mousedown', on);
+    el.addEventListener('mouseup', off);
+    el.addEventListener('mouseleave', off);
+  }
+  bindHold('btnLeft', 'left');
+  bindHold('btnRight', 'right');
+  bindHold('btnThrust', 'thrust');
+  var fireBtn = document.getElementById('btnFire');
+  fireBtn.addEventListener('touchstart', function (e) { e.preventDefault(); fire(); }, { passive: false });
+  fireBtn.addEventListener('mousedown', function (e) { e.preventDefault(); fire(); });
+
+  resetGame();
+})();
+</script>
 </body>
 </html>
