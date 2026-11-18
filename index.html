@@ -55,5 +55,6 @@ function setCat(c,el){cur=c;document.querySelectorAll('.chip').forEach(x=>x.clas
 function filterGames(q){q=q.toLowerCase();render(GAMES.filter(g=>(cur==='All'||g.cat===cur)&&(g.name.toLowerCase().includes(q)||g.desc.toLowerCase().includes(q))));}
 render(GAMES);
 </script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1ec5d2cd1dd2486999d56e287ccba960"}'></script>
 </body>
 </html>
