@@ -392,5 +392,17 @@ const GAMES = [
   
     {slug:"blockibo-color-blocks", name:"Blockibo: Color Blocks", cat:"Puzzle", emoji:"🧩", desc:"Solve logic puzzles by moving colorful blocks and clearing paths in this browser game. Play Blockibo: Color Blocks online for free on iOS, Android, and desktop.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/blockibo-color-blocks/big_preview/f06922a7ea184f9fa21501743310eb4f_og.jpg"},
   
-    {slug:"star-shift-gravity-match", name:"Star Shift: Gravity Match", cat:"Puzzle", emoji:"💎", desc:"Master gravity in this cosmic match-3 puzzle. Swap gems to control cascades across 450 levels. Play this game for free online on desktop, Android, and iOS devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/56a5753c852a41f983f4da69ff8d03d0_og.jpg"}
+    {slug:"star-shift-gravity-match", name:"Star Shift: Gravity Match", cat:"Puzzle", emoji:"💎", desc:"Master gravity in this cosmic match-3 puzzle. Swap gems to control cascades across 450 levels. Play this game for free online on desktop, Android, and iOS devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/56a5753c852a41f983f4da69ff8d03d0_og.jpg"},
+  
+      {slug:"snow-rider-3d", name:"Snow Rider 3D", cat:"3D", emoji:"🛷", desc:"Navigate a snowy 3D world on a sleigh in this endless arcade game. Collect gifts and dodge obstacles on your mobile or desktop. Play this game online for free.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/snow-rider-3d/big_preview/df56fa5f6507424cbaa3969f7a4c9fd6_og.jpg"},
+  
+      {slug:"eggy-car", name:"Eggy Car", cat:"Racing", emoji:"🥚", desc:"Drive as far as possible without dropping your egg in this physics-based challenge. Play this driving game online for free on desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/eggy-car/big-preview/a1c9ac37765a4699b4c4cd4e24222a03_og.jpg"},
+  
+      {slug:"drift-hunters", name:"Drift Hunters", cat:"Racing", emoji:"🏎️", desc:"Drift Hunters is a 3D drifting simulator: pick from 26 customizable cars, hit 10 tracks and hold long, stylish drifts to earn credits for tuning and upgrades.", license:"GameMonetize", source:"GameMonetize", thumb:""},
+  
+      {slug:"escape-road", name:"Escape Road", cat:"Racing", emoji:"🚓", desc:"Escape Road drops you into a high-speed police chase after a bank heist: weave through city traffic, dodge roadblocks and collect cash to unlock 90 cars.", license:"GameMonetize", source:"GameMonetize", thumb:""},
+  
+      {slug:"poly-track", name:"PolyTrack", cat:"Racing", emoji:"🏁", desc:"PolyTrack is a low-poly 3D time-trial racer: speed through looping tracks, beat your best lap time, and design your own custom tracks in the built-in editor.", license:"GameMonetize", source:"GameMonetize", thumb:""},
+  
+      {slug:"shell-shockers", name:"Shell Shockers", cat:"Shooting", emoji:"🥚", desc:"Shell Shockers is a fast-paced egg shooter: grab your weapon, crack rival eggs across the arena and come out on top.", license:"GameMonetize", source:"GameMonetize", thumb:""}
 ];
