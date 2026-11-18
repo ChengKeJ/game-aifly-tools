@@ -23,3 +23,18 @@ nav a:hover{color:#fff}
 footer{border-top:1px solid #222;color:var(--muted);font-size:13px;padding:24px 0 36px;line-height:1.6}
 .game-frame{width:100%;height:520px;border:0;background:#000;border-radius:12px}
 @media(max-width:640px){.hero h1{font-size:26px}.search input{width:120px}.game-frame{height:420px}}
+/* Fullscreen: wrapper + button on every game page */
+.game-wrap{position:relative}
+.fs-btn{position:absolute;top:10px;right:10px;z-index:5;display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:8px 14px;min-height:44px;font-size:14px;font-family:inherit;cursor:pointer}
+.fs-btn svg{width:16px;height:16px;flex:none}
+.fs-btn:hover{background:rgba(0,0,0,.85)}
+.game-wrap:fullscreen,.game-wrap:-webkit-full-screen{width:100%;height:100%;background:#000}
+.game-wrap:fullscreen .game-frame,.game-wrap:-webkit-full-screen .game-frame{height:100%;border-radius:0}
+.game-wrap.theater{position:fixed;inset:0;z-index:9999;background:#000;border-radius:0}
+.game-wrap.theater .game-frame{height:100%;border-radius:0}
+body.theater-on{overflow:hidden}
+.game-wrap.theater{max-width:none}
+.game-wrap.theater #game{height:100%;aspect-ratio:auto;border-radius:0}
+.rotate-hint{display:none}
+.game-wrap.theater .rotate-hint{display:block;position:absolute;top:64px;left:50%;transform:translateX(-50%);z-index:6;background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 14px;font-size:13px;white-space:nowrap;pointer-events:none}
+@media (orientation:landscape){.game-wrap.theater .rotate-hint{display:none}}
