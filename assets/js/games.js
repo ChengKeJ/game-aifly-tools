@@ -398,11 +398,11 @@ const GAMES = [
   
       {slug:"eggy-car", name:"Eggy Car", cat:"Racing", emoji:"🥚", desc:"Drive as far as possible without dropping your egg in this physics-based challenge. Play this driving game online for free on desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/eggy-car/big-preview/a1c9ac37765a4699b4c4cd4e24222a03_og.jpg"},
   
-      {slug:"drift-hunters", name:"Drift Hunters", cat:"Racing", emoji:"🏎️", desc:"Drift Hunters is a 3D drifting simulator: pick from 26 customizable cars, hit 10 tracks and hold long, stylish drifts to earn credits for tuning and upgrades.", license:"GameMonetize", source:"GameMonetize", thumb:""},
+      {slug:"drift-hunters", name:"Drift Hunters", cat:"Racing", emoji:"🏎️", desc:"Drift Hunters is a 3D drifting simulator: pick from 26 customizable cars, hit 10 tracks and hold long, stylish drifts to earn credits for tuning and upgrades.", license:"GameMonetize", source:"GameMonetize", thumb:"/assets/thumbs/drift-hunters.jpg"},
   
-      {slug:"escape-road", name:"Escape Road", cat:"Racing", emoji:"🚓", desc:"Escape Road drops you into a high-speed police chase after a bank heist: weave through city traffic, dodge roadblocks and collect cash to unlock 90 cars.", license:"GameMonetize", source:"GameMonetize", thumb:""},
+      {slug:"escape-road", name:"Escape Road", cat:"Racing", emoji:"🚓", desc:"Escape Road drops you into a high-speed police chase after a bank heist: weave through city traffic, dodge roadblocks and collect cash to unlock 90 cars.", license:"GameMonetize", source:"GameMonetize", thumb:"/assets/thumbs/escape-road.jpg"},
   
-      {slug:"poly-track", name:"PolyTrack", cat:"Racing", emoji:"🏁", desc:"PolyTrack is a low-poly 3D time-trial racer: speed through looping tracks, beat your best lap time, and design your own custom tracks in the built-in editor.", license:"GameMonetize", source:"GameMonetize", thumb:""},
+      {slug:"poly-track", name:"PolyTrack", cat:"Racing", emoji:"🏁", desc:"PolyTrack is a low-poly 3D time-trial racer: speed through looping tracks, beat your best lap time, and design your own custom tracks in the built-in editor.", license:"GameMonetize", source:"GameMonetize", thumb:"/assets/thumbs/poly-track.jpg"},
   
-      {slug:"shell-shockers", name:"Shell Shockers", cat:"Shooting", emoji:"🥚", desc:"Shell Shockers is a fast-paced egg shooter: grab your weapon, crack rival eggs across the arena and come out on top.", license:"GameMonetize", source:"GameMonetize", thumb:""}
+      {slug:"shell-shockers", name:"Shell Shockers", cat:"Shooting", emoji:"🥚", desc:"Shell Shockers is a fast-paced egg shooter: grab your weapon, crack rival eggs across the arena and come out on top.", license:"GameMonetize", source:"GameMonetize", thumb:"/assets/thumbs/shell-shockers.jpg"}
 ];
