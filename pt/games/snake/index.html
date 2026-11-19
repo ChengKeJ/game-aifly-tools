@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jogar Snake grátis online | AIFly Games</title>
+<meta name="description" content="Jogar Snake grátis online: coma, cresça e não bata. A cobrinha clássica, com setas ou deslizando. Sem baixar nada nem criar conta.">
+<link rel="canonical" href="https://game.aifly.tools/pt/games/snake/">
+<link rel="alternate" hreflang="en" href="https://game.aifly.tools/games/snake/">
+<link rel="alternate" hreflang="es" href="https://game.aifly.tools/games/snake/">
+<link rel="alternate" hreflang="pt" href="https://game.aifly.tools/games/snake/">
+<link rel="alternate" hreflang="x-default" href="https://game.aifly.tools/games/snake/">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.game-box{background:#171a21;border:1px solid #232733;border-radius:14px;padding:24px;text-align:center;max-width:480px;margin:0 auto}
+.score-row{display:flex;justify-content:center;gap:12px;margin-bottom:14px}
+.score-box{background:#232733;border-radius:8px;padding:8px 16px;min-width:90px}
+.score-box .lbl{font-size:12px;color:#9aa0ae;text-transform:uppercase;letter-spacing:1px}
+.score-box .val{font-size:22px;font-weight:700;color:#fff}
+#board{background:#0d1117;border:2px solid #232733;border-radius:10px;display:block;margin:0 auto;max-width:100%;touch-action:none}
+#status{margin:12px 0;font-size:18px;font-weight:700;min-height:26px}
+.btn{background:#ffb020;color:#111;padding:10px 22px;border:none;border-radius:999px;font-weight:700;cursor:pointer;font-size:15px}
+.btn:hover{filter:brightness(1.1)}
+.hint{color:#9aa0ae;font-size:13px;margin-top:12px;line-height:1.6}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="logo" href="/pt/">Game aifly.tools</a><nav><a href="/pt/">Início</a><a href="/pt/">Todos os jogos</a></nav></div></header>
+<main class="wrap" style="padding:24px 16px">
+<p style="color:#9aa0ae;font-size:13px"><a href="/pt/">Início</a> / Arcade / Snake</p>
+<h1>🐍 Jogar Snake grátis online</h1>
+<p style="color:#9aa0ae;line-height:1.6">Coma, cresça e não bata na parede nem em si mesmo. A clássica cobrinha arcade, com as setas ou deslizando o dedo.</p>
+<p><strong>Como jogar:</strong> Use as setas / WASD ou deslize para se mover. Coma a comida vermelha para crescer e pontuar. Não bata na parede nem na sua própria cauda. Sem baixar nada nem criar conta.</p>
+<div class="game-box">
+  <div class="score-row">
+    <div class="score-box"><div class="lbl">Pontos</div><div class="val" id="score">0</div></div>
+    <div class="score-box"><div class="lbl">Recorde</div><div class="val" id="best">0</div></div>
+  </div>
+  <canvas id="board" width="400" height="400"></canvas>
+  <div id="status">Pressione uma seta ou deslize para começar</div>
+  <button class="btn" id="restartBtn">🔄 Reiniciar</button>
+  <p class="hint">Setas / WASD ou deslize para se mover.<br>A velocidade aumenta conforme você come. Cada comida vale +10 pontos.</p>
+</div>
+<h2>Sobre Snake</h2>
+<p style="line-height:1.7">Coma, cresça e não bata na parede nem em si mesmo. A clássica cobrinha arcade, com as setas ou deslizando o dedo. Esta página faz parte do game.aifly.tools, um salão gratuito de jogos H5 com mais de 200 minijogos online.</p>
+<p style="color:#9aa0ae;font-size:13px">Licença: MIT - Fonte: Self-hosted implementation - Categoria: Arcade - Não há AdSense nesta página.</p>
+</main>
+<footer><div class="wrap"><strong>game.aifly.tools</strong> — salão gratuito de jogos H5 da aifly.tools.</div></footer>
+<script>
+(function(){
+  var canvas=document.getElementById('board'), ctx=canvas.getContext('2d');
+  var scoreEl=document.getElementById('score'), bestEl=document.getElementById('best'),
+      statusEl=document.getElementById('status');
+  var CELL=20, COLS=20, ROWS=20;
+  var snake, dir, nextDir, food, score, best=0, timer=null, running=false, started=false;
+  try{ best=parseInt(localStorage.getItem('gsnake-best')||'0',10)||0; }catch(e){}
+  bestEl.textContent=best;
+
+  function placeFood(){
+    while(true){
+      var f={x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)};
+      var onSnake=snake.some(function(s){return s.x===f.x && s.y===f.y;});
+      if(!onSnake) return f;
+    }
+  }
+  function draw(){
+    ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.strokeStyle='#1c2230'; ctx.lineWidth=1;
+    for(var i=1;i<COLS;i++){ ctx.beginPath(); ctx.moveTo(i*CELL,0); ctx.lineTo(i*CELL,canvas.height); ctx.stroke(); }
+    for(var j=1;j<ROWS;j++){ ctx.beginPath(); ctx.moveTo(0,j*CELL); ctx.lineTo(canvas.width,j*CELL); ctx.stroke(); }
+    ctx.fillStyle='#ff4757';
+    ctx.beginPath(); ctx.arc(food.x*CELL+CELL/2, food.y*CELL+CELL/2, CELL/2-2, 0, Math.PI*2); ctx.fill();
+    snake.forEach(function(seg,idx){
+      ctx.fillStyle=idx===0?'#2ed573':'#1e9e4a';
+      ctx.fillRect(seg.x*CELL+1, seg.y*CELL+1, CELL-2, CELL-2);
+    });
+  }
+  function speed(){ return Math.max(70, 150 - Math.floor(score/50)*10); }
+  function step(){
+    dir=nextDir;
+    var head={x:snake[0].x+dir.x, y:snake[0].y+dir.y};
+    if(head.x<0||head.x>=COLS||head.y<0||head.y>=ROWS||snake.some(function(s){return s.x===head.x&&s.y===head.y;})){
+      gameOver(); return;
+    }
+    snake.unshift(head);
+    if(head.x===food.x&&head.y===food.y){
+      score+=10; scoreEl.textContent=score;
+      if(score>best){ best=score; bestEl.textContent=best; try{ localStorage.setItem('gsnake-best',String(best)); }catch(e){} }
+      food=placeFood();
+      clearInterval(timer); timer=setInterval(step,speed());
+    } else {
+      snake.pop();
+    }
+    draw();
+  }
+  function start(){
+    snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+    dir={x:1,y:0}; nextDir={x:1,y:0};
+    food=placeFood(); score=0; scoreEl.textContent='0';
+    running=true; started=true;
+    statusEl.textContent='Jogando — boa sorte!';
+    clearInterval(timer); timer=setInterval(step,speed());
+    draw();
+  }
+  function gameOver(){
+    running=false; clearInterval(timer);
+    statusEl.textContent='💥 Fim de jogo! Pontuação final: '+score+'. Pressione Reiniciar para jogar novamente.';
+  }
+  function setDir(x,y){
+    if(!started){ start(); }
+    if(!running) return;
+    if(x===-dir.x&&y===-dir.y) return; // no reversing into yourself
+    nextDir={x:x,y:y};
+  }
+  document.getElementById('restartBtn').addEventListener('click',start);
+  document.addEventListener('keydown',function(e){
+    var k=e.key;
+    if(k==='ArrowUp'||k==='w'||k==='W'){ e.preventDefault(); setDir(0,-1); }
+    else if(k==='ArrowDown'||k==='s'||k==='S'){ e.preventDefault(); setDir(0,1); }
+    else if(k==='ArrowLeft'||k==='a'||k==='A'){ e.preventDefault(); setDir(-1,0); }
+    else if(k==='ArrowRight'||k==='d'||k==='D'){ e.preventDefault(); setDir(1,0); }
+  });
+  var sx=0, sy=0;
+  canvas.addEventListener('touchstart',function(e){ var t=e.changedTouches[0]; sx=t.clientX; sy=t.clientY; e.preventDefault(); },{passive:false});
+  canvas.addEventListener('touchend',function(e){
+    var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy;
+    if(Math.max(Math.abs(dx),Math.abs(dy))<24) return;
+    if(Math.abs(dx)>Math.abs(dy)) setDir(dx>0?1:-1,0); else setDir(0,dy>0?1:-1);
+    e.preventDefault();
+  },{passive:false});
+  // idle board
+  snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+  food={x:14,y:10};
+  draw();
+})();
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1ec5d2cd1dd2486999d56e287ccba960"}'></script>
+</body>
+</html>
