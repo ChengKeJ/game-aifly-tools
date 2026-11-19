@@ -404,5 +404,45 @@ const GAMES = [
   
       {slug:"poly-track", name:"PolyTrack", cat:"Racing", emoji:"🏁", desc:"PolyTrack is a low-poly 3D time-trial racer: speed through looping tracks, beat your best lap time, and design your own custom tracks in the built-in editor.", license:"GameMonetize", source:"GameMonetize", thumb:"/assets/thumbs/poly-track.jpg"},
   
-      {slug:"shell-shockers", name:"Shell Shockers", cat:"Shooting", emoji:"🥚", desc:"Shell Shockers is a fast-paced egg shooter: grab your weapon, crack rival eggs across the arena and come out on top.", license:"GameMonetize", source:"GameMonetize", thumb:"/assets/thumbs/shell-shockers.jpg"}
+      {slug:"shell-shockers", name:"Shell Shockers", cat:"Shooting", emoji:"🥚", desc:"Shell Shockers is a fast-paced egg shooter: grab your weapon, crack rival eggs across the arena and come out on top.", license:"GameMonetize", source:"GameMonetize", thumb:"/assets/thumbs/shell-shockers.jpg"},
+  
+      {slug:"burger-restaurant-simulator-3d", name:"Burger Restaurant Simulator 3D", cat:"Simulation", emoji:"🍔", desc:"Manage your own restaurant, cook burgers, and expand your culinary empire in this 3D simulation game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/burger-restaurant-simulator-3d/big_preview/b4cbcd2693594ae1a4e6aa672025365c_og.jpg"},
+  
+      {slug:"cake-shop-simulator-bake-sell", name:"Cake Shop Simulator: Bake & Sell", cat:"Simulation", emoji:"🍰", desc:"Manage your own bakery in this management game. Bake 3D cakes, chat with customers, and haggle for prices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cake-shop-simulator-bake-sell/big_preview/0f7d69eb526f4042b3ab890e177085ef_og.jpg"},
+  
+      {slug:"chicken-kingdom-egg-farm-tycoon", name:"Chicken Kingdom: Egg Farm Tycoon", cat:"Simulation", emoji:"🐔", desc:"Manage your farm in this 3D idle tycoon game. Collect eggs, cook food, and hire helpers to build your kingdom.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/f37dd90bb9f14c2093065b1005a34f9a_og.jpg"},
+  
+      {slug:"car-escape", name:"Car Escape", cat:"Puzzle", emoji:"🚗", desc:"Navigate through congested streets in this driving puzzle game. Assess paths, plan vehicle movements, and escape traffic.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/car-escape/big-preview/bbf927460d774a35af13c52177e6b158_og.jpg"},
+  
+      {slug:"escape-from-grandmas-basement--hidden-object", name:"Escape From Grandma's Basement - Hidden Object", cat:"Puzzle", emoji:"🔍", desc:"Solve puzzles and find hidden objects to escape in this time-based challenge before the five-minute timer runs out.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/escape-from-grandmas-basement--hidden-object/big-preview/87d4e7bba716451594586d2658de96cf_og.jpg"},
+  
+      {slug:"dancing-road", name:"Dancing Road", cat:"Music", emoji:"🎵", desc:"Guide a ball along a neon track matching colors to the beat in this rhythm runner.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/dancing-road/big_preview/6c7688b907574ca99836b611f5c12719_og.jpg"},
+  
+      {slug:"fly-saber", name:"Fly Saber", cat:"Music", emoji:"⚔️", desc:"Wield dual energy swords to slice blocks in this rhythm-based arcade game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/d46a9328624d49a4822342a393a82649_og.jpg"},
+  
+      {slug:"car-parking-3d", name:"Car Parking 3D", cat:"Racing", emoji:"🅿️", desc:"Master precision driving in Car Parking 3D. Navigate realistic environments and tricky obstacles to park perfectly.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/car-parking-3d/big-preview/793f820aa5a04707a217413aa37c25de_og.jpg"},
+  
+      {slug:"4-pics-1-word", name:"4 Pics 1 Word", cat:"Puzzle", emoji:"🖼️", desc:"Analyze four images to find the common hidden word in this brain training guessing game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/4-pics-1-word/big-preview/210c08de7bd646d08d2dca984a90c6d8_og.jpg"},
+  
+      {slug:"50-states-quiz", name:"50 States Quiz", cat:"Puzzle", emoji:"🇺🇸", desc:"Test your knowledge of the United States in this interactive trivia game about the 50 states.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/50-states-quiz/big-preview/49d15ba50bce4e49bba40497e4867efb_og.jpg"},
+  
+      {slug:"cozy-crossword", name:"Cozy Crossword", cat:"Puzzle", emoji:"✏️", desc:"Solve hundreds of crossword puzzles at your own pace in this relaxing word game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cozy-crossword/big_preview/ad5494e996294997a02504afa13524c3_og.jpg"},
+  
+      {slug:"animal-hospital", name:"Animal Hospital", cat:"Simulation", emoji:"🐾", desc:"Identify anomalies and treat patients in this horror mystery game. Can you survive the night shift?", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/animal-hospital/big_preview/164f3268bac3487dad00604580d17370_og.jpg"},
+  
+      {slug:"passenger-city-taxi-game", name:"Passenger City Taxi Game", cat:"Racing", emoji:"🚕", desc:"Navigate busy streets and transport passengers in this driving simulator.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/passenger-city-taxi-game/big-preview/70963bd4947a4af28731c76b4d122cc0_og.jpg"},
+  
+      {slug:"animals-vs-zombies", name:"Animals vs Zombies", cat:"Simulation", emoji:"🧟", desc:"Rescue kidnapped animals from aliens in this idle game. Evolve your creatures, build a team, and explore diverse worlds.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/animals-vs-zombies/big-preview/2b579b0cb2844a0496bff95a54d274f5_og.jpg"},
+  
+      {slug:"black-hole-eat-the-universe", name:"Black Hole: Eat the Universe", cat:"Simulation", emoji:"🕳️", desc:"Tap to feed a black hole, devour planets, and collapse the universe for power in this idle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/black-hole-eat-the-universe/big-preview/e5f7052f33db4e00a92a194ccd119185_og.jpg"},
+  
+      {slug:"cat-blasters", name:"Cat Blasters", cat:"Shooting", emoji:"🐱", desc:"Pilot your starship in this retro arcade space shooter. Battle enemies and bosses across multiple modes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cat-blasters/big_preview/5b3c5efc6e2947e2af9762a9430572c7_og.jpg"},
+  
+      {slug:"2-player-tank-combat", name:"2 Player Tank Combat", cat:"Action", emoji:"🛡️", desc:"Engage in head-to-head tank battles in this competitive two-player combat game. Outsmart your opponent to claim victory.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/2-player-tank-combat/big-preview/8c983e783c474edfade3e7c410a7dee6_og.jpg"},
+  
+      {slug:"army-commander", name:"Army Commander", cat:"Strategy", emoji:"🎖️", desc:"Manage your military camp in this idle strategy game. Recruit soldiers, upgrade your base, and launch operations.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/army-commander/big_preview/03e77310a2da47809a6879a3718ffef1_og.jpg"},
+  
+      {slug:"4-colors", name:"4 Colors", cat:"Board", emoji:"🃏", desc:"Challenge computer opponents in this card game. Match colors or numbers to empty your hand.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/4-colors/big-preview/f47945bab8724f42a0911e6909328a08_og.jpg"},
+  
+      {slug:"3d-mega-maze", name:"3D Mega Maze", cat:"Puzzle", emoji:"🌀", desc:"Navigate a ball through 25 complex 3D labyrinths in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/5b37af421a254e82a553875963af4202_og.jpg"}
 ];
