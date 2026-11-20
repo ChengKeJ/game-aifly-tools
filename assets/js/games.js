@@ -446,5 +446,45 @@ const GAMES = [
   
       {slug:"3d-mega-maze", name:"3D Mega Maze", cat:"Puzzle", emoji:"🌀", desc:"Navigate a ball through 25 complex 3D labyrinths in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/5b37af421a254e82a553875963af4202_og.jpg"},
   
-      {slug:"cut-watermelon-8-slices", name:"Cut the Watermelon into 8 Equal Slices", cat:"Puzzle", emoji:"🍉", desc:"Drag 4 straight cuts across the watermelon and try to make 8 perfectly equal slices. One action, one minute — how even can you cut?", license:"Original", source:"AIFly Games", thumb:"/assets/thumbs/cut-watermelon-8-slices.jpg"}
+      {slug:"cut-watermelon-8-slices", name:"Cut the Watermelon into 8 Equal Slices", cat:"Puzzle", emoji:"🍉", desc:"Drag 4 straight cuts across the watermelon and try to make 8 perfectly equal slices. One action, one minute — how even can you cut?", license:"Original", source:"AIFly Games", thumb:"/assets/thumbs/cut-watermelon-8-slices.jpg"},
+  
+      {slug:"mountain-taxi-challenge", name:"Mountain Taxi Challenge", cat:"Racing", emoji:"🚕", desc:"Navigate treacherous mountain roads and complete 30 unique driving missions in this arcade taxi simulator.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/mountain-taxi-challenge/big_preview/e176ee801a65483fb22008f4608f73d1_og.jpg"},
+  
+      {slug:"bus-parking-game", name:"Bus Parking Game", cat:"Racing", emoji:"🚌", desc:"Master precision driving in this bus parking challenge. Navigate city buses through obstacles and park perfectly.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bus-parking-game/big_preview/d1e9ddbb21464f2aafd524b88a1adf5f_og.jpg"},
+  
+      {slug:"farm-care-tycoon", name:"Farm Care Tycoon", cat:"Simulation", emoji:"🚜", desc:"Build your agricultural empire in this farm tycoon game. Grow crops, raise animals, and manage your shop.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/farm-care-tycoon/big_preview/b0737788987b4de1bec3d8cbc1a3b5a3_og.jpg"},
+  
+      {slug:"bubble-word-jam", name:"Bubble Word Jam", cat:"Puzzle", emoji:"🫧", desc:"Pop bubbles and sort words into categories in this puzzle brain trainer. Merge related words to clear the board.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bubble-word-jam/big_preview/89b7456bde8b4c00a02fea5a0d4fb98b_og.jpg"},
+  
+      {slug:"basket-sport-stars", name:"Basket Sport Stars", cat:"Sports", emoji:"🏀", desc:"Compete in fast-paced basketball matches on colorful courts. Challenge friends in local 2-player mode.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/basket-sport-stars/big_preview/911f428fd4a14cb0bff044898fe9a120_og.jpg"},
+  
+      {slug:"football-2026", name:"Football 2026", cat:"Sports", emoji:"⚽", desc:"Experience deep football gameplay with advanced tactics and career mode in this sports game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/football-2026/big-preview/2237fc6b7b104ab5ba0ef43348407fac_og.jpg"},
+  
+      {slug:"chess-online-multiplayer", name:"Chess Online Multiplayer", cat:"Board", emoji:"♟️", desc:"Play chess online for free against the computer or real players in this classic board game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/dd9781afd09a46418fea5d992bb7edfa_og.jpg"},
+  
+      {slug:"screw-sort-3d", name:"Screw Sort 3D", cat:"Puzzle", emoji:"🔩", desc:"Sort screws, bolts, and nuts into boxes by color in this 3D logic puzzle.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/screw-sort-3d/big-preview/077844b3a0f24b178c7f3e8a53bcc2b9_og.jpg"},
+  
+      {slug:"find-match-3d", name:"Find Match 3D", cat:"Puzzle", emoji:"🔍", desc:"Clear the board by finding three identical items in a cluttered 3D scene in this matching puzzle adventure.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/find-match-3d/big-preview/b8951ea43f0c4e18af3401f015c1750c_og.jpg"},
+  
+      {slug:"cooking-utopia-restaurant-game", name:"Cooking Utopia", cat:"Simulation", emoji:"🍳", desc:"Master culinary skills and manage your restaurant empire in this cooking game. Prepare diverse meals for customers.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cooking-utopia-restaurant-game/big_preview/4c75feb4d905496db429875d173e084f_og.jpg"},
+  
+      {slug:"supermarket-simulator-dream-store", name:"Supermarket Simulator: Dream Store", cat:"Simulation", emoji:"🛒", desc:"Build and manage your own retail empire in this supermarket simulation. Handle staff, inventory, and finances.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/supermarket-simulator-dream-store/big_preview/3beec6ad234b41eab107c53c6b32abc0_og.jpg"},
+  
+      {slug:"extreme-car-driving-simulator", name:"Extreme Car Driving Simulator", cat:"Racing", emoji:"🏎️", desc:"Drive and drift in an open world city with advanced physics in this sports car simulator.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/extreme-car-driving-simulator/big_preview/86f903c9f6234e62be4d6805a9429e7b_og.jpg"},
+  
+      {slug:"formula-car-circuit-racing", name:"Formula Car Circuit Racing", cat:"Racing", emoji:"🏁", desc:"Compete in high-speed motorsport on challenging tracks in this formula racing game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/formula-car-circuit-racing/big_preview/7d76f2668ff148e4b37f5c07e2735be3_og.jpg"},
+  
+      {slug:"call-of-tanks", name:"Call of Tanks", cat:"Strategy", emoji:"🎖️", desc:"Deploy tanks and upgrade your defenses in this strategy game. Destroy enemy bases by choosing the right units.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/call-of-tanks/big_preview/5102b02c78e34bd0adf96f5a6d86d5eb_og.jpg"},
+  
+      {slug:"one-shot-sniper-arena", name:"One Shot: Sniper Arena", cat:"Shooting", emoji:"🎯", desc:"Experience fast-paced 3D multiplayer arena combat. Eliminate opponents with precision shots.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/one-shot-sniper-arena/big_preview/4c936c222aec4ab38fc4a88be70cb0f2_og.jpg"},
+  
+      {slug:"kingdom-defender-tower-defense", name:"Kingdom Defender - Tower Defense", cat:"Strategy", emoji:"🏰", desc:"Defend your kingdom from hordes of enemies using towers and special abilities in this tower defense game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/kingdom-defender-tower-defense/big-preview/b4378ab74fc045d28e8a084bcf58890d_og.jpg"},
+  
+      {slug:"hero-defense-king", name:"Hero Defense King", cat:"Strategy", emoji:"🛡️", desc:"Defend your tower from waves of enemies by commanding heroes and using strategic upgrades.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/hero-defense-king/big-preview/376771b261254d23b4fc3cdd96153b09_og.jpg"},
+  
+      {slug:"traffic-rush-online", name:"Traffic Rush Online", cat:"Racing", emoji:"🚗", desc:"Navigate city streets in this 3D driving game. Change lanes, customize your car, and compete in three modes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/traffic-rush-online/big_preview/8b5c9711e59d49f2a3bde681805443f4_og.jpg"},
+  
+      {slug:"bowling-stars", name:"Bowling Stars", cat:"Sports", emoji:"🎳", desc:"Compete in classic bowling matches to earn trophies and unlock superior balls.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bowling-stars/big-preview/cbb5a9163f4b49e6beed884d7b01207c_og.jpg"},
+  
+      {slug:"doodle-draw-fish", name:"Doodle Draw Fish", cat:"Arcade", emoji:"🐟", desc:"Sketch unique fish in this idle clicker and RPG. Build your team, upgrade your aquarium, and battle in arenas.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/doodle-draw-fish/big_preview/454a9e48edf64a699184ab846c8c3282_og.jpg"}
 ];
