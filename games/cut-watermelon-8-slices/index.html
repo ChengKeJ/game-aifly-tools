@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1115">
+<title>Cut the Watermelon into 8 Equal Slices | AIFly Games</title>
+<meta name="description" content="Drag 4 straight cuts across the watermelon and try to make 8 perfectly equal slices. One action, one minute — how even can you cut? Play free, no download.">
+<meta property="og:title" content="Cut the Watermelon into 8 Equal Slices | AIFly Games">
+<meta property="og:description" content="Drag 4 straight cuts across the watermelon and try to make 8 perfectly equal slices. I scored a watermelon — can you beat me?">
+<meta property="og:image" content="https://game.aifly.tools/assets/thumbs/cut-watermelon-8-slices.jpg">
+<meta property="og:url" content="https://game.aifly.tools/games/cut-watermelon-8-slices/">
+<link rel="canonical" href="https://game.aifly.tools/games/cut-watermelon-8-slices/">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.wm-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}
+.wm-dots{display:inline-flex;gap:6px}
+.wm-dot{width:14px;height:14px;border-radius:50%;border:2px solid #43a047;background:transparent;display:inline-block}
+.wm-dot.used{background:#43a047}
+.wm-best{color:#9aa0ae;font-size:13px}
+.wm-hint{color:#ffb74d;font-size:14px;min-height:20px;margin:6px 0}
+#game{touch-action:none;display:block;cursor:crosshair}
+.wm-result{display:none;margin:16px 0;padding:20px;border:1px solid #2a2f3a;border-radius:12px;background:#171a21;text-align:center}
+.wm-result.show{display:block}
+.wm-score{font-size:56px;font-weight:800;line-height:1;color:#ff5252}
+.wm-score small{font-size:22px;color:#9aa0ae}
+.wm-verdict{font-size:18px;margin:10px 0 4px}
+.wm-bestline{color:#9aa0ae;font-size:14px;margin-bottom:16px}
+.wm-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.wm-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid #3a4152;background:#232833;color:#fff;border-radius:999px;padding:10px 18px;min-height:44px;font-size:15px;font-family:inherit;cursor:pointer;text-decoration:none}
+.wm-btn:hover{background:#2e3542}
+.wm-btn.primary{background:#1d9bf0;border-color:#1d9bf0}
+.wm-btn.primary:hover{background:#1a8cd8}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="logo" href="/">Game aifly.tools</a><nav><a href="/">Home</a><a href="/">All games</a></nav></div></header>
+<main class="wrap" style="padding:24px 16px">
+<p style="color:#9aa0ae;font-size:13px"><a href="/">Home</a> / Puzzle / Cut the Watermelon into 8 Equal Slices</p>
+<h1>Cut the Watermelon into 8 Equal Slices</h1>
+<p style="color:#9aa0ae;line-height:1.6">Drag across the watermelon to make 4 straight cuts — try to end up with 8 perfectly equal slices. One action, one minute.</p>
+<div class="wm-bar">
+<span><strong>Cuts left:</strong></span>
+<span class="wm-dots" id="wmDots"><span class="wm-dot"></span><span class="wm-dot"></span><span class="wm-dot"></span><span class="wm-dot"></span></span>
+<span class="wm-best" id="wmBest"></span>
+</div>
+<p class="wm-hint" id="wmHint"></p>
+<div class="game-wrap" id="gameWrap">
+<canvas id="game" class="game-frame" title="Cut the Watermelon into 8 Equal Slices"></canvas>
+<button class="fs-btn" id="fsBtn" type="button" aria-label="Play fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg><span>Fullscreen</span></button>
+<div class="rotate-hint">Rotate your phone for a bigger view</div>
+</div>
+<div class="wm-result" id="wmResult">
+<div class="wm-score"><span id="wmScore">0</span><small>/100</small></div>
+<p class="wm-verdict" id="wmVerdict"></p>
+<p class="wm-bestline" id="wmBestLine"></p>
+<div class="wm-actions">
+<button class="wm-btn" id="wmAgain" type="button">Play again</button>
+<button class="wm-btn primary" id="wmShare" type="button">Share to X</button>
+<button class="wm-btn" id="wmCopy" type="button">Copy link</button>
+</div>
+</div>
+<h2>About Cut the Watermelon into 8 Equal Slices</h2>
+<p style="line-height:1.7">A one-action slicing game: drag 4 straight cuts across the watermelon and see how equal your 8 slices turn out. Four cuts through the middle at the right angles make perfect eighths — anything else, and the pieces fight it out. Share your score and challenge a friend to beat it. This is an original game made by AIFly Games.</p>
+<p style="color:#9aa0ae;font-size:13px">Licence: Original game by AIFly Games - Category: Puzzle - No AdSense is shown on this page.</p>
+<p><a href="/">Browse all games</a></p>
+</main>
+<footer><div class="wrap"><strong>game.aifly.tools</strong> — free H5 game hall by aifly.tools.</div></footer>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1ec5d2cd1dd2486999d56e287ccba960"}'></script>
+<script src="/assets/js/fullscreen.js" defer></script>
+<script>
+(function () {
+  'use strict';
+  var PAGE_URL = 'https://game.aifly.tools/games/cut-watermelon-8-slices/';
+  var BEST_KEY = 'wm8_best';
+  var TOTAL_CUTS = 4;
+
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var dots = document.getElementById('wmDots').children;
+  var hintEl = document.getElementById('wmHint');
+  var bestEl = document.getElementById('wmBest');
+  var resultEl = document.getElementById('wmResult');
+  var scoreEl = document.getElementById('wmScore');
+  var verdictEl = document.getElementById('wmVerdict');
+  var bestLineEl = document.getElementById('wmBestLine');
+
+  var W = 0, H = 0, CX = 0, CY = 0, R = 0;
+  var cuts = [];        // confirmed cut lines {nx, ny, d}
+  var preview = null;  // drag in progress {x1, y1, x2, y2}
+  var scored = false;
+  var lastResult = null;
+  var best = 0;
+  try { best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) { best = 0; }
+  bestEl.textContent = best > 0 ? 'Best: ' + best + '/100' : '';
+
+  // ---------- geometry (verified in node: 4 perfect 45-degree cuts = 100) ----------
+  function circlePolygon(cx, cy, r, n) {
+    var pts = [];
+    for (var i = 0; i < n; i++) {
+      var a = (2 * Math.PI * i) / n;
+      pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+    }
+    return pts;
+  }
+  function lineFromDrag(x1, y1, x2, y2) {
+    var dx = x2 - x1, dy = y2 - y1;
+    var len = Math.hypot(dx, dy);
+    if (len < 1e-6) return null;
+    var nx = -dy / len, ny = dx / len;
+    return { nx: nx, ny: ny, d: nx * x1 + ny * y1 };
+  }
+  function distToLine(line, p) { return line.nx * p[0] + line.ny * p[1] - line.d; }
+  function lineHitsCircle(line, cx, cy, r) {
+    return Math.abs(line.nx * cx + line.ny * cy - line.d) < r;
+  }
+  function clipPolygon(poly, line, keepPositive) {
+    var out = [], n = poly.length;
+    for (var i = 0; i < n; i++) {
+      var cur = poly[i], nxt = poly[(i + 1) % n];
+      var dc = distToLine(line, cur), dn = distToLine(line, nxt);
+      var inC = keepPositive ? dc >= -1e-9 : dc <= 1e-9;
+      var inN = keepPositive ? dn >= -1e-9 : dn <= 1e-9;
+      if (inC) out.push(cur);
+      if (inC !== inN) {
+        var t = dc / (dc - dn);
+        out.push([cur[0] + (nxt[0] - cur[0]) * t, cur[1] + (nxt[1] - cur[1]) * t]);
+      }
+    }
+    return out;
+  }
+  function splitRegions(regions, line) {
+    var out = [];
+    regions.forEach(function (poly) {
+      var minD = Infinity, maxD = -Infinity;
+      poly.forEach(function (p) { var d = distToLine(line, p); if (d < minD) minD = d; if (d > maxD) maxD = d; });
+      if (minD >= -1e-9 || maxD <= 1e-9) { out.push(poly); return; }
+      var pos = clipPolygon(poly, line, true);
+      var neg = clipPolygon(poly, line, false);
+      if (pos.length >= 3) out.push(pos);
+      if (neg.length >= 3) out.push(neg);
+    });
+    return out;
+  }
+  function polyArea(poly) {
+    var s = 0;
+    for (var i = 0; i < poly.length; i++) {
+      var p = poly[i], q = poly[(i + 1) % poly.length];
+      s += p[0] * q[1] - q[0] * p[1];
+    }
+    return Math.abs(s) / 2;
+  }
+  function centroid(poly) {
+    var sx = 0, sy = 0;
+    poly.forEach(function (p) { sx += p[0]; sy += p[1]; });
+    return [sx / poly.length, sy / poly.length];
+  }
+  function scoreCuts(cx, cy, r, lines) {
+    var regions = [circlePolygon(cx, cy, r, 128)];
+    lines.forEach(function (line) {
+      if (line && lineHitsCircle(line, cx, cy, r)) regions = splitRegions(regions, line);
+    });
+    var total = Math.PI * r * r;
+    var areas = regions.map(polyArea).sort(function (a, b) { return b - a; });
+    var n = regions.length;
+    var padded = areas.slice();
+    while (padded.length < 8) padded.push(0);
+    var ideal = total / 8, D = 0;
+    padded.forEach(function (a) { D += Math.abs(a - ideal); });
+    D = D / total;
+    var factor = Math.min(1, 8 / n);
+    var score = Math.round(100 * Math.max(0, 1 - D) * factor);
+    return { areas: areas, regions: regions, score: score };
+  }
+  function verdict(score) {
+    if (score >= 95) return 'Perfect slices! Watermelon master.';
+    if (score >= 80) return 'So close — nearly perfect eighths.';
+    if (score >= 60) return 'Pretty even. A little more practice.';
+    if (score >= 40) return 'Lopsided — the pieces are fighting.';
+    if (score >= 1) return 'Watermelon massacre!';
+    return 'Did you even cut it?';
+  }
+
+  // ---------- drawing ----------
+  function seededRand(i) { var x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+  function layout() {
+    var dpr = window.devicePixelRatio || 1;
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    CX = W / 2; CY = H / 2; R = Math.min(W, H) * 0.38;
+  }
+  function chord(line) {
+    // intersection of the line with the circle -> segment endpoints
+    var dist = line.nx * CX + line.ny * CY - line.d;
+    var px = CX - line.nx * dist, py = CY - line.ny * dist;
+    var half = Math.sqrt(Math.max(0, R * R - dist * dist));
+    var tx = -line.ny, ty = line.nx;
+    return [[px - tx * half, py - ty * half], [px + tx * half, py + ty * half]];
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // rind
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, 2 * Math.PI); ctx.fillStyle = '#1f7a2e'; ctx.fill();
+    // stripes on the rind (clipped to the ring)
+    ctx.save();
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, 2 * Math.PI); ctx.clip();
+    ctx.strokeStyle = '#2e9e3f'; ctx.lineWidth = R * 0.09; ctx.lineCap = 'round';
+    for (var s = -3; s <= 3; s++) {
+      ctx.beginPath();
+      ctx.moveTo(CX + s * R * 0.28, CY - R * 1.05);
+      ctx.bezierCurveTo(CX + s * R * 0.28 + R * 0.12, CY - R * 0.35,
+        CX + s * R * 0.28 - R * 0.12, CY + R * 0.35,
+        CX + s * R * 0.28, CY + R * 1.05);
+      ctx.stroke();
+    }
+    ctx.restore();
+    // flesh
+    var g = ctx.createRadialGradient(CX - R * 0.25, CY - R * 0.3, R * 0.1, CX, CY, R * 0.88);
+    g.addColorStop(0, '#ff7070'); g.addColorStop(1, '#e53935');
+    ctx.beginPath(); ctx.arc(CX, CY, R * 0.88, 0, 2 * Math.PI); ctx.fillStyle = g; ctx.fill();
+    // seeds (deterministic)
+    ctx.fillStyle = '#3e2723';
+    for (var i = 0; i < 26; i++) {
+      var ang = seededRand(i) * 2 * Math.PI;
+      var rr = R * (0.18 + seededRand(i + 100) * 0.6);
+      var sx = CX + Math.cos(ang) * rr, sy = CY + Math.sin(ang) * rr;
+      ctx.save(); ctx.translate(sx, sy); ctx.rotate(seededRand(i + 200) * Math.PI);
+      ctx.beginPath(); ctx.ellipse(0, 0, R * 0.022, R * 0.035, 0, 0, 2 * Math.PI); ctx.fill();
+      ctx.restore();
+    }
+    // confirmed cuts
+    cuts.forEach(function (line) {
+      var c = chord(line);
+      ctx.beginPath(); ctx.moveTo(c[0][0], c[0][1]); ctx.lineTo(c[1][0], c[1][1]);
+      ctx.strokeStyle = '#7f0000'; ctx.lineWidth = 4; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(c[0][0], c[0][1]); ctx.lineTo(c[1][0], c[1][1]);
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 1.5; ctx.stroke();
+    });
+    // drag preview
+    if (preview) {
+      ctx.beginPath(); ctx.moveTo(preview.x1, preview.y1); ctx.lineTo(preview.x2, preview.y2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.9)'; ctx.lineWidth = 3; ctx.setLineDash([10, 8]); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    // piece % labels after scoring
+    if (scored && lastResult) {
+      var total = Math.PI * R * R;
+      ctx.font = 'bold ' + Math.max(13, R * 0.09) + 'px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      lastResult.regions.forEach(function (poly) {
+        var a = polyArea(poly);
+        if (a / total < 0.02) return;
+        var c = centroid(poly);
+        var label = Math.round(a / total * 100) + '%';
+        ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,0.7)';
+        ctx.strokeText(label, c[0], c[1]);
+        ctx.fillStyle = '#fff'; ctx.fillText(label, c[0], c[1]);
+      });
+    }
+  }
+
+  // ---------- interaction ----------
+  function canvasPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+  function updateDots() {
+    for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('used', i < cuts.length);
+  }
+  canvas.addEventListener('pointerdown', function (e) {
+    if (scored || cuts.length >= TOTAL_CUTS) return;
+    e.preventDefault();
+    var p = canvasPos(e);
+    preview = { x1: p.x, y1: p.y, x2: p.x, y2: p.y };
+    try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+    draw();
+  });
+  canvas.addEventListener('pointermove', function (e) {
+    if (!preview) return;
+    var p = canvasPos(e);
+    preview.x2 = p.x; preview.y2 = p.y;
+    draw();
+  });
+  canvas.addEventListener('pointerup', function (e) {
+    if (!preview) return;
+    var p = canvasPos(e);
+    preview.x2 = p.x; preview.y2 = p.y;
+    var line = lineFromDrag(preview.x1, preview.y1, preview.x2, preview.y2);
+    preview = null;
+    if (!line) { hintEl.textContent = 'That was a tap — drag across the watermelon to cut.'; draw(); return; }
+    if (!lineHitsCircle(line, CX, CY, R)) { hintEl.textContent = 'That cut missed the watermelon — try again.'; draw(); return; }
+    hintEl.textContent = '';
+    cuts.push(line);
+    updateDots();
+    draw();
+    if (cuts.length >= TOTAL_CUTS) finish();
+  });
+  canvas.addEventListener('pointercancel', function () { preview = null; draw(); });
+
+  function finish() {
+    scored = true;
+    lastResult = scoreCuts(CX, CY, R, cuts);
+    var s = lastResult.score;
+    var isNewBest = s > best;
+    if (isNewBest) { best = s; try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) { /* ignore */ } }
+    bestEl.textContent = best > 0 ? 'Best: ' + best + '/100' : '';
+    scoreEl.textContent = s;
+    verdictEl.textContent = verdict(s);
+    bestLineEl.textContent = isNewBest && s > 0
+      ? 'New best score!'
+      : (lastResult.regions.length + ' pieces — perfect is 8 equal slices.');
+    resultEl.classList.add('show');
+    draw();
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function reset() {
+    cuts = []; preview = null; scored = false; lastResult = null;
+    hintEl.textContent = '';
+    resultEl.classList.remove('show');
+    updateDots();
+    draw();
+  }
+
+  // ---------- share / copy ----------
+  document.getElementById('wmAgain').addEventListener('click', reset);
+  document.getElementById('wmShare').addEventListener('click', function () {
+    var s = lastResult ? lastResult.score : 0;
+    var text = 'I scored ' + s + '/100 cutting a watermelon into 8 equal slices! Can you beat me?';
+    var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +
+      '&url=' + encodeURIComponent(PAGE_URL) + '&hashtags=CutWatermelon';
+    window.open(url, '_blank', 'noopener');
+  });
+  document.getElementById('wmCopy').addEventListener('click', function () {
+    var btn = document.getElementById('wmCopy');
+    function done() { btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy link'; }, 2000); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(PAGE_URL).then(done, function () { fallbackCopy(); });
+    } else { fallbackCopy(); }
+    function fallbackCopy() {
+      var ta = document.createElement('textarea');
+      ta.value = PAGE_URL; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) { /* ignore */ }
+      document.body.removeChild(ta);
+    }
+  });
+
+  window.addEventListener('resize', function () { layout(); draw(); });
+  layout(); updateDots(); draw();
+})();
+</script>
+</body>
+</html>
