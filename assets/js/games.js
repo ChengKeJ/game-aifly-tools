@@ -444,5 +444,7 @@ const GAMES = [
   
       {slug:"4-colors", name:"4 Colors", cat:"Board", emoji:"🃏", desc:"Challenge computer opponents in this card game. Match colors or numbers to empty your hand.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/4-colors/big-preview/f47945bab8724f42a0911e6909328a08_og.jpg"},
   
-      {slug:"3d-mega-maze", name:"3D Mega Maze", cat:"Puzzle", emoji:"🌀", desc:"Navigate a ball through 25 complex 3D labyrinths in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/5b37af421a254e82a553875963af4202_og.jpg"}
+      {slug:"3d-mega-maze", name:"3D Mega Maze", cat:"Puzzle", emoji:"🌀", desc:"Navigate a ball through 25 complex 3D labyrinths in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/5b37af421a254e82a553875963af4202_og.jpg"},
+  
+      {slug:"cut-watermelon-8-slices", name:"Cut the Watermelon into 8 Equal Slices", cat:"Puzzle", emoji:"🍉", desc:"Drag 4 straight cuts across the watermelon and try to make 8 perfectly equal slices. One action, one minute — how even can you cut?", license:"Original", source:"AIFly Games", thumb:"/assets/thumbs/cut-watermelon-8-slices.jpg"}
 ];
