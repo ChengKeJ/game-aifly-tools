@@ -486,5 +486,45 @@ const GAMES = [
   
       {slug:"bowling-stars", name:"Bowling Stars", cat:"Sports", emoji:"🎳", desc:"Compete in classic bowling matches to earn trophies and unlock superior balls.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bowling-stars/big-preview/cbb5a9163f4b49e6beed884d7b01207c_og.jpg"},
   
-      {slug:"doodle-draw-fish", name:"Doodle Draw Fish", cat:"Arcade", emoji:"🐟", desc:"Sketch unique fish in this idle clicker and RPG. Build your team, upgrade your aquarium, and battle in arenas.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/doodle-draw-fish/big_preview/454a9e48edf64a699184ab846c8c3282_og.jpg"}
+      {slug:"doodle-draw-fish", name:"Doodle Draw Fish", cat:"Arcade", emoji:"🐟", desc:"Sketch unique fish in this idle clicker and RPG. Build your team, upgrade your aquarium, and battle in arenas.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/doodle-draw-fish/big_preview/454a9e48edf64a699184ab846c8c3282_og.jpg"},
+  
+      {slug:"tennis-masters", name:"Tennis Masters", cat:"Sports", emoji:"🎾", desc:"Compete in fast-paced 1-on-1 tennis matches against the computer or a friend. Collect power-ups and funny transformations mid-match.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/tennis-masters/big_preview/579ccf1f24084553b4aebe81ffd468b2_og.jpg"},
+  
+      {slug:"penalty-shooter", name:"Penalty Shooter", cat:"Sports", emoji:"⚽", desc:"Take turns as penalty taker and goalkeeper in this soccer shootout. Five shots each — score more than you concede to win.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/penalty-shooter/big_preview/8c95d6c82b0d42d3856005a382b61439_og.jpg"},
+  
+      {slug:"pool-8-ball-mania", name:"Pool: 8 Ball Mania", cat:"Sports", emoji:"🎱", desc:"Classic eight-ball pool with realistic physics. Play against the computer or a friend and clear your group before the black ball.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/pool-8-ball-mania/big_preview/d3ea37c2217446499940c3e93fa17b1b_og.jpg"},
+  
+      {slug:"mahjong-puzzle-tile-match", name:"Mahjong Puzzle: Tile Match", cat:"Puzzle", emoji:"🀄", desc:"Clear the board by linking identical mahjong tiles in this brain-teasing matching puzzle.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/mahjong-puzzle-tile-match/big-preview/c4e6143f9d2d42188591a56b9ac0aea9_og.jpg"},
+  
+      {slug:"hidden-object-my-hotel", name:"Hidden Object: My Hotel", cat:"Puzzle", emoji:"🔍", desc:"Restore a dream hotel by finding hidden items in cluttered rooms. Spot every silhouette to bring each room back to life.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/hidden-object-my-hotel/big-preview/94eab6bba922419d904b5872c8a1fb52_og.jpg"},
+  
+      {slug:"monster-king-3d", name:"Monster King 3D", cat:"Action", emoji:"👹", desc:"Mine and connect eggs to build an army of monsters, then lead them into battle in this 3D action-adventure.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/monster-king-3d/big_preview/484b89a4b0b744bd892a98506985c4be_og.jpg"},
+  
+      {slug:"craft-and-battle", name:"Craft and Battle", cat:"Strategy", emoji:"⚔️", desc:"Lead your army, build bases and extract resources in this military strategy game. Destroy the enemy base to win.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/craft-and-battle/big_preview/b152e7d24d064364816e5464f0188784_og.jpg"},
+  
+      {slug:"moto-x3m-spooky-land", name:"Moto X3M Spooky Land", cat:"Racing", emoji:"🏍️", desc:"Race through haunted tracks in this Halloween bike game. Perform stunts, beat the clock and survive 32 spooky levels.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/moto-x3m-spooky-land/big-preview/8013d6d81a584e96b7c818757853da8c_og.jpg"},
+  
+      {slug:"crowd-rush", name:"Crowd Rush", cat:"Arcade", emoji:"🏃", desc:"Lead your crowd through sky tracks, multiply your runners through gates and defeat bosses in this puzzle runner.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/c9e866e6aca14c9ea97dd02fcce3e226_og.jpg"},
+  
+      {slug:"backflip-master-parkour-stunts", name:"Backflip Master: Parkour Stunts", cat:"Arcade", emoji:"🤸", desc:"Master physics-driven backflips on rooftops and cliffs. Crouch, tuck, spin and stick the landing.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/backflip-master-parkour-stunts/big_preview/60783fa9c41e413592e2bae8ada34e7b_og.jpg"},
+  
+      {slug:"arrow-puzzle", name:"Arrow Puzzle", cat:"Puzzle", emoji:"🏹", desc:"Clear the grid by removing arrows in the correct order in this logic puzzle. One blocked tap costs a life.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/arrow-puzzle/big-preview/6f9c8fc74f8a4dd39e6700bc24fce9ce_og.jpg"},
+  
+      {slug:"extreme-motorcycle-simulator", name:"Extreme Motorcycle Simulator", cat:"Racing", emoji:"🏍️", desc:"Ride with realistic motorcycle physics in an open world. Explore city and airport maps and unlock new bikes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/extreme-motorcycle-simulator/big_preview/56c524ce34cd4ac790bdfd0379933ec9_og.jpg"},
+  
+      {slug:"cannon-blast", name:"Cannon Blast", cat:"Shooting", emoji:"💣", desc:"Master angles and power to trigger chain reactions in this arcade shooter. Smash jars, blocks and everything in the way.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cannon-blast/big_preview/3e6de756e7e14e0fa1ba79aa118e89ad_og.jpg"},
+  
+      {slug:"boxing-stars", name:"Boxing Stars", cat:"Sports", emoji:"🥊", desc:"Rise from the underground to the championship in this boxing arena game. Mix attacks, blocks and movement to win.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/boxing-stars/big_preview/e924e27fd059432aaceb25596fa1695a_og.jpg"},
+  
+      {slug:"citadel-fortress-siege", name:"Citadel: Fortress Siege", cat:"Strategy", emoji:"🏰", desc:"Build and defend your stronghold in this medieval strategy game. Manage resources, command armies and conquer rival citadels.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/citadel-fortress-siege/big_preview/5b795673726e4c068551b19494098091_og.jpg"},
+  
+      {slug:"bridge-builder", name:"Bridge Builder", cat:"Simulation", emoji:"🌉", desc:"Test your engineering skills in this physics puzzle. Build structures strong enough to carry vehicles across the gap.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bridge-builder/big-preview/4f12f6a379db4666a4b3141c7aa23441_og.jpg"},
+  
+      {slug:"hole-feast", name:"Hole Feast", cat:"Arcade", emoji:"🕳️", desc:"Glide your hole across the map, swallow objects and grow in this io-style munch-fest. Outgrow every rival hole.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/a4236534bbfc4137b424b50f91f3ed5b_og.jpg"},
+  
+      {slug:"english-checkers-online-multiplayer", name:"English Checkers Online", cat:"Board", emoji:"⚫", desc:"Classic English checkers against the computer or real players. Capture every opponent checker — or block them completely.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/ef1c9de1c5c14afb90bf333c8dd34a4a_og.jpg"},
+  
+      {slug:"ludo", name:"Ludo", cat:"Board", emoji:"🎲", desc:"Classic Ludo with 3D boards and unique tokens. Roll the dice and race all four tokens home before your opponents.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/ludo/big_preview/3c3e97fe886a47dba725826f4ed32012_og.jpg"},
+  
+      {slug:"galaxy-clicker", name:"Galaxy Clicker", cat:"Arcade", emoji:"🪐", desc:"Explore planets and stars in this idle clicker. Earn income, merge planets and upgrade your stats.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/galaxy-clicker/big-preview/c48f3e8602634539a0376552a1d76bb9_og.jpg"}
 ];
