@@ -526,5 +526,45 @@ const GAMES = [
   
       {slug:"ludo", name:"Ludo", cat:"Board", emoji:"🎲", desc:"Classic Ludo with 3D boards and unique tokens. Roll the dice and race all four tokens home before your opponents.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/ludo/big_preview/3c3e97fe886a47dba725826f4ed32012_og.jpg"},
   
-      {slug:"galaxy-clicker", name:"Galaxy Clicker", cat:"Arcade", emoji:"🪐", desc:"Explore planets and stars in this idle clicker. Earn income, merge planets and upgrade your stats.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/galaxy-clicker/big-preview/c48f3e8602634539a0376552a1d76bb9_og.jpg"}
+      {slug:"galaxy-clicker", name:"Galaxy Clicker", cat:"Arcade", emoji:"🪐", desc:"Explore planets and stars in this idle clicker. Earn income, merge planets and upgrade your stats.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/galaxy-clicker/big-preview/c48f3e8602634539a0376552a1d76bb9_og.jpg"},
+  
+      {slug:"abyss-gate-mmorpg", name:"Abyss Gate: MMORPG", cat:"Action", emoji:"⚔️", desc:"Explore dungeons, fight bosses and compete in PvP in this multiplayer action RPG. Create a hero, master weapon skills and battle through the abyss.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/abyss-gate-mmorpg/big_preview/0c2988a319ad449b8692837c21baf6ed_og.jpg"},
+  
+      {slug:"beast-squad", name:"Beast Squad", cat:"Action", emoji:"🦁", desc:"A 3v3 arena shooter starring cartoon animals with toy weapons. Haul crystals, score knockouts and win rounds with your squad.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/ece4f971d1744450b16750d4d3dd0fef_og.jpg"},
+  
+      {slug:"bottle-jump-3d", name:"Bottle Jump 3D", cat:"Arcade", emoji:"🍾", desc:"Master the bottle flip challenge in this 3D skill game. Flip your bottle through obstacle-filled rooms and land it upright.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bottle-jump-3d/big_preview/845373a9035146028a44366f2e2bbdae_og.jpg"},
+  
+      {slug:"arrow-escape-puzzle", name:"Arrow Escape Puzzle", cat:"Puzzle", emoji:"🏹", desc:"Solve challenging puzzles by moving arrows in the correct direction to clear the board. One wrong move and the board stays stuck.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/arrow-escape-puzzle/big_preview/9af45250296d410a9a25a4f993c84db3_og.jpg"},
+  
+      {slug:"bike-hill-3d", name:"Bike Hill 3D", cat:"Racing", emoji:"🚲", desc:"Race down steep 3D hills, dodge obstacles and beat other riders to the finish in this downhill biking game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/3890ffc49c08404b832b8b12a1006390_og.jpg"},
+  
+      {slug:"beam-crash-polygon", name:"Beam Crash Polygon", cat:"Racing", emoji:"🚗", desc:"Test car durability with soft-body physics in this driving destruction sandbox. Crash, compare and destroy.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/beam-crash-polygon/big_preview/39d42d002abe4ca997d3c99a98d9b853_og.jpg"},
+  
+      {slug:"attack-of-zombies", name:"Attack of Zombies", cat:"Shooting", emoji:"🧟", desc:"Survive waves of undead in this shooting game. Unlock weapons, use tactical items and fight bosses.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/attack-of-zombies/big_preview/9b31d77b48bc483ba974f4dc8dbd8685_og.jpg"},
+  
+      {slug:"coastfall-drone-strike", name:"Coastfall: Drone Strike", cat:"Action", emoji:"🛩️", desc:"Pilot an armed drone through twelve tactical sorties. Use night-vision, dodge missiles and protect friendly troops.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/72c6cb2a1d8a4f84811d45484372c2ca_og.jpg"},
+  
+      {slug:"baseball-league", name:"Baseball League", cat:"Sports", emoji:"⚾", desc:"Test your timing in this skill-based batting game. Read the pitch, swing for home runs and chase high scores.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/baseball-league/big-preview/748cefcf43d14f8bb363200ae4682a93_og.jpg"},
+  
+      {slug:"billiard-challenge", name:"Billiard Challenge", cat:"Sports", emoji:"🎱", desc:"Test your precision in this skill-based billiards game. Pot balls within limited attempts across varied tables.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/billiard-challenge/big_preview/64d9edc3c480476ab3902039aef973c0_og.jpg"},
+  
+      {slug:"booblyc-td-card-tower-defense", name:"Booblyc TD: Card Tower Defense", cat:"Strategy", emoji:"🃏", desc:"Defend your kingdom in this story-driven tower defense with a card twist. Collect cards to upgrade your units.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/53eedca0c3724bc1a95bb5495195c846_og.jpg"},
+  
+      {slug:"army-evolution-merge--tactics", name:"Army Evolution: Merge & Tactics", cat:"Strategy", emoji:"🪖", desc:"Build an army across eras by merging units and using tactical placement. Evolve from spears to heavy artillery.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/army-evolution-merge--tactics/big_preview/ab869467136a42bea03b506a796b2674_og.jpg"},
+  
+      {slug:"bimka-the-master-of-destruction", name:"Bimka: The Master of Destruction", cat:"Simulation", emoji:"💥", desc:"Experience realistic car physics and body deformation in this destruction simulator. Crash, smash and test every car.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bimka-the-master-of-destruction/big_preview/dfb688515bb247fcb9f3e9c73d3b1ee6_og.jpg"},
+  
+      {slug:"animal-hospital-3d", name:"Animal Hospital 3D", cat:"Simulation", emoji:"🏥", desc:"Explore a 3D physics sandbox with ragdoll characters, vehicles and building tools. No goal — just create and experiment.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/animal-hospital-3d/big_preview/f2ccef16c86141f297907262648af44a_og.jpg"},
+  
+      {slug:"age-arena", name:"Age Arena", cat:"Arcade", emoji:"🛡️", desc:"Compete in fast-paced 60-second arena battles where your weapons fight for you. Evolve from the Stone Age to the Robot Age.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/c825f38fb6134d4fa681af06ed324111_og.jpg"},
+  
+      {slug:"chess-online-playing", name:"Chess Online", cat:"Board", emoji:"♟️", desc:"Classic chess against real players, AI or a friend. Challenge opponents online or train against the computer.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/chess-online-playing/big-preview/21a2ea2e959c4c59856c90f7e4897dd4_og.jpg"},
+  
+      {slug:"domino-online-multiplayer", name:"Domino Online Multiplayer", cat:"Board", emoji:"🎲", desc:"Challenge opponents in classic domino matches online. Match numbers, empty your hand first and win.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/cb47eb3cea0d456f814856a5f6db7649_og.jpg"},
+  
+      {slug:"1-speed-click", name:"+1 Speed Click", cat:"Arcade", emoji:"⚡", desc:"Master speed-based obstacle courses in this clicker game. Tap to boost your character, win races and unlock new worlds.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/1-speed-click/big_preview/35dffbd6ff4846bcb9077c304f2b32dc_og.jpg"},
+  
+      {slug:"anima-saga--clicker-rpg", name:"Anima Saga: Clicker RPG", cat:"Arcade", emoji:"🐉", desc:"Embark on an idle fantasy adventure where every click helps you defeat monsters. Earn gold, recruit allies and grow stronger.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/anima-saga--clicker-rpg/big-preview/6acf30361dbd4efcaee2a5e2f00a81c7_og.jpg"},
+  
+      {slug:"animal-hair-salon", name:"Animal Hair Salon", cat:"Simulation", emoji:"✂️", desc:"Design, cut and colour unique hairstyles for adorable animals in this creative beauty salon game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/animal-hair-salon/big-preview/8ac649a2cf904f6091271cdecbab4055_og.jpg"}
 ];
