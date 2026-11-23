@@ -566,5 +566,45 @@ const GAMES = [
   
       {slug:"anima-saga--clicker-rpg", name:"Anima Saga: Clicker RPG", cat:"Arcade", emoji:"🐉", desc:"Embark on an idle fantasy adventure where every click helps you defeat monsters. Earn gold, recruit allies and grow stronger.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/anima-saga--clicker-rpg/big-preview/6acf30361dbd4efcaee2a5e2f00a81c7_og.jpg"},
   
-      {slug:"animal-hair-salon", name:"Animal Hair Salon", cat:"Simulation", emoji:"✂️", desc:"Design, cut and colour unique hairstyles for adorable animals in this creative beauty salon game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/animal-hair-salon/big-preview/8ac649a2cf904f6091271cdecbab4055_og.jpg"}
+      {slug:"animal-hair-salon", name:"Animal Hair Salon", cat:"Simulation", emoji:"✂️", desc:"Design, cut and colour unique hairstyles for adorable animals in this creative beauty salon game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/animal-hair-salon/big-preview/8ac649a2cf904f6091271cdecbab4055_og.jpg"},
+  
+      {slug:"agrario--farmers-battle", name:"Agrario: Farmers' Battle", cat:"IO", emoji:"🚜", desc:"Compete in online tractor battles to claim land. Sow your fields, steal rival territory and outmaneuver opponents to top the leaderboard.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/agrario-farmers-battle/big_preview/4f75a0829b11425587f94ea5b5b134ff_og.jpg"},
+  
+      {slug:"antfall-ant-swarm-idle", name:"Antfall: Ant Swarm Idle", cat:"Idle", emoji:"🐜", desc:"Grow your ant colony in this idle game. Forage for loot, upgrade your swarm and conquer the anthill board, run after run.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/36ffb04f98b241018516bf629a2187ad_og.jpg"},
+  
+      {slug:"ants-color-puzzle", name:"Ants: Color Puzzle", cat:"Puzzle", emoji:"🧩", desc:"Help a colony collect colorful blocks in this matching puzzle. Dispatch ant teams in the right order to clear the board.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/ants-color-puzzle/big_preview/8ae67da9b983496b9c2a744e4b3775cc_og.jpg"},
+  
+      {slug:"bank-heist-judgment-day", name:"Bank Heist: Judgment Day", cat:"Action", emoji:"💰", desc:"Play as a bandit in this shooting game. Rob banks, find keys, crack safes and defeat the guards standing between you and the vault.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bank-heist-judgment-day/big-preview/0d8b97b87173467fb7744b7f773151e6_og.jpg"},
+  
+      {slug:"block-blast-2048", name:"Block Blast 2048", cat:"Puzzle", emoji:"🧱", desc:"Merge blocks with matching numbers in this calm puzzle game. Combine tiles into larger values and chase new records at your own pace.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/block-blast-2048/big-preview/15f394ba6c12422fb69c4905e35ed8ed_og.jpg"},
+  
+      {slug:"bubble-pop-legend", name:"Bubble Pop Legend", cat:"Arcade", emoji:"🫧", desc:"Aim and shoot to match colorful bubbles in this casual game. Clear the board to earn coins and chase high scores.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bubble-pop-legend/big-preview/b4e3c3c1844e441190a422148a9c98ee_og.jpg"},
+  
+      {slug:"cake-slice-sort-3d", name:"Cake Slice Sort 3D", cat:"Puzzle", emoji:"🍰", desc:"Sort and stack colorful cake slices to complete delicious desserts in this merge puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cake-slice-sort-3d/big_preview/60264da09f4c4f1c80786ff8ba1bfd72_og.jpg"},
+  
+      {slug:"car-crash-mountain-stunts-3d", name:"Car Crash: Mountain Stunts 3D", cat:"Racing", emoji:"🚗", desc:"Drive on mountain roads, perform stunts and experience vehicle damage in this 3D driving game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/car-crash-mountain-stunts-3d/big_preview/157955a181ed49c8a047331088fa6bda_og.jpg"},
+  
+      {slug:"case-simulator-cars", name:"Case Simulator: Cars", cat:"Simulation", emoji:"🚙", desc:"Open cases to collect over 60 unique vehicles, then compete in drift, speed and time trial races.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/8182b27328ef4f95810459f1e98b2b8f_og.jpg"},
+  
+      {slug:"cooking-tasty-restaurant-game", name:"Cooking Tasty: Restaurant Game", cat:"Simulation", emoji:"🍳", desc:"Master global cuisines and manage your restaurant empire in this time-management game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cooking-tasty-restaurant-game/big_preview/c91875abbd584cfeb451cf2d1f322ca2_og.jpg"},
+  
+      {slug:"crossfire-citadel", name:"Crossfire Citadel", cat:"Strategy", emoji:"🏰", desc:"Defend your base from waves of enemies in this strategy game. Place turrets wisely to survive 40 levels.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/crossfire-citadel/big_preview/e74b958777e74a3fad7f85ab0c722215_og.jpg"},
+  
+      {slug:"dismount-ragdoll", name:"Dismount Ragdoll", cat:"Arcade", emoji:"🤸", desc:"Experience ragdoll physics by launching characters into traps to break bones and score points.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/dismount-ragdoll/big_preview/3948e5aa85da41d990f12697c44a075f_og.jpg"},
+  
+      {slug:"draw-crash-race", name:"Draw Crash Race", cat:"Racing", emoji:"✏️", desc:"Draw your own car and race against bots on sky tracks with realistic physics in this creative car game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/draw-crash-race/big_preview/c303eb0055174fd9976cc0a5050930c5_og.jpg"},
+  
+      {slug:"elemental-monsters-merge", name:"Elemental Monsters: Merge", cat:"Puzzle", emoji:"🧪", desc:"Combine fire, water, earth and air elementals to build a powerful army in this merge strategy game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/elemental-monsters-merge/big_preview/73cef2197f2741a9bb6e033b0c6a1f30_og.jpg"},
+  
+      {slug:"gin-rummy", name:"Gin Rummy", cat:"Board", emoji:"🃏", desc:"Challenge an opponent in this strategic card game. Create sets and runs to clear your hand first.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/gin-rummy/big-preview/a69269bce67b4b258abec91debff9bef_og.jpg"},
+  
+      {slug:"mystery-dumpling-go-merge-io", name:"Mystery Dumpling Go: Merge IO", cat:"IO", emoji:"🥟", desc:"Collect and merge dumplings to evolve your squad in this idle IO game. Dominate the arena with stronger dumplings.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/mystery-dumpling-go-merge-io/big_preview/8750aaf5c1994826b8156399b0907a6c_og.jpg"},
+  
+      {slug:"octo-market-underwater-supermarket", name:"Octo Market: Underwater Supermarket", cat:"Simulation", emoji:"🐙", desc:"Manage an underwater store with Otto the octopus. Harvest goods, hire helpers and upgrade departments.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/octo-market-underwater-supermarket/big_preview/4b7489d140b14d9b8100dd9d4e7ddfe5_og.jpg"},
+  
+      {slug:"piggy-heist", name:"Piggy Heist", cat:"Action", emoji:"🐷", desc:"Lead a pig gang through city districts in this survivor-like action game. Crack vaults, dodge security robots and upgrade your crew.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/4c33d5dbc0b146928f79d535f173490f_og.jpg"},
+  
+      {slug:"ragdoll-soccer", name:"Ragdoll Soccer", cat:"Sports", emoji:"⚽", desc:"Compete in Ragdoll Soccer, a 2D sports game with single-player and local multiplayer modes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/ragdoll-soccer/big_preview/89eea6260df6439e81dac76423b04309_og.jpg"},
+  
+      {slug:"solar-smash", name:"Solar Smash", cat:"Simulation", emoji:"🪐", desc:"Harness cosmic power to create or destroy planets and moons in this physics simulator.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/solar-smash/big-preview/678db982b1364f018e7c4fac3b1f4a44_og.jpg"}
 ];
