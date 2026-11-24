@@ -606,5 +606,45 @@ const GAMES = [
   
       {slug:"ragdoll-soccer", name:"Ragdoll Soccer", cat:"Sports", emoji:"⚽", desc:"Compete in Ragdoll Soccer, a 2D sports game with single-player and local multiplayer modes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/ragdoll-soccer/big_preview/89eea6260df6439e81dac76423b04309_og.jpg"},
   
-      {slug:"solar-smash", name:"Solar Smash", cat:"Simulation", emoji:"🪐", desc:"Harness cosmic power to create or destroy planets and moons in this physics simulator.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/solar-smash/big-preview/678db982b1364f018e7c4fac3b1f4a44_og.jpg"}
+      {slug:"solar-smash", name:"Solar Smash", cat:"Simulation", emoji:"🪐", desc:"Harness cosmic power to create or destroy planets and moons in this physics simulator.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/solar-smash/big-preview/678db982b1364f018e7c4fac3b1f4a44_og.jpg"},
+  
+      {slug:"crazy-motorcycle", name:"Crazy Motorcycle", cat:"Racing", emoji:"🏍️", desc:"Race motorcycles across sky-high courses in this fast-paced driving game — time your jumps to clear the gaps between platforms.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/crazy-motorcycle/big_preview/11291362bcec4bc0bf750337150730f7_og.jpg"},
+  
+      {slug:"popping-candies", name:"Popping Candies", cat:"Puzzle", emoji:"🍬", desc:"Match and crush candies in this puzzle game. Clear obstacles and use special boosters to complete each level.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/popping-candies/big-preview/7546f1f72f59475487a53c82adfb7c89_og.jpg"},
+  
+      {slug:"idle-train-empire", name:"Idle Train Empire", cat:"Idle", emoji:"🚂", desc:"Manage your own railway station in this idle tycoon game. Purchase trains, upgrade routes and expand your business.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/idle-train-empire/big-preview/e3802898026944ec8bd00e4beea2ca24_og.jpg"},
+  
+      {slug:"space-strike", name:"Space Strike", cat:"Action", emoji:"🚀", desc:"Pilot your ship through intense space combat to protect planets from alien threats in this shooting arcade game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/space-strike/big-preview/2fb7fb270bac47c2b0ba87caae0b5e76_og.jpg"},
+  
+      {slug:"race-to-win", name:"Battle Arena Race to Win", cat:"Racing", emoji:"🏎️", desc:"Join the Red or Blue team in this car racing game. Collect and upgrade vehicles to dominate the arena.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/race-to-win/big-preview/516624caaa4b46fa9827b48cd542b960_og.jpg"},
+  
+      {slug:"wood-nuts-master-puzzle", name:"Wood Nuts Master", cat:"Puzzle", emoji:"🔩", desc:"Test your strategic thinking in this screw puzzle game. Fit screws and nuts to topple wooden blocks.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/wood-nuts-master-puzzle/big-preview/e4383bcbc13c490d8c846f69108c38af_og.jpg"},
+  
+      {slug:"online-car-destruction", name:"Online Car Destruction Simulator 3D", cat:"Simulation", emoji:"🚗", desc:"Experience realistic vehicle crashes and demolition chaos in this driving game — no strict objectives, just destruction.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/online-car-destruction/big-preview/39924242bbdd4fe0b34a807e27611dc2_og.jpg"},
+  
+      {slug:"nuts-bolts-wood-puzzle", name:"Nuts & Bolts", cat:"Puzzle", emoji:"🧩", desc:"Solve logical wood puzzles by unscrewing nuts and bolts in this brain training game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/nuts-bolts-wood-puzzle/big-preview/411af712644b44289f5ae0dd7d415d50_og.jpg"},
+  
+      {slug:"money-factory", name:"Money Factory", cat:"Idle", emoji:"💰", desc:"Manage your own money-making factory in this idle strategy game. Enhance operations and multiply your earnings.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/money-factory/big-preview/f24357772eb04a8b86ebdd29236951ff_og.jpg"},
+  
+      {slug:"crazy-sheep", name:"Crazy Sheep", cat:"Puzzle", emoji:"🐑", desc:"Help a clumsy sheep cross obstacles by building bridges in this skill puzzle-platformer.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/crazy-sheep/big-preview/d7dc5aa3bf55427ea8067d8468dd7595_og.jpg"},
+  
+      {slug:"bubble-blast", name:"Bubble Blast", cat:"Puzzle", emoji:"🫧", desc:"Pop bubbles in this classic match-3 puzzle game. Clear the board using tactical thinking and boosters.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bubble-blast/big-preview/48be0e1ca5354daa8378d69daea53114_og.jpg"},
+  
+      {slug:"alpha-balls", name:"Alpha Balls", cat:"Puzzle", emoji:"🔤", desc:"Challenge your vocabulary in this word puzzle game — build words from letter balls and collect coins.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/alpha-balls/big-preview/6668e3bd0fe54fa2bfa56ca4f2c69240_og.jpg"},
+  
+      {slug:"connect-monsters", name:"Connect Monsters", cat:"Puzzle", emoji:"👾", desc:"Challenge your mental skills in this matching puzzle game. Connect monsters to earn high scores.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/connect-monsters/big-preview/31fe085e520c443d9b3243f3c575e876_og.jpg"},
+  
+      {slug:"quackventure", name:"Quackventure", cat:"Arcade", emoji:"🦆", desc:"Join Quack the duck in this arcade adventure to escape a giant monster through a magical forest.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/quackventure/big_preview/346ba0bc348d48bbb0a7b27c252c425b_og.jpg"},
+  
+      {slug:"colors-forms", name:"Colors & Forms", cat:"Puzzle", emoji:"🎨", desc:"Test your reflexes and strategy in this puzzle game — match falling elements by moving pieces at the bottom of the tracks.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/colors-forms/big-preview/8ebee86f0a294c189e9d187758dc8a16_og.jpg"},
+  
+      {slug:"crazy-axe", name:"Crazy Axe", cat:"Arcade", emoji:"🪓", desc:"Master your aim and reflexes in this action-packed arcade adventure and climb the leaderboard.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/crazy-axe/big-preview/325749ef4743490d9c9109b6a5d2c456_og.jpg"},
+  
+      {slug:"stickman-kombat-2d", name:"Stickman Kombat 2D", cat:"Action", emoji:"🥋", desc:"Engage in intense stickman combat with precise combos and aerial strikes in this fighting game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/stickman-kombat-2d/big_preview/4b027b6071e2495aad3ac02403e35a1a_og.jpg"},
+  
+      {slug:"zen-solitaire", name:"Zen Solitaire", cat:"Board", emoji:"🃏", desc:"Arrange cards by suit and rank in this classic Klondike-style card game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/zen-solitaire/big_preview/25e5b3ac8ef24a369aee987ec92c7479_og.jpg"},
+  
+      {slug:"warfare-1942", name:"Warfare 1942", cat:"Action", emoji:"💥", desc:"Experience intense World War II combat with tanks and loyal dogs in this action shooter.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/cadfda07585747878bc011e31c027403_og.jpg"},
+  
+      {slug:"tile-valley", name:"Tile Valley", cat:"Puzzle", emoji:"🀄", desc:"Challenge your brain with this relaxing matching puzzle game. Collect three identical tiles to clear the board.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/tile-valley/big-preview/dabea2e0c14043aeacf15adde56deb3a_og.jpg"}
 ];
