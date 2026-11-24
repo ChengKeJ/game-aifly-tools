@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img">
+  <title>AIFly Games</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e9ebef"/>
+    </linearGradient>
+    <radialGradient id="ball" cx="0.35" cy="0.3" r="0.9">
+      <stop offset="0" stop-color="#ffd66b"/>
+      <stop offset="0.55" stop-color="#ffb020"/>
+      <stop offset="1" stop-color="#ef8f00"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g transform="rotate(-6 256 256)">
+    <ellipse cx="256" cy="452" rx="118" ry="13" fill="#000000" opacity="0.12"/>
+    <rect x="241" y="206" width="30" height="152" rx="15" fill="#171a21"/>
+    <rect x="150" y="356" width="212" height="68" rx="34" fill="#ffffff" stroke="#171a21" stroke-width="10"/>
+    <circle cx="312" cy="390" r="13" fill="#ffb020"/>
+    <circle cx="200" cy="390" r="8" fill="#171a21" opacity="0.45"/>
+    <circle cx="256" cy="152" r="66" fill="url(#ball)"/>
+    <ellipse cx="232" cy="126" rx="20" ry="13" fill="#ffffff" opacity="0.55" transform="rotate(-24 232 126)"/>
+  </g>
+</svg>
