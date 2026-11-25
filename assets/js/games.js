@@ -646,5 +646,45 @@ const GAMES = [
   
       {slug:"warfare-1942", name:"Warfare 1942", cat:"Action", emoji:"💥", desc:"Experience intense World War II combat with tanks and loyal dogs in this action shooter.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/preview/cadfda07585747878bc011e31c027403_og.jpg"},
   
-      {slug:"tile-valley", name:"Tile Valley", cat:"Puzzle", emoji:"🀄", desc:"Challenge your brain with this relaxing matching puzzle game. Collect three identical tiles to clear the board.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/tile-valley/big-preview/dabea2e0c14043aeacf15adde56deb3a_og.jpg"}
+      {slug:"tile-valley", name:"Tile Valley", cat:"Puzzle", emoji:"🀄", desc:"Challenge your brain with this relaxing matching puzzle game. Collect three identical tiles to clear the board.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/tile-valley/big-preview/dabea2e0c14043aeacf15adde56deb3a_og.jpg"},
+  
+      {slug:"ninja-dash-playgama", name:"Ninja Dash", cat:"Puzzle", emoji:"🥷", desc:"Master stealth and strategy in this cozy tactic puzzle. Plan every move and use your surroundings to eliminate foes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/ninja-dash-playgama/big-preview/71905bbfafbd4676b31bc7a9efe82016_og.jpg"},
+  
+      {slug:"miner-jam-playgama", name:"Miner Jam", cat:"Puzzle", emoji:"⛏️", desc:"Strategically match colored pickaxes with ores to break boxes and advance through levels in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/miner-jam-playgama/big_preview/c4defa2c8bc840009dab6b4da968c129_og.jpg"},
+  
+      {slug:"trolley-problem", name:"Trolley Problem", cat:"Puzzle", emoji:"🚋", desc:"Face challenging ethical dilemmas in this interactive choice game and test your decision-making strategies.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/trolley-problem/big_preview/a4328006f1a640919fc6702752e97dc9_og.jpg"},
+  
+      {slug:"time-tanks", name:"Time of Tanks", cat:"Shooting", emoji:"🎖️", desc:"Experience dynamic tank battles in this war game. Navigate landscapes and engage enemies online.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/time-tanks/big-preview/caa541c7556141b8aaf0de932f6791e0_og.jpg"},
+  
+      {slug:"build-and-run-playgama", name:"Build And Run", cat:"Arcade", emoji:"🏗️", desc:"Navigate levels, construct ramps, and defeat foes in this skill game. Build platforms on the fly while racing forward.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/build-and-run-playgama/big-preview/323041a10d8b420d96efa2f2184969c8_og.jpg"},
+  
+      {slug:"left-4-die", name:"Left 4 Die", cat:"Shooting", emoji:"🧟", desc:"Survive a post-apocalyptic world in this intense shooting game. Face endless enemies, upgrade your gear, and complete missions.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/left-4-die/big-preview/cf00b629fdc7492bbdce4d6f6b5a9f31_og.jpg"},
+  
+      {slug:"gun-clone-playgama", name:"Gun Clone", cat:"Arcade", emoji:"🔫", desc:"Upgrade and duplicate weapons in this arcade runner. Defeat foes across various levels.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/gun-clone-playgama/big-preview/f0956304c54849388202c5f3370a560c_og.jpg"},
+  
+      {slug:"chainsaw3d-playgama", name:"Chainsaw 3D", cat:"Arcade", emoji:"🪚", desc:"Master the chainsaw to cut logs and navigate obstacles in this skill-based arcade game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/chainsaw3d-playgama/big_preview/1be40a75fbdb4e7599bf99cd028d3640_og.jpg"},
+  
+      {slug:"arrow-fever-playgama", name:"Arrow Fever", cat:"Action", emoji:"🏹", desc:"Master your bow and arrow to defeat foes in this action game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/arrow-fever-playgama/big_preview/207545213eec45bbb05ed85f2640a8de_og.jpg"},
+  
+      {slug:"merge13-playgama", name:"Merge 13", cat:"Puzzle", emoji:"🔢", desc:"Combine numbered cells to reach higher scores in this logic puzzle. Merge your way toward 13.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/merge13-playgama/big-preview/e2add2d3d424422d8ac4634df9a142d3_og.jpg"},
+  
+      {slug:"teamloyalty", name:"Team Loyalty", cat:"Action", emoji:"🏃", desc:"Command your army in this running game. Pass through gates to increase your unit count and defeat foes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/teamloyalty/big-preview/340563bda1484901a94178f91b9f1d11_og.jpg"},
+  
+      {slug:"ninja-bambooassassin-playgama", name:"Ninja: Bamboo Assassin", cat:"Action", emoji:"🗡️", desc:"Navigate treacherous forests as a skilled ninja in this action arcade game. Master stealth and precision.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/ninja-bambooassassin-playgama/big_preview/77bb15728619403c8e1c500a89b705f4_og.jpg"},
+  
+      {slug:"click-click-clicker-playgama", name:"Click Click Clicker", cat:"Idle", emoji:"🖱️", desc:"Accumulate wealth by clicking buttons in this idle game. Unlock new cursors, themes, and music.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/click-click-clicker-playgama/big_preview/78514216da2d4d458f71a8bfea002aab_og.jpg"},
+  
+      {slug:"stairs-trivia-playgama", name:"Stairs Trivia", cat:"Puzzle", emoji:"🧠", desc:"Test your knowledge in this 3D quiz game where you build stairs to reach the peak.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/stairs-trivia-playgama/big_preview/0232838a81b4470294532cf6e85dd356_og.jpg"},
+  
+      {slug:"day-of-atrocity", name:"Day of Atrocity", cat:"Action", emoji:"💥", desc:"Defend your territory against endless waves of enemies in this voxel survival game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/day-of-atrocity/big-preview/1300394e06434fb0ae96981647aeeb24_og.jpg"},
+  
+      {slug:"blocktrianglepuzzle-playgama", name:"Block Triangle Puzzle", cat:"Puzzle", emoji:"🔺", desc:"Combine colorful triangles to form unique designs in this creative shape-matching puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/blocktrianglepuzzle-playgama/big-preview/48f3d4bc98a34124bcbddecc15e4edf1_og.jpg"},
+  
+      {slug:"medival-royal", name:"Medival Pixel Royale", cat:"Action", emoji:"⚔️", desc:"Experience intense combat in this pixelated medieval world. Compete in solo or multiplayer modes.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/medival-royal/big-preview/ad58ffed54404280a2d5a169b1f778ce_og.jpg"},
+  
+      {slug:"find-numbers", name:"Find Numbers", cat:"Puzzle", emoji:"🔍", desc:"Sharpen your focus by matching pairs of numbers, flags, and emojis in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/find-numbers/big-preview/254ee4601ad54c2192de592130e91649_og.jpg"},
+  
+      {slug:"unlock-cars", name:"Unlock Cars", cat:"Puzzle", emoji:"🚗", desc:"Guide vehicles onto busy roads in this puzzle game. Collect diamonds to unlock upgrades.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/unlock-cars/big_preview/cd231c339511451099dc7d66adf86257_og.jpg"},
+  
+      {slug:"defender-tanks-merge", name:"Defender: Tanks Merge", cat:"Strategy", emoji:"🛡️", desc:"Build a powerful army by merging tanks and using tactical abilities to survive enemy waves.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/defender-tanks-merge/big-preview/29ce9880b2a745c2883f9343d795c1c4_og.jpg"}
 ];
