@@ -686,5 +686,45 @@ const GAMES = [
   
       {slug:"unlock-cars", name:"Unlock Cars", cat:"Puzzle", emoji:"🚗", desc:"Guide vehicles onto busy roads in this puzzle game. Collect diamonds to unlock upgrades.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/unlock-cars/big_preview/cd231c339511451099dc7d66adf86257_og.jpg"},
   
-      {slug:"defender-tanks-merge", name:"Defender: Tanks Merge", cat:"Strategy", emoji:"🛡️", desc:"Build a powerful army by merging tanks and using tactical abilities to survive enemy waves.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/defender-tanks-merge/big-preview/29ce9880b2a745c2883f9343d795c1c4_og.jpg"}
+      {slug:"defender-tanks-merge", name:"Defender: Tanks Merge", cat:"Strategy", emoji:"🛡️", desc:"Build a powerful army by merging tanks and using tactical abilities to survive enemy waves.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/defender-tanks-merge/big-preview/29ce9880b2a745c2883f9343d795c1c4_og.jpg"},
+  
+      {slug:"bubble-boom", name:"Bubble Boom", cat:"Puzzle", emoji:"🧩", desc:"Aim, shoot, and pop bubbles in this classic bubble shooter.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/bubble-boom/big-preview/3cd68f69b073483bb828af70f4b40afd_og.jpg"},
+  
+      {slug:"save-noob-playgama", name:"Save the Noob", cat:"Puzzle", emoji:"🧩", desc:"Rescue Noob from threats by drawing lines to destroy enemies in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/save-noob-playgama/big_preview/b83e2f660e7947c1bc7f449621f897c8_og.jpg"},
+  
+      {slug:"zombie-space-episode-ii", name:"Zombie Space Episode II", cat:"Shooting", emoji:"🎯", desc:"Battle hordes of zombies on a space station in this shooting game. Find survivors, upgrade weapons, and play solo or with a friend. Free to play online on desktop and android.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/zombie-space-episode-ii/big-preview/6ce13cbdb8d34c029fc0b7be41f117d0_og.jpg"},
+  
+      {slug:"stickman-miners-wars-playgama", name:"Stickman Miners Wars", cat:"Strategy", emoji:"🛡️", desc:"Lead your stickman army to victory by mining gold and attacking enemy castles. This strategy game is playable online for free on desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/stickman-miners-wars-playgama/big-preview/71e64753044f416fb9046a5c26d773d9_og.jpg"},
+  
+      {slug:"popcat-merge-the-cats-playgama", name:"PopCats: Merge the cats!", cat:"Puzzle", emoji:"🧩", desc:"Combine matching cats to create bigger ones in this puzzle game.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/popcat-merge-the-cats-playgama/big-preview/776e3f5bf2c74d13bdefa1200d864b1f_og.jpg"},
+  
+      {slug:"geometry-arrow", name:"Geometry Arrow", cat:"Arcade", emoji:"🎮", desc:"Navigate an arrow through a cave filled with spikes and obstacles. Reach the portal in this free online game for desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/geometry-arrow/big-preview/71b2416c0d6143e0b46e1fa4898e3afd_og.jpg"},
+  
+      {slug:"little-big-fighters", name:"Little Big Fighters", cat:"Action", emoji:"⚔️", desc:"Enter the arena in Little Big Fighters, an action survival game. Defeat opponents and collect resources to grow stronger.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/little-big-fighters/big-preview/40327e2554f34e649b51e2d8827549c9_og.jpg"},
+  
+      {slug:"the-escape-series-playgama", name:"The Escape Series", cat:"Puzzle", emoji:"🧩", desc:"Test your intellect in The Escape Series. Explore environments, solve riddles, and find clues to escape. Play this mystery game online for free on mobile and desktop.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/the-escape-series-playgama/big-preview/29528ec6375f47ccbefdb10b9d5b3640_og.jpg"},
+  
+      {slug:"amaze-playgama", name:"Amaze!", cat:"Puzzle", emoji:"🧩", desc:"Navigate a ball through challenging mazes to paint every square. This puzzle game is playable online for free on desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/amaze-playgama/big_preview/c5e5cb0a22c14dffbca3df137b89546b_og.jpg"},
+  
+      {slug:"gun-and-roll-playgama", name:"Gun and Roll", cat:"Shooting", emoji:"🎯", desc:"Roll your object, upgrade your gun, and shoot through levels in this action game. Play this game online for free on your desktop, iOS, or Android device.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/gun-and-roll-playgama/big-preview/3d198615311a4fe8a485dd1595d6464f_og.jpg"},
+  
+      {slug:"robbie-draw-your-sword-playgama", name:"Robbie: Draw your Sword", cat:"Action", emoji:"⚔️", desc:"Explore this obby adventure game where you gather swords and level up your character. This free game is playable online on desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/robbie-draw-your-sword-playgama/big-preview/bf3fce51e4324cbcaf8ef2d5164f39b1_og.jpg"},
+  
+      {slug:"daddy-escape", name:"Daddy Escape", cat:"Puzzle", emoji:"🧩", desc:"Solve mind-bending puzzles and pull pins to help Daddy escape traps. This brain-training game is playable online for free on desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/daddy-escape/big_preview/249f5fcf5caf4e6591a4af87105c6a19_og.jpg"},
+  
+      {slug:"axe-run-playgama", name:"Axe Run", cat:"Arcade", emoji:"🎮", desc:"Chop through barriers, collect wood, and build a city in this adventure. Play this game online for free on your desktop, Android, or iOS mobile device.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/axe-run-playgama/big-preview/b0da9f27a74343bebefe2ff2f13732d4_og.jpg"},
+  
+      {slug:"broomcraft-mystic-evasion", name:"Broomcraft Mystic Evasion", cat:"Action", emoji:"⚔️", desc:"Fly on a broom and battle hordes of enemies in this survival game. Collect spells, upgrade gear, and conquer bosses.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/broomcraft-mystic-evasion/big-preview/dcb0d81211f44e0bb8a17907b3239e53_og.jpg"},
+  
+      {slug:"cubby-soccer-league", name:"Cubby Soccer League", cat:"Sports", emoji:"⚽", desc:"Navigate the field, protect the ball, and score goals in Cubby Soccer League. This sports game is playable online for free on desktop, iOS, and Android devices.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/cubby-soccer-league/big-preview/e788bad9059144ad8d725908e4e7f9bd_og.jpg"},
+  
+      {slug:"build-levels-earn-money", name:"Build levels – earn money!", cat:"Arcade", emoji:"🎮", desc:"Release balls into holes to earn diamonds and buy upgrades in this card game. Play this challenge online for free on your desktop or android device.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/build-levels-earn-money/big-preview/068eb1fec903421cbbfbae2493de5950_og.jpg"},
+  
+      {slug:"nubik-in-the-monster-world", name:"Nubik in the Monster World", cat:"Shooting", emoji:"🎯", desc:"Rescue kittens and defeat monsters with an arsenal of weapons in this shooting game. Play this adventure online for free on your desktop, Android, or iOS device.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/nubik-in-the-monster-world/big-preview/2141d5c95e4a40c0a9aa0a79b2da6ac0_og.jpg"},
+  
+      {slug:"the-cult", name:"The Cult", cat:"Strategy", emoji:"🛡️", desc:"Lead a cult of fishmen in this card adventure to summon a nameless deity. Play this fantasy game online for free on your desktop, Android, or iOS device.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/the-cult/big-preview/29f9b23408d842d997a37449f67ffcbc_og.jpg"},
+  
+      {slug:"lucy-the-dog-rescue-playgama", name:"Lucy the Dog Rescue", cat:"Adventure", emoji:"🗺️", desc:"Search for a lost dog in a mysterious forest and an old house. This hidden-object game is playable online for free on mobile devices and desktop computers.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/lucy-the-dog-rescue-playgama/big-preview/161d3d6a6eab40c2a2fe923b73158915_og.jpg"},
+  
+      {slug:"who-is-this-playgama", name:"Who Is This?", cat:"Puzzle", emoji:"🧩", desc:"Solve mysteries by using strategic questioning in interactive chats. This detective game is free to play online on your desktop, iOS, or Android device.", license:"Playgama", source:"Playgama", thumb:"https://static.playgama.com/p-img/pg/who-is-this-playgama/big-preview/8e47a93d6f034514875f6eadea105bfd_og.jpg"}
 ];
